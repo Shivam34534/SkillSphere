@@ -12,7 +12,7 @@ const ClubDashboard = ({ user }) => {
         <div className="wallet-pill" style={{background: 'rgba(59, 130, 246, 0.1)', borderColor: 'rgba(59, 130, 246, 0.2)'}}>
           <Users size={16} color="#3b82f6" />
           <span style={{color: '#bfdbfe'}}>Manage Community</span>
-          <span className="xp-badge" style={{background: '#3b82f6'}}>+{user.xpLevel * 10} XP</span>
+          <span className="xp-badge" style={{background: '#3b82f6'}}>+{((user.xpLevel || 1) * 10)} XP</span>
         </div>
       </div>
 

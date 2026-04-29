@@ -56,7 +56,7 @@ function App() {
         <div className="app-container">
           <Navigation />
           
-          <div style={{ paddingTop: '80px' }}>
+          <div style={{ paddingTop: '80px', width: '100%' }}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />

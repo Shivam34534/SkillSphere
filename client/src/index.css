@@ -1131,8 +1131,9 @@ button {
 /* Dashboard UI */
 .dashboard-container {
   min-height: 100vh;
-  padding: 6rem 2rem 2rem; /* Account for navbar */
+  padding: 6rem 2rem 2rem;
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
 }
 

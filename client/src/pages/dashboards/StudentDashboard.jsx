@@ -12,7 +12,7 @@ const StudentDashboard = ({ user }) => {
         <div className="wallet-pill">
           <Zap size={16} color="#fbbf24" />
           <span>{user.walletBalance || 0} Credits</span>
-          <span className="xp-badge">+{user.xpLevel * 10} XP</span>
+          <span className="xp-badge">+{((user.xpLevel || 1) * 10)} XP</span>
         </div>
       </div>
 

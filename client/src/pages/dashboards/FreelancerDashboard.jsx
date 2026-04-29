@@ -12,7 +12,7 @@ const FreelancerDashboard = ({ user }) => {
         <div className="wallet-pill" style={{background: 'rgba(217, 70, 239, 0.1)', borderColor: 'rgba(217, 70, 239, 0.2)'}}>
           <DollarSign size={16} color="#d946ef" />
           <span style={{color: '#f5d0fe'}}>₹{user.walletBalance || 0} Earned</span>
-          <span className="xp-badge" style={{background: '#d946ef'}}>+{user.xpLevel * 10} XP</span>
+          <span className="xp-badge" style={{background: '#d946ef'}}>+{((user.xpLevel || 1) * 10)} XP</span>
         </div>
       </div>
 
