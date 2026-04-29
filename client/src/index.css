@@ -784,7 +784,7 @@ button {
 }
 
 /* === Dashboard === */
-.dashboard-container {
+.old-dashboard-container {
   display: grid;
   grid-template-columns: 300px 1fr;
   gap: 2rem;
