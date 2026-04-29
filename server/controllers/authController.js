@@ -7,18 +7,34 @@ const generateToken = (id) => {
 
 export const registerUser = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, mobile, collegeName, department, year, skillsToTeach, skillsToLearn } = req.body;
     const userExists = await User.findOne({ email });
 
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    const user = await User.create({ name, email, password, role: role || 'STUDENT' });
+    const user = await User.create({ 
+      name, 
+      email, 
+      password, 
+      role: role || 'STUDENT',
+      mobile,
+      collegeName,
+      department,
+      year,
+      skillsToTeach: skillsToTeach || [],
+      skillsToLearn: skillsToLearn || []
+    });
 
     if (user) {
       res.status(201).json({
-        _id: user._id, name: user.name, email: user.email, token: generateToken(user._id),
+        _id: user._id, 
+        name: user.name, 
+        email: user.email, 
+        role: user.role,
+        isVerified: user.isVerified,
+        token: generateToken(user._id),
       });
     } else {
       res.status(400).json({ message: 'Invalid user data' });
