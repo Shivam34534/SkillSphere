@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
+import MeetingRoom from './pages/MeetingRoom';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
 import { useNavigate } from 'react-router-dom';
@@ -62,6 +63,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/meeting/:id" element={<MeetingRoom />} />
             </Routes>
           </div>
         </div>

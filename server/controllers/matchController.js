@@ -1,12 +1,21 @@
 import Match from '../models/Match.js';
+import User from '../models/User.js';
 
 export const createMatchRequest = async (req, res) => {
   try {
-    const { userBId, skillOfferedByA, skillOfferedByB, exchangeType } = req.body;
+    const { userBEmail, skillOfferedByA, skillOfferedByB, exchangeType } = req.body;
     
+    // Find the other user by their email
+    const userB = await User.findOne({ email: userBEmail });
+    if (!userB) {
+      return res.status(404).json({ message: 'No student found with that email address.' });
+    }
+
+    const userBId = userB._id.toString();
+
     // Prevent self-matching
     if (userBId === req.user._id.toString()) {
-      return res.status(400).json({ message: 'Cannot match with yourself' });
+      return res.status(400).json({ message: 'Cannot match with yourself.' });
     }
 
     const match = await Match.create({

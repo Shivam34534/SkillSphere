@@ -1,7 +1,65 @@
-import React from 'react';
-import { Briefcase, DollarSign, Star, TrendingUp, Users, Activity, ExternalLink, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Briefcase, DollarSign, Star, TrendingUp, Users, Activity, ExternalLink, CheckCircle, Plus } from 'lucide-react';
 
 const FreelancerDashboard = ({ user }) => {
+  const [services, setServices] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/api/v1/services', {
+        headers: { Authorization: `Bearer ${user.token}` }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        // Filter out services not belonging to this freelancer
+        setServices(data.filter(s => s.freelancerId?._id === user._id || s.freelancerId === user._id));
+      }
+    } catch (error) {
+      console.error('Failed to fetch services', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePostService = async () => {
+    const title = window.prompt("Service Title (e.g., 'React UI Design'):");
+    if (!title) return;
+    const description = window.prompt("Service Description:");
+    const category = window.prompt("Category (e.g., 'Web Dev'):");
+    const amount = window.prompt("Price in Credits/Cash (e.g., 50):");
+    
+    if (title && description && category) {
+      try {
+        const response = await fetch('http://localhost:5000/api/v1/services', {
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}` 
+          },
+          body: JSON.stringify({ 
+            title, description, category, 
+            pricing: { type: 'CREDITS', amount: Number(amount) || 0 }
+          })
+        });
+        
+        if (response.ok) {
+          alert('Service posted successfully!');
+          fetchServices();
+        } else {
+          const err = await response.json();
+          alert('Error: ' + err.message);
+        }
+      } catch (error) {
+        alert('Failed to post service');
+      }
+    }
+  };
+
   return (
     <div className="dashboard-content">
       <div className="dashboard-header">
@@ -23,8 +81,8 @@ const FreelancerDashboard = ({ user }) => {
           {/* Quick Stats */}
           <div style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem'}}>
             <div className="glass-card" style={{padding: '1.5rem', textAlign: 'center'}}>
-              <h3 style={{fontSize: '2rem', margin: '0 0 0.5rem 0', color: 'white'}}>0</h3>
-              <p style={{fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0}}>Active Orders</p>
+              <h3 style={{fontSize: '2rem', margin: '0 0 0.5rem 0', color: 'white'}}>{services.length}</h3>
+              <p style={{fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0}}>Active Services</p>
             </div>
             <div className="glass-card" style={{padding: '1.5rem', textAlign: 'center'}}>
               <h3 style={{fontSize: '2rem', margin: '0 0 0.5rem 0', color: 'white'}}>0</h3>
@@ -40,12 +98,34 @@ const FreelancerDashboard = ({ user }) => {
           <div className="section-container">
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
               <h2 style={{fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}><Briefcase size={20} color="#d946ef" /> Your Services</h2>
-              <button className="btn-primary" style={{padding: '0.4rem 1rem', fontSize: '0.85rem', background: 'linear-gradient(135deg, #d946ef 0%, #c026d3 100%)'}}>+ Post New Service</button>
+              <button onClick={handlePostService} className="btn-primary" style={{padding: '0.4rem 1rem', fontSize: '0.85rem', background: 'linear-gradient(135deg, #d946ef 0%, #c026d3 100%)'}}>
+                <Plus size={14} style={{marginRight: '0.3rem', display: 'inline'}} /> Post New Service
+              </button>
             </div>
             
-            <div className="glass-card" style={{padding: '2rem', textAlign: 'center', borderStyle: 'dashed'}}>
-              <p style={{color: 'var(--text-muted)', marginBottom: '1rem'}}>You haven't posted any services yet.</p>
-              <button className="btn-ghost">Create your first service listing</button>
+            <div className="glass-card" style={{padding: '1.5rem'}}>
+              {loading ? (
+                <p style={{color: 'var(--text-muted)', textAlign: 'center'}}>Loading services...</p>
+              ) : services.length > 0 ? (
+                services.map((service, idx) => (
+                  <div key={service._id} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: idx !== services.length - 1 ? '1px solid var(--glass-border)' : 'none', paddingBottom: idx !== services.length - 1 ? '1rem' : 0, marginBottom: idx !== services.length - 1 ? '1rem' : 0}}>
+                    <div>
+                      <h4 style={{margin: 0, color: 'white'}}>{service.title}</h4>
+                      <p style={{fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0.2rem 0'}}>{service.description}</p>
+                      <span className="skill-badge" style={{background: 'rgba(217, 70, 239, 0.1)', color: '#d946ef', fontSize: '0.7rem'}}>{service.category}</span>
+                    </div>
+                    <div style={{textAlign: 'right'}}>
+                      <div style={{fontWeight: 'bold', color: '#fbbf24'}}>{service.pricing?.amount} {service.pricing?.type}</div>
+                      <div style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>Delivery: {service.deliveryTimeDays} day(s)</div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div style={{textAlign: 'center', padding: '1rem 0'}}>
+                  <p style={{color: 'var(--text-muted)', marginBottom: '1rem'}}>You haven't posted any services yet.</p>
+                  <button onClick={handlePostService} className="btn-ghost">Create your first service listing</button>
+                </div>
+              )}
             </div>
           </div>
 
