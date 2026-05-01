@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { BookOpen, Users, Briefcase, Zap, Star, Shield, Search, ArrowRight, Video, FileText, Code, Palette, Presentation, Plus } from 'lucide-react';
 
 const StudentDashboard = ({ user }) => {
@@ -216,7 +217,7 @@ const StudentDashboard = ({ user }) => {
                             {isInitiator ? `You offer: ${match.skillOfferedByA} • They offer: ${match.skillOfferedByB}` : `They offer: ${match.skillOfferedByA} • You offer: ${match.skillOfferedByB}`}
                           </span>
                           <div style={{marginTop: '0.2rem', fontSize: '0.75rem', color: match.status === 'ACCEPTED' ? '#10b981' : 'var(--text-muted)'}}>
-                            Status: {match.status} {match.meetingLink && <a href={`/meeting/${match._id}`} style={{color: 'var(--primary)', marginLeft: '0.5rem'}}>Join Meeting</a>}
+                            Status: {match.status} {match.meetingLink && <Link to={`/meeting/${match._id}`} style={{color: 'var(--primary)', marginLeft: '0.5rem', fontWeight: 'bold'}}>Join Meeting</Link>}
                           </div>
                         </div>
                       </div>
