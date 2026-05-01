@@ -131,6 +131,37 @@ const StudentDashboard = ({ user }) => {
       alert('Failed to load tutors');
     }
   };
+  const handlePurchase = async (serviceId, amount) => {
+    if (user.walletBalance < amount) {
+      alert(`You don't have enough credits. You need ${amount} credits.`);
+      return;
+    }
+    
+    if (window.confirm(`Buy this service for ${amount} Credits?`)) {
+      try {
+        const response = await fetch(`http://localhost:5000/api/v1/services/${serviceId}/purchase`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${user.token}`
+          }
+        });
+        
+        if (response.ok) {
+          const updatedUser = { ...user, walletBalance: user.walletBalance - amount };
+          localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+          
+          // Force a page reload to update the Context and navbar instantly
+          window.location.reload();
+        } else {
+          const data = await response.json();
+          alert(data.message || 'Purchase failed');
+        }
+      } catch (error) {
+        alert('An error occurred during purchase');
+      }
+    }
+  };
 
   return (
     <div className="dashboard-content">
@@ -139,7 +170,21 @@ const StudentDashboard = ({ user }) => {
           <h1>Welcome, {user.name}</h1>
           <p>Student • {user.department} • Level {user.xpLevel} Beginner</p>
         </div>
-        <div className="wallet-pill">
+        <div 
+          className="wallet-pill" 
+          onClick={() => {
+            const amount = window.prompt("🚀 MVP TEST MODE: How many free credits do you want to add to your wallet?", "100");
+            if (amount && !isNaN(amount)) {
+              const updatedUser = { ...user, walletBalance: (user.walletBalance || 0) + parseInt(amount) };
+              localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+              window.location.reload();
+            }
+          }}
+          style={{cursor: 'pointer', transition: 'transform 0.2s'}}
+          title="Click to add test credits!"
+          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+        >
           <Zap size={16} color="#fbbf24" />
           <span>{user.walletBalance || 0} Credits</span>
           <span className="xp-badge">+{((user.xpLevel || 1) * 10)} XP</span>
@@ -180,7 +225,7 @@ const StudentDashboard = ({ user }) => {
                     </div>
                     <div style={{textAlign: 'right'}}>
                       <div style={{fontWeight: 'bold', color: '#fbbf24'}}>{service.pricing?.amount} {service.pricing?.type}</div>
-                      <button className="btn-primary" style={{padding: '0.3rem 0.6rem', fontSize: '0.75rem', marginTop: '0.5rem'}} onClick={() => alert('Purchased!')}>Buy</button>
+                      <button className="btn-primary" style={{padding: '0.3rem 0.6rem', fontSize: '0.75rem', marginTop: '0.5rem'}} onClick={() => handlePurchase(service._id, service.pricing?.amount)}>Buy</button>
                     </div>
                   </div>
                 )) : (
@@ -227,9 +272,15 @@ const StudentDashboard = ({ user }) => {
                           <button onClick={() => handleRespond(match._id, 'ACCEPTED')} className="btn-primary" style={{padding: '0.4rem 0.8rem', fontSize: '0.8rem', background: '#10b981'}}>Accept</button>
                           <button onClick={() => handleRespond(match._id, 'DECLINED')} className="btn-ghost" style={{padding: '0.4rem 0.8rem', fontSize: '0.8rem', color: '#ef4444'}}>Decline</button>
                         </div>
+                      ) : match.status === 'ACCEPTED' ? (
+                        <Link to={`/meeting/${match._id}`}>
+                          <button className="btn-primary" style={{padding: '0.4rem 0.8rem', fontSize: '0.8rem', background: 'var(--primary)'}}>
+                            Join Call
+                          </button>
+                        </Link>
                       ) : (
-                        <button className="btn-ghost" style={{padding: '0.4rem 0.8rem', fontSize: '0.8rem'}} disabled>
-                          {isInitiator && match.status === 'PENDING' ? 'Waiting...' : 'View'}
+                        <button className="btn-ghost" style={{padding: '0.4rem 0.8rem', fontSize: '0.8rem', opacity: 0.5}} disabled>
+                          {isInitiator && match.status === 'PENDING' ? 'Waiting...' : 'Closed'}
                         </button>
                       )}
                     </div>
@@ -270,16 +321,30 @@ const StudentDashboard = ({ user }) => {
           </div>
 
           <div className="glass-card" style={{padding: '1.5rem'}}>
-            <h3 style={{fontSize: '1.1rem', marginBottom: '1rem'}}>Trust & Growth</h3>
+            <h3 style={{fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between'}}>
+              Trust & Growth 
+              <span style={{fontSize: '0.7rem', backgroundColor: 'rgba(59, 130, 246, 0.2)', color: '#3b82f6', padding: '0.2rem 0.5rem', borderRadius: '10px'}}>
+                Level {user.xpLevel || 1}
+              </span>
+            </h3>
             <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem'}}>
               <span style={{fontSize: '0.9rem', color: 'var(--text-muted)'}}>Trust Score</span>
-              <span style={{fontWeight: 'bold', color: '#10b981'}}>{user.trustScore}/100</span>
+              <span style={{fontWeight: 'bold', color: '#10b981'}}>{user.trustScore || 50}/100</span>
             </div>
             <div style={{width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden'}}>
-              <div style={{width: `${user.trustScore}%`, height: '100%', background: '#10b981'}}></div>
+              <div style={{width: `${user.trustScore || 50}%`, height: '100%', background: '#10b981', transition: 'width 0.5s ease-out'}}></div>
             </div>
+            
+            <div style={{marginTop: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem'}}>
+              <span style={{fontSize: '0.9rem', color: 'var(--text-muted)'}}>Gigs Completed</span>
+              <span style={{fontWeight: 'bold', color: '#3b82f6'}}>{user.completedGigs || 0}</span>
+            </div>
+
             <p style={{fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
-              <Shield size={14} color="#3b82f6"/> Complete 2 more gigs to reach Learner level!
+              <Shield size={14} color="#3b82f6"/> 
+              {user.xpLevel >= 5 
+                ? "Max level! You're a Campus Expert!" 
+                : `Complete ${5 - ((user.completedGigs || 0) % 5)} more gigs to reach ${['Beginner', 'Learner', 'Contributor', 'Mentor', 'Campus Expert'][user.xpLevel || 1] || 'next'} level!`}
             </p>
           </div>
         </div>

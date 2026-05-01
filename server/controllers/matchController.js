@@ -33,15 +33,23 @@ export const createMatchRequest = async (req, res) => {
 
 export const getMyMatches = async (req, res) => {
   try {
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: 'User context missing' });
+    }
+
     const matches = await Match.find({
       $or: [{ userAId: req.user._id }, { userBId: req.user._id }]
     })
-    .populate('userAId', 'name profilePhoto trustScore')
-    .populate('userBId', 'name profilePhoto trustScore');
+    .populate('userAId', 'name profilePhoto trustScore email')
+    .populate('userBId', 'name profilePhoto trustScore email');
     
-    res.json(matches);
+    // Filter out any matches where population failed (user deleted)
+    const validMatches = matches.filter(m => m.userAId && m.userBId);
+    
+    res.json(validMatches);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error in getMyMatches:', error);
+    res.status(500).json({ message: 'Error fetching matches: ' + error.message });
   }
 };
 
