@@ -178,10 +178,7 @@ const StudentDashboard = () => {
               dispatch(updateUser({ walletBalance: (user.walletBalance || 0) + parseInt(amount) }));
             }
           }}
-          style={{cursor: 'pointer', transition: 'transform 0.2s'}}
           title="Click to add test credits!"
-          onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-          onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
         >
           <Zap size={16} color="#fbbf24" />
           <span>{user.walletBalance || 0} Credits</span>
@@ -191,43 +188,43 @@ const StudentDashboard = () => {
 
       <div className="dashboard-grid">
         {/* Main Feed */}
-        <div className="main-column" style={{display: 'flex', flexDirection: 'column', gap: '2rem'}}>
+        <div className="main-column">
           
           {/* Quick Actions */}
-          <div className="action-cards" style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem'}}>
+          <div className="action-cards">
             <div className="glass-card" style={{padding: '1.5rem', background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%)', borderColor: 'rgba(139, 92, 246, 0.2)'}}>
               <BookOpen size={24} color="#a855f7" style={{marginBottom: '1rem'}} />
               <h3>Learn a Skill</h3>
-              <p style={{fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem'}}>Find tutors and buy sessions</p>
-              <button onClick={handleBrowseTutors} className="btn-primary" style={{padding: '0.5rem 1rem', fontSize: '0.85rem', width: '100%'}}>{showServices ? "Hide Tutors" : "Browse Tutors"}</button>
+              <p className="text-sm text-text-muted mb-4">Find tutors and buy sessions</p>
+              <button onClick={handleBrowseTutors} className="btn-primary w-full py-2 text-sm">{showServices ? "Hide Tutors" : "Browse Tutors"}</button>
             </div>
             <div className="glass-card" style={{padding: '1.5rem', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%)', borderColor: 'rgba(16, 185, 129, 0.2)'}}>
               <Briefcase size={24} color="#10b981" style={{marginBottom: '1rem'}} />
               <h3>Teach & Earn</h3>
-              <p style={{fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem'}}>Offer your skills to peers</p>
-              <button onClick={handlePostService} className="btn-primary" style={{padding: '0.5rem 1rem', fontSize: '0.85rem', width: '100%', background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'}}>Create Micro-service</button>
+              <p className="text-sm text-text-muted mb-4">Offer your skills to peers</p>
+              <button onClick={handlePostService} className="btn-primary w-full py-2 text-sm" style={{background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'}}>Create Micro-service</button>
             </div>
           </div>
 
           {/* Render Services if showServices is true */}
           {showServices && (
             <div className="section-container">
-              <h2 style={{fontSize: '1.25rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}><BookOpen size={20} color="#a855f7" /> Available Tutors & Services</h2>
-              <div className="glass-card" style={{padding: '1.5rem'}}>
+              <h2 className="flex items-center gap-2"><BookOpen size={20} color="#a855f7" /> Available Tutors & Services</h2>
+              <div className="glass-card p-6">
                 {services.length > 0 ? services.map((service, idx) => (
-                  <div key={service._id} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: idx !== services.length - 1 ? '1px solid var(--glass-border)' : 'none', paddingBottom: idx !== services.length - 1 ? '1rem' : 0, marginBottom: idx !== services.length - 1 ? '1rem' : 0}}>
+                  <div key={service._id} className={`flex justify-between items-center ${idx !== services.length - 1 ? 'border-b border-glass-border pb-4 mb-4' : ''}`}>
                     <div>
-                      <h4 style={{margin: 0, color: 'white'}}>{service.title} <span style={{fontSize: '0.7rem', color: 'var(--text-muted)', fontWeight: 'normal'}}>by {service.freelancerId?.name || 'Unknown'}</span></h4>
-                      <p style={{fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0.2rem 0'}}>{service.description}</p>
-                      <span className="skill-badge" style={{background: 'rgba(139, 92, 246, 0.1)', color: '#a855f7', fontSize: '0.7rem'}}>{service.category}</span>
+                      <h4 className="m-0 text-text-main">{service.title} <span className="text-[10px] text-text-muted font-normal uppercase tracking-wider ml-2">by {service.freelancerId?.name || 'Unknown'}</span></h4>
+                      <p className="text-sm text-text-muted my-1">{service.description}</p>
+                      <span className="skill-badge bg-primary/10 text-primary text-[10px]">{service.category}</span>
                     </div>
-                    <div style={{textAlign: 'right'}}>
-                      <div style={{fontWeight: 'bold', color: '#fbbf24'}}>{service.pricing?.amount} {service.pricing?.type}</div>
-                      <button className="btn-primary" style={{padding: '0.3rem 0.6rem', fontSize: '0.75rem', marginTop: '0.5rem'}} onClick={() => handlePurchase(service._id, service.pricing?.amount)}>Buy</button>
+                    <div className="text-right">
+                      <div className="font-bold text-yellow-400">{service.pricing?.amount} {service.pricing?.type}</div>
+                      <button className="btn-primary py-1 px-3 text-xs mt-2" onClick={() => handlePurchase(service._id, service.pricing?.amount)}>Buy</button>
                     </div>
                   </div>
                 )) : (
-                  <p style={{color: 'var(--text-muted)', textAlign: 'center'}}>No tutors found right now.</p>
+                  <p className="text-text-muted text-center">No tutors found right now.</p>
                 )}
               </div>
             </div>
@@ -235,49 +232,49 @@ const StudentDashboard = () => {
 
           {/* Dynamic Matches Feed */}
           <div className="section-container">
-            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
-              <h2 style={{fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}><Star size={20} color="#fbbf24" /> Your Skill Exchanges</h2>
-              <button onClick={handleCreateMatch} className="btn-ghost" style={{padding: '0.4rem 0.8rem', fontSize: '0.85rem', border: '1px solid var(--glass-border)'}}>
-                <Plus size={14} style={{marginRight: '0.3rem'}} /> Request Match
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="flex items-center gap-2"><Star size={20} color="#fbbf24" /> Your Skill Exchanges</h2>
+              <button onClick={handleCreateMatch} className="btn-ghost py-1.5 px-3 text-sm border border-glass-border">
+                <Plus size={14} className="mr-1" /> Request Match
               </button>
             </div>
 
-            <div className="glass-card" style={{padding: '1.5rem'}}>
+            <div className="glass-card p-6">
               {loading ? (
-                <p style={{color: 'var(--text-muted)', textAlign: 'center'}}>Loading matches...</p>
+                <p className="text-text-muted text-center">Loading matches...</p>
               ) : matches.length > 0 ? (
                 matches.map((match, idx) => {
                   const isInitiator = match.userAId._id === user._id;
                   const otherUser = isInitiator ? match.userBId : match.userAId;
                   
                   return (
-                    <div key={match._id} style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: idx !== matches.length - 1 ? '1px solid var(--glass-border)' : 'none', paddingBottom: idx !== matches.length - 1 ? '1rem' : 0, marginBottom: idx !== matches.length - 1 ? '1rem' : 0}}>
-                      <div style={{display: 'flex', alignItems: 'center', gap: '1rem'}}>
-                        <div style={{width: '40px', height: '40px', borderRadius: '50%', background: isInitiator ? 'var(--secondary)' : 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold'}}>{otherUser?.name?.charAt(0) || '?'}</div>
+                    <div key={match._id} className={`flex justify-between items-center ${idx !== matches.length - 1 ? 'border-b border-glass-border pb-4 mb-4' : ''}`}>
+                      <div className="flex items-center gap-4">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold ${isInitiator ? 'bg-secondary' : 'bg-primary'}`}>{otherUser?.name?.charAt(0) || '?'}</div>
                         <div>
-                          <h4 style={{margin: 0}}>{otherUser?.name || 'Unknown User'}</h4>
-                          <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>
+                          <h4 className="m-0 text-text-main">{otherUser?.name || 'Unknown User'}</h4>
+                          <span className="text-xs text-text-muted">
                             {isInitiator ? `You offer: ${match.skillOfferedByA} • They offer: ${match.skillOfferedByB}` : `They offer: ${match.skillOfferedByA} • You offer: ${match.skillOfferedByB}`}
                           </span>
-                          <div style={{marginTop: '0.2rem', fontSize: '0.75rem', color: match.status === 'ACCEPTED' ? '#10b981' : 'var(--text-muted)'}}>
-                            Status: {match.status} {match.meetingLink && <Link to={`/meeting/${match._id}`} style={{color: 'var(--primary)', marginLeft: '0.5rem', fontWeight: 'bold'}}>Join Meeting</Link>}
+                          <div className={`mt-1 text-[10px] font-semibold ${match.status === 'ACCEPTED' ? 'text-success' : 'text-text-muted'}`}>
+                            {match.status} {match.meetingLink && <Link to={`/meeting/${match._id}`} className="text-primary ml-2 underline">Join Meeting</Link>}
                           </div>
                         </div>
                       </div>
                       
                       {!isInitiator && match.status === 'PENDING' ? (
-                        <div style={{display: 'flex', gap: '0.5rem'}}>
-                          <button onClick={() => handleRespond(match._id, 'ACCEPTED')} className="btn-primary" style={{padding: '0.4rem 0.8rem', fontSize: '0.8rem', background: '#10b981'}}>Accept</button>
-                          <button onClick={() => handleRespond(match._id, 'DECLINED')} className="btn-ghost" style={{padding: '0.4rem 0.8rem', fontSize: '0.8rem', color: '#ef4444'}}>Decline</button>
+                        <div className="flex gap-2">
+                          <button onClick={() => handleRespond(match._id, 'ACCEPTED')} className="btn-primary py-1.5 px-3 text-xs bg-success">Accept</button>
+                          <button onClick={() => handleRespond(match._id, 'DECLINED')} className="btn-ghost py-1.5 px-3 text-xs text-red-500">Decline</button>
                         </div>
                       ) : match.status === 'ACCEPTED' ? (
                         <Link to={`/meeting/${match._id}`}>
-                          <button className="btn-primary" style={{padding: '0.4rem 0.8rem', fontSize: '0.8rem', background: 'var(--primary)'}}>
+                          <button className="btn-primary py-1.5 px-3 text-xs bg-primary">
                             Join Call
                           </button>
                         </Link>
                       ) : (
-                        <button className="btn-ghost" style={{padding: '0.4rem 0.8rem', fontSize: '0.8rem', opacity: 0.5}} disabled>
+                        <button className="btn-ghost py-1.5 px-3 text-xs opacity-50 cursor-not-allowed" disabled>
                           {isInitiator && match.status === 'PENDING' ? 'Waiting...' : 'Closed'}
                         </button>
                       )}
@@ -285,9 +282,9 @@ const StudentDashboard = () => {
                   );
                 })
               ) : (
-                <div style={{textAlign: 'center', padding: '2rem 0', color: 'var(--text-muted)'}}>
+                <div className="text-center py-8 text-text-muted">
                   <p>You don't have any active skill matches yet.</p>
-                  <p style={{fontSize: '0.85rem', marginTop: '0.5rem'}}>Click "Request Match" to barter skills with another student!</p>
+                  <p className="text-xs mt-2">Click "Request Match" to barter skills with another student!</p>
                 </div>
               )}
             </div>
@@ -295,51 +292,51 @@ const StudentDashboard = () => {
         </div>
 
         {/* Sidebar */}
-        <div className="sidebar" style={{display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
-          <div className="glass-card" style={{padding: '1.5rem'}}>
-            <h3 style={{fontSize: '1.1rem', marginBottom: '1rem'}}>Your Skills</h3>
+        <div className="sidebar">
+          <div className="glass-card p-6">
+            <h3 className="text-lg mb-4">Your Skills</h3>
             
-            <div style={{marginBottom: '1rem'}}>
-              <span style={{fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px'}}>Offering</span>
-              <div style={{display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem'}}>
+            <div className="mb-4">
+              <span className="text-[10px] text-text-muted uppercase tracking-widest font-bold">Offering</span>
+              <div className="flex flex-wrap gap-2 mt-2">
                 {user.skillsToTeach?.length > 0 ? user.skillsToTeach.map((skill, i) => (
-                  <span key={i} className="skill-badge" style={{background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.2)', padding: '0.2rem 0.8rem', borderRadius: '12px', fontSize: '0.8rem'}}>{skill}</span>
-                )) : <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>None added yet</span>}
+                  <span key={i} className="skill-badge bg-success/10 text-success border border-success/20">{skill}</span>
+                )) : <span className="text-xs text-text-muted">None added yet</span>}
               </div>
             </div>
 
             <div>
-              <span style={{fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px'}}>Learning</span>
-              <div style={{display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem'}}>
+              <span className="text-[10px] text-text-muted uppercase tracking-widest font-bold">Learning</span>
+              <div className="flex flex-wrap gap-2 mt-2">
                 {user.skillsToLearn?.length > 0 ? user.skillsToLearn.map((skill, i) => (
-                  <span key={i} className="skill-badge" style={{background: 'rgba(217, 70, 239, 0.1)', color: '#d946ef', border: '1px solid rgba(217, 70, 239, 0.2)', padding: '0.2rem 0.8rem', borderRadius: '12px', fontSize: '0.8rem'}}>{skill}</span>
-                )) : <span style={{fontSize: '0.8rem', color: 'var(--text-muted)'}}>None added yet</span>}
+                  <span key={i} className="skill-badge bg-secondary/10 text-secondary border border-secondary/20">{skill}</span>
+                )) : <span className="text-xs text-text-muted">None added yet</span>}
               </div>
             </div>
           </div>
 
-          <div className="glass-card" style={{padding: '1.5rem'}}>
-            <h3 style={{fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between'}}>
+          <div className="glass-card p-6">
+            <h3 className="text-lg mb-4 flex justify-between items-center">
               Trust & Growth 
-              <span style={{fontSize: '0.7rem', backgroundColor: 'rgba(59, 130, 246, 0.2)', color: '#3b82f6', padding: '0.2rem 0.5rem', borderRadius: '10px'}}>
+              <span className="text-[10px] bg-accent/20 text-accent py-1 px-2 rounded-lg">
                 Level {user.xpLevel || 1}
               </span>
             </h3>
-            <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem'}}>
-              <span style={{fontSize: '0.9rem', color: 'var(--text-muted)'}}>Trust Score</span>
-              <span style={{fontWeight: 'bold', color: '#10b981'}}>{user.trustScore || 50}/100</span>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm text-text-muted">Trust Score</span>
+              <span className="font-bold text-success">{user.trustScore || 50}/100</span>
             </div>
-            <div style={{width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden'}}>
-              <div style={{width: `${user.trustScore || 50}%`, height: '100%', background: '#10b981', transition: 'width 0.5s ease-out'}}></div>
+            <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+              <div className="h-full bg-success transition-all duration-500" style={{width: `${user.trustScore || 50}%`}}></div>
             </div>
             
-            <div style={{marginTop: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem'}}>
-              <span style={{fontSize: '0.9rem', color: 'var(--text-muted)'}}>Gigs Completed</span>
-              <span style={{fontWeight: 'bold', color: '#3b82f6'}}>{user.completedGigs || 0}</span>
+            <div className="mt-6 flex items-center justify-between mb-2">
+              <span className="text-sm text-text-muted">Gigs Completed</span>
+              <span className="font-bold text-accent">{user.completedGigs || 0}</span>
             </div>
 
-            <p style={{fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
-              <Shield size={14} color="#3b82f6"/> 
+            <p className="text-[10px] text-text-muted mt-4 flex items-center gap-2 leading-relaxed">
+              <Shield size={12} className="text-accent"/> 
               {user.xpLevel >= 5 
                 ? "Max level! You're a Campus Expert!" 
                 : `Complete ${5 - ((user.completedGigs || 0) % 5)} more gigs to reach ${['Beginner', 'Learner', 'Contributor', 'Mentor', 'Campus Expert'][user.xpLevel || 1] || 'next'} level!`}

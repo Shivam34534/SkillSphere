@@ -1,3 +1,4 @@
+import express from 'express';
 import { createGig, getOpenGigs, applyForGig, hireFreelancer, completeGig, getClubGigs } from '../controllers/gigController.js';
 import { protect } from '../middleware/authMiddleware.js';
 

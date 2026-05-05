@@ -94,11 +94,11 @@ function Signup() {
         </button>
 
         <div className="auth-header text-center mb-10">
-          {step === 1 && <h2 className="text-3xl font-bold text-white">Choose your journey</h2>}
-          {step === 2 && <h2 className="text-3xl font-bold text-white">Create your account</h2>}
-          {step === 3 && <h2 className="text-3xl font-bold text-white">Verify your campus</h2>}
-          {step === 4 && <h2 className="text-3xl font-bold text-white">Set your skills</h2>}
-          {step === 5 && <h2 className="text-3xl font-bold text-white">Verify your email</h2>}
+          {step === 1 && <h2 className="text-3xl font-display font-bold text-text-main">Choose your journey</h2>}
+          {step === 2 && <h2 className="text-3xl font-display font-bold text-text-main">Create your account</h2>}
+          {step === 3 && <h2 className="text-3xl font-display font-bold text-text-main">Verify your campus</h2>}
+          {step === 4 && <h2 className="text-3xl font-display font-bold text-text-main">Set your skills</h2>}
+          {step === 5 && <h2 className="text-3xl font-display font-bold text-text-main">Verify your email</h2>}
           
           <div className="flex justify-center gap-2 mt-4">
             {[1,2,3,4,5].map(s => (
@@ -117,17 +117,17 @@ function Signup() {
           <div className="grid gap-4">
             <button type="button" className="glass-card p-6 flex items-start gap-4 text-left hover:border-primary transition-all bg-white/[0.02]" onClick={() => handleRoleSelect('STUDENT')}>
               <div className="bg-primary/10 p-3 rounded-xl text-primary-hover"><GraduationCap size={24} /></div>
-              <div><h3 className="text-lg font-semibold text-white mb-1">Student</h3><p className="text-text-muted text-sm leading-relaxed">I want to learn, hire peers, and build my portfolio.</p></div>
+              <div><h3 className="text-lg font-display font-semibold text-text-main mb-1">Student</h3><p className="text-text-muted text-sm leading-relaxed">I want to learn, hire peers, and build my portfolio.</p></div>
             </button>
 
             <button type="button" className="glass-card p-6 flex items-start gap-4 text-left hover:border-secondary transition-all bg-white/[0.02]" onClick={() => handleRoleSelect('FREELANCER')}>
               <div className="bg-secondary/10 p-3 rounded-xl text-secondary"><Briefcase size={24} /></div>
-              <div><h3 className="text-lg font-semibold text-white mb-1">Freelancer</h3><p className="text-text-muted text-sm leading-relaxed">I want to offer my skills and earn money on campus.</p></div>
+              <div><h3 className="text-lg font-display font-semibold text-text-main mb-1">Freelancer</h3><p className="text-text-muted text-sm leading-relaxed">I want to offer my skills and earn money on campus.</p></div>
             </button>
 
             <button type="button" className="glass-card p-6 flex items-start gap-4 text-left hover:border-accent transition-all bg-white/[0.02]" onClick={() => handleRoleSelect('CLUB')}>
               <div className="bg-accent/10 p-3 rounded-xl text-accent"><Building size={24} /></div>
-              <div><h3 className="text-lg font-semibold text-white mb-1">Campus Club / Org</h3><p className="text-text-muted text-sm leading-relaxed">I want to recruit talent and manage our internal economy.</p></div>
+              <div><h3 className="text-lg font-display font-semibold text-text-main mb-1">Campus Club / Org</h3><p className="text-text-muted text-sm leading-relaxed">I want to recruit talent and manage our internal economy.</p></div>
             </button>
 
             <div className="text-center mt-6">
@@ -351,6 +351,13 @@ function Signup() {
               <Mail size={20} />
               <p>Enter the 6-digit code sent to <b className="text-white">{formData.email}</b></p>
             </div>
+
+            {/* Test OTP Alert for Dev Mode */}
+            {process.env.NODE_ENV === 'development' && (
+              <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-xl text-yellow-500 text-sm font-bold text-center">
+                Check browser console for OTP if email is slow!
+              </div>
+            )}
 
             <div className="input-group">
               <label className="block text-sm font-medium text-text-muted mb-2 text-center">OTP Code</label>

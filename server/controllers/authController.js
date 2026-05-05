@@ -17,43 +17,58 @@ export const registerUser = async (req, res) => {
       return res.status(400).json({ message: 'Please use a valid email address.' });
     }
 
-    const userExists = await User.findOne({ email });
+    let user = await User.findOne({ email });
 
-    if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
+    if (user && user.isVerified) {
+      return res.status(400).json({ message: 'User already exists and is verified. Please log in.' });
     }
 
     // 2. Generate 6-digit OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
 
-    const user = await User.create({ 
-      name, 
-      email, 
-      password, 
-      role: role || 'STUDENT',
-      mobile,
-      collegeName,
-      department,
-      year,
-      skillsToTeach: skillsToTeach || [],
-      skillsToLearn: skillsToLearn || [],
-      otp,
-      otpExpires
-    });
+    if (user && !user.isVerified) {
+      // Update existing unverified user
+      user.name = name;
+      user.password = password;
+      user.role = role || 'STUDENT';
+      user.mobile = mobile;
+      user.collegeName = collegeName;
+      user.department = department;
+      user.year = year;
+      user.skillsToTeach = skillsToTeach || [];
+      user.skillsToLearn = skillsToLearn || [];
+      user.otp = otp;
+      user.otpExpires = otpExpires;
+      await user.save();
+      console.log(`[AUTH] Unverified user ${email} updated with new OTP`);
+    } else {
+      // Create new user
+      user = await User.create({ 
+        name, 
+        email, 
+        password, 
+        role: role || 'STUDENT',
+        mobile,
+        collegeName,
+        department,
+        year,
+        skillsToTeach: skillsToTeach || [],
+        skillsToLearn: skillsToLearn || [],
+        otp,
+        otpExpires
+      });
+      console.log(`[AUTH] New user ${email} created`);
+    }
 
     if (user) {
-      // 3. Send OTP via Email
-      try {
-        await sendEmail(user.email, 'Verify Your SkillSphere Account', otpTemplate(otp));
-        console.log(`[AUTH] OTP sent to ${email}`);
-      } catch (emailError) {
-        console.error("Failed to send OTP email:", emailError);
-        // We still return 201 because the user was created, but we notify about the email failure
-      }
+      // 3. Send OTP via Email (Non-blocking for faster response)
+      sendEmail(user.email, 'Verify Your SkillSphere Account', otpTemplate(otp))
+        .then(() => console.log(`[AUTH] OTP sent to ${email}`))
+        .catch(emailError => console.error("Failed to send OTP email:", emailError));
       
       res.status(201).json({
-        message: 'Registration successful. Please verify the OTP sent to your email.',
+        message: `Registration successful. ${process.env.NODE_ENV === 'development' ? 'TEST OTP: ' + otp : 'Please verify the OTP sent to your email.'}`,
         email: user.email,
         testOtp: process.env.NODE_ENV === 'development' ? otp : undefined 
       });

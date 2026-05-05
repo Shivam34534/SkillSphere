@@ -7,14 +7,14 @@ function Home() {
     <>
       <header className="hero-section">
         <div className="hero-bg-grid"></div>
-        <div className="badge-pill" style={{padding: '0.3rem 1rem 0.3rem 0.3rem', border: '1px solid rgba(255, 255, 255, 0.05)', background: 'rgba(0,0,0,0.3)', backdropFilter: 'blur(10px)'}}>
+        <div className="badge-pill">
           <span className="badge-new">NEW</span>
-          <span style={{color: '#94a3b8', fontSize: '0.8rem'}}>Verified campus-only economy is live</span>
+          <span>Verified campus-only economy is live</span>
         </div>
         
         <h1 className="hero-title">
           The campus economy<br />
-          <span style={{background: 'linear-gradient(135deg, #e9d5ff 0%, #d946ef 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>built for students.</span>
+          <span className="gradient-text">built for students.</span>
         </h1>
         
         <p className="hero-subtitle">
@@ -23,49 +23,27 @@ function Home() {
         
         <div className="hero-buttons">
           <Link to="/signup">
-            <button className="btn-primary large" style={{padding: '1rem 2rem', fontSize: '1.1rem', borderRadius: '12px'}}>
+            <button className="btn-primary large">
               Join your campus <ArrowRight size={20} />
             </button>
           </Link>
           <Link to="/marketplace">
-            <button className="btn-secondary large" style={{padding: '1rem 2rem', fontSize: '1.1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.03)'}}>
+            <button className="btn-secondary large">
               Explore Marketplace <Briefcase size={20} style={{marginLeft: '0.5rem'}} />
             </button>
           </Link>
         </div>
 
-        <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#64748b', fontSize: '0.8rem', marginTop: '1rem'}}>
+        <div className="trust-badge">
           <ShieldCheck size={14} color="#10b981" /> College email verified · Escrow protected · Zero spam
         </div>
       </header>
 
       <section style={{maxWidth: '1000px', margin: '0 auto', padding: '0 2rem 4rem', position: 'relative', zIndex: 10}}>
-        <div style={{
-          position: 'relative',
-          width: '100%',
-          height: '600px',
-          borderRadius: '24px',
-          background: 'url("https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop") center/cover no-repeat',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 0 60px rgba(139, 92, 246, 0.15), inset 0 0 0 1px rgba(255,255,255,0.05)',
-          overflow: 'hidden'
-        }}>
+        <div className="hero-visual-container">
           <div style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(17, 14, 23, 0.4)'}}></div>
           
-          <div style={{
-            position: 'absolute',
-            top: '2rem',
-            left: '-2rem',
-            background: '#161320',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            padding: '1rem',
-            borderRadius: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.8rem',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-            zIndex: 20
-          }}>
+          <div className="floating-stat-card" style={{ top: '2rem', left: '-2rem' }}>
             <div style={{width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 10px #10b981'}}></div>
             <div>
               <div style={{color: '#94a3b8', fontSize: '0.75rem'}}>New gig matched</div>
@@ -73,20 +51,7 @@ function Home() {
             </div>
           </div>
 
-          <div style={{
-            position: 'absolute',
-            bottom: '3rem',
-            right: '-2rem',
-            background: '#161320',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            padding: '1rem',
-            borderRadius: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.8rem',
-            boxShadow: '0 10px 30px rgba(0,0,0,0.5)',
-            zIndex: 20
-          }}>
+          <div className="floating-stat-card" style={{ bottom: '3rem', right: '-2rem' }}>
             <div style={{
               background: 'linear-gradient(135deg, #d946ef 0%, #a855f7 100%)',
               color: 'white',
@@ -130,13 +95,11 @@ function Home() {
       </section>
 
       <section className="features-section" id="features" style={{paddingTop: '6rem'}}>
-        <div style={{color: '#d946ef', fontWeight: '700', letterSpacing: '1.5px', fontSize: '0.85rem', textTransform: 'uppercase', marginBottom: '1rem'}}>
-          PLATFORM
-        </div>
+        <div className="feature-tag">PLATFORM</div>
         <h2 className="section-title" style={{textAlign: 'left', marginBottom: '1rem', fontSize: '3rem', maxWidth: '800px', lineHeight: '1.1'}}>
           Everything a campus needs in one <span className="gradient-text">ecosystem.</span>
         </h2>
-        <p className="section-subtitle" style={{textAlign: 'left', margin: '0 0 4rem 0', maxWidth: '800px', fontSize: '1.1rem'}}>
+        <p className="section-subtitle" style={{textAlign: 'left', margin: '0 0 4rem 0', maxWidth: '800px'}}>
           A full operating system for student talent — from first gig to first paycheck.
         </p>
         

@@ -19,7 +19,7 @@ export const createSkill = async (req, res) => {
 
 export const getSkills = async (req, res) => {
   try {
-    const skills = await Skill.find({}).populate('providerId', 'name profile.avatar trustScore');
+    const skills = await Skill.find({}).populate('providerId', 'name profilePhoto trustScore');
     res.json(skills);
   } catch (error) {
     res.status(500).json({ message: error.message });

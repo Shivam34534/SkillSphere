@@ -1,7 +1,11 @@
 import express from 'express';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import cors from 'cors';
+import http from 'http';
+import { Server } from 'socket.io';
 import connectDB from './config/db.js';
+
+// Route imports
 import authRoutes from './routes/authRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import skillRoutes from './routes/skillRoutes.js';
@@ -13,7 +17,7 @@ import matchRoutes from './routes/matchRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
 
 // Load env
-dotenv.config();
+// Env loaded via import 'dotenv/config' at top
 
 // Connect DB
 connectDB();
@@ -51,11 +55,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-import http from 'http';
-import { Server } from 'socket.io';
-
 const PORT = process.env.PORT || 5000;
-
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -96,6 +96,16 @@ io.on('connection', (socket) => {
   });
 });
 
-server.listen(PORT, () => {
-  console.log(`Server & Socket.io running in ${process.env.NODE_ENV} mode on port http://localhost:${PORT}`);
+server.on('error', (error) => {
+  if (error.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use. Please try a different port or stop the other process.`);
+  } else {
+    console.error('Server error:', error);
+  }
+});
+
+server.listen(PORT, '0.0.0.0', () => {
+  const addr = server.address();
+  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+  console.log(`Server & Socket.io running on ${bind} in ${process.env.NODE_ENV || 'development'} mode`);
 });

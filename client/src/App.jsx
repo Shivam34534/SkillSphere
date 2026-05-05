@@ -30,23 +30,25 @@ function Navigation() {
           <span>SkillSphere</span>
         </Link>
         <div className="nav-links">
-          <Link to="/marketplace">Marketplace</Link>
-          <a href="/#features">Features</a>
-          <a href="/#how-it-works">How it works</a>
-          <a href="/#roles">Roles</a>
-          <a href="/#pricing">Pricing</a>
+          <Link to="/marketplace" className="nav-link">Marketplace</Link>
+          <a href="/#features" className="nav-link">Features</a>
+          <a href="/#how-it-works" className="nav-link">How it works</a>
+          <a href="/#roles" className="nav-link">Roles</a>
+          <a href="/#pricing" className="nav-link">Pricing</a>
         </div>
         <div className="nav-actions">
           {user ? (
             <>
-              <Link to="/profile" style={{color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', marginRight: '1rem'}}>Profile</Link>
-              <span style={{color: 'var(--text-muted)', display: 'flex', alignItems: 'center'}}>{user.name}</span>
-              <button className="btn-primary" onClick={handleLogout} style={{padding: '0.5rem 1.25rem', fontSize: '0.9rem', marginLeft: '1rem'}}>Log Out</button>
+              <Link to="/profile" className="nav-link">Profile</Link>
+              <span className="user-name">{user.name}</span>
+              <button className="btn-primary" onClick={handleLogout} style={{padding: '0.5rem 1.25rem', fontSize: '0.9rem'}}>Log Out</button>
             </>
           ) : (
             <>
-              <Link to="/login" style={{color: '#f8f8fa', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500'}}>Sign in</Link>
-              <Link to="/signup"><button className="btn-primary" style={{padding: '0.5rem 1.25rem', fontSize: '0.9rem'}}>Get started</button></Link>
+              <Link to="/login" className="nav-link" style={{ color: 'var(--text-main)' }}>Sign in</Link>
+              <Link to="/signup">
+                <button className="btn-primary" style={{padding: '0.5rem 1.25rem', fontSize: '0.9rem'}}>Get started</button>
+              </Link>
             </>
           )}
         </div>

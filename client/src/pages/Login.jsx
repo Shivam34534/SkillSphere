@@ -36,7 +36,7 @@ function Login() {
           <ChevronLeft size={20} className="group-hover:-translate-x-0.5 transition-transform" />
         </Link>
         <div className="auth-header text-center mb-8">
-          <h2 className="text-3xl font-bold text-white mb-2">Welcome Back</h2>
+          <h2 className="text-3xl font-display font-bold text-text-main mb-2">Welcome Back</h2>
           <p className="text-text-muted">Enter your credentials to access your SkillSphere account.</p>
         </div>
         

@@ -24,6 +24,15 @@ export default {
         success: {
           DEFAULT: '#10b981',
         },
+        text: {
+          main: '#f8f8fa',
+          muted: '#94a3b8',
+        },
+        'glass-border': 'rgba(255, 255, 255, 0.05)',
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        display: ['Space Grotesk', 'sans-serif'],
       },
       backgroundImage: {
         'glass-gradient': 'linear-gradient(135deg, rgba(17, 14, 23, 0.7) 0%, rgba(17, 14, 23, 0.3) 100%)',

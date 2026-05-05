@@ -18,8 +18,12 @@ export const updateUserProfile = async (req, res) => {
     const user = await User.findById(req.user._id);
     if (user) {
       user.name = req.body.name || user.name;
-      user.profile.bio = req.body.bio || user.profile.bio;
-      user.profile.skills = req.body.skills || user.profile.skills;
+      user.mobile = req.body.mobile || user.mobile;
+      user.collegeName = req.body.collegeName || user.collegeName;
+      user.department = req.body.department || user.department;
+      user.year = req.body.year || user.year;
+      user.skillsToTeach = req.body.skillsToTeach || user.skillsToTeach;
+      user.skillsToLearn = req.body.skillsToLearn || user.skillsToLearn;
       
       const updatedUser = await user.save();
       res.json(updatedUser);

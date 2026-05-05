@@ -36,36 +36,34 @@ const Marketplace = () => {
   });
 
   return (
-    <div className="marketplace-container" style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-      <div className="marketplace-header" style={{ textAlign: 'center', marginBottom: '3rem' }}>
-        <h1 style={{ fontSize: '3rem', fontWeight: '800', background: 'linear-gradient(135deg, #fff 0%, #94a3b8 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '1rem' }}>
+    <div className="marketplace-container">
+      <div className="marketplace-header">
+        <h1 className="gradient-text">
           Explore the Campus Economy
         </h1>
-        <p style={{ color: 'var(--text-muted)', fontSize: '1.2rem', maxWidth: '700px', margin: '0 auto' }}>
+        <p>
           Find the perfect tutor, freelancer, or collaborator for your next project.
         </p>
       </div>
 
       {/* Search & Filter Bar */}
-      <div className="search-filter-bar" style={{ display: 'flex', gap: '1rem', marginBottom: '3rem', flexWrap: 'wrap' }}>
-        <div className="search-input-wrapper" style={{ flex: 1, position: 'relative', minWidth: '300px' }}>
-          <Search size={20} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+      <div className="search-filter-bar">
+        <div className="search-input-wrapper">
+          <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
           <input 
             type="text" 
             placeholder="Search for skills, services, or names..." 
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            style={{ width: '100%', padding: '1rem 1rem 1rem 3rem', borderRadius: '12px', border: '1px solid var(--glass-border)', backgroundColor: 'rgba(255,255,255,0.05)', color: 'white', outline: 'none', fontSize: '1rem' }}
           />
         </div>
-        <div className="category-filters" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-          <Filter size={18} color="var(--text-muted)" style={{ marginRight: '0.5rem' }} />
+        <div className="category-filters">
+          <Filter size={18} className="text-text-muted mr-2" />
           {categories.map(cat => (
             <button 
               key={cat}
               onClick={() => setSelectedCategory(cat)}
-              className={selectedCategory === cat ? 'btn-primary' : 'btn-ghost'}
-              style={{ padding: '0.5rem 1rem', fontSize: '0.9rem', borderRadius: '20px' }}
+              className={selectedCategory === cat ? 'btn-primary py-2 px-5 rounded-full text-sm' : 'btn-ghost py-2 px-5 rounded-full text-sm'}
             >
               {cat}
             </button>
@@ -75,50 +73,50 @@ const Marketplace = () => {
 
       {/* Services Grid */}
       {loading ? (
-        <div style={{ textAlign: 'center', padding: '5rem' }}>
-          <div className="spinner" style={{ margin: '0 auto 1rem' }}></div>
-          <p style={{ color: 'var(--text-muted)' }}>Fetching the best talent on campus...</p>
+        <div className="text-center py-20">
+          <div className="spinner mx-auto mb-4"></div>
+          <p className="text-text-muted">Fetching the best talent on campus...</p>
         </div>
       ) : (
-        <div className="services-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
+        <div className="services-grid">
           {filteredServices.length > 0 ? filteredServices.map((service) => (
-            <div key={service._id} className="glass-card service-card" style={{ padding: '0', overflow: 'hidden', display: 'flex', flexDirection: 'column', height: '100%', transition: 'transform 0.3s ease' }}>
-              <div style={{ padding: '1.5rem', flex: 1 }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                  <span className="skill-badge" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#a855f7', fontSize: '0.75rem', fontWeight: 'bold', padding: '0.3rem 0.8rem', borderRadius: '20px' }}>
+            <div key={service._id} className="glass-card service-card">
+              <div className="service-card-content">
+                <div className="flex justify-between items-start mb-4">
+                  <span className="skill-badge bg-primary/10 text-primary">
                     {service.category}
                   </span>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', color: '#fbbf24', fontSize: '0.9rem' }}>
-                    <Star size={14} fill="#fbbf24" />
-                    <span>{service.freelancerId?.trustScore ? (service.freelancerId.trustScore / 20).toFixed(1) : '5.0'}</span>
+                  <div className="flex items-center gap-1 text-yellow-400 text-sm">
+                    <Star size={14} fill="currentColor" />
+                    <span className="font-bold">{service.freelancerId?.trustScore ? (service.freelancerId.trustScore / 20).toFixed(1) : '5.0'}</span>
                   </div>
                 </div>
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem', color: 'white' }}>{service.title}</h3>
-                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '1.5rem', lineBreak: 'anywhere' }}>
+                <h3 className="text-xl font-bold mb-2 text-text-main">{service.title}</h3>
+                <p className="text-text-muted text-sm mb-6 leading-relaxed line-clamp-3">
                   {service.description}
                 </p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                  <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'var(--primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 'bold', fontSize: '0.8rem' }}>
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center font-bold text-xs">
                     {service.freelancerId?.name?.charAt(0) || 'U'}
                   </div>
-                  <span style={{ fontSize: '0.9rem', color: 'white' }}>{service.freelancerId?.name || 'Anonymous'}</span>
+                  <span className="text-sm text-text-main font-medium">{service.freelancerId?.name || 'Anonymous'}</span>
                 </div>
               </div>
-              <div style={{ padding: '1.25rem 1.5rem', borderTop: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: 'rgba(255,255,255,0.02)' }}>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase' }}>Starting from</span>
-                  <span style={{ fontSize: '1.25rem', fontWeight: 'bold', color: '#fbbf24' }}>{service.pricing?.amount} {service.pricing?.type}</span>
+              <div className="service-card-footer">
+                <div className="flex flex-col">
+                  <span className="text-[10px] text-text-muted uppercase tracking-wider">Starting from</span>
+                  <span className="text-xl font-bold text-yellow-400">{service.pricing?.amount} {service.pricing?.type}</span>
                 </div>
-                <Link to="/login" className="btn-primary" style={{ padding: '0.6rem 1.2rem', fontSize: '0.85rem' }}>
+                <Link to="/login" className="btn-primary py-2 px-5 text-sm">
                   View Gigs
                 </Link>
               </div>
             </div>
           )) : (
-            <div style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '5rem' }}>
-              <Zap size={48} color="var(--text-muted)" style={{ margin: '0 auto 1rem', opacity: 0.5 }} />
-              <h3 style={{ fontSize: '1.5rem', color: 'white' }}>No services found</h3>
-              <p style={{ color: 'var(--text-muted)' }}>Try adjusting your search or filters to find what you're looking for.</p>
+            <div className="col-span-full text-center py-20">
+              <Zap size={48} className="text-text-muted mx-auto mb-4 opacity-50" />
+              <h3 className="text-2xl text-text-main mb-2">No services found</h3>
+              <p className="text-text-muted">Try adjusting your search or filters to find what you're looking for.</p>
             </div>
           )}
         </div>
