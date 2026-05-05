@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { User, Mail, Lock, ArrowRight, Briefcase, Phone, Building, Book, GraduationCap, ChevronLeft, CheckCircle, Sparkles } from 'lucide-react';
+import { User, Mail, Lock, ArrowRight, Briefcase, Phone, Building, Book, GraduationCap, ChevronLeft, CheckCircle, Sparkles, Eye, EyeOff } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { register, verifyOTP } from '../store/slices/authSlice';
 
@@ -12,6 +12,8 @@ function Signup() {
     skillsToTeach: '', skillsToLearn: '',
     otp: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [focusedField, setFocusedField] = useState(null);
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -56,18 +58,40 @@ function Signup() {
     dispatch(verifyOTP({ email: formData.email, otp: formData.otp }));
   };
 
+  const renderTooltip = (field, text) => {
+    if (focusedField === field && !formData[field]) {
+      return (
+        <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 z-50 pointer-events-none hidden md:block">
+          <div className="bg-primary/90 backdrop-blur-md text-white text-[10px] py-2 px-3 rounded-lg shadow-xl border border-white/20 whitespace-nowrap animate-in fade-in zoom-in slide-in-from-left-2 duration-300">
+            {text}
+            <div className="absolute top-1/2 -left-1 -translate-y-1/2 w-2 h-2 bg-primary/90 rotate-45 border-l border-b border-white/20"></div>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
-    <div className="auth-container flex items-start justify-center min-h-screen bg-background-dark py-16 px-4">
-      <div className="glow-sphere secondary-glow absolute top-1/3 right-1/4 opacity-20"></div>
-      <div className="glow-sphere main-glow absolute bottom-1/4 left-1/4 opacity-20"></div>
+    <div className="auth-container flex items-start justify-center min-h-screen bg-background-dark py-16 px-4 transition-all duration-700">
+      <div className={`glow-sphere secondary-glow absolute top-1/3 right-1/4 opacity-20 transition-all duration-1000 ${
+        formData.role === 'FREELANCER' ? 'bg-secondary' : 
+        formData.role === 'CLUB' ? 'bg-accent' : 'bg-primary'
+      }`}></div>
+      <div className={`glow-sphere main-glow absolute bottom-1/4 left-1/4 opacity-20 transition-all duration-1000 ${
+        formData.role === 'FREELANCER' ? 'bg-secondary' : 
+        formData.role === 'CLUB' ? 'bg-accent' : 'bg-primary'
+      }`}></div>
       
       <div className="glass-card auth-card w-full max-w-xl p-8 md:p-12 relative z-10">
         
-        {step > 1 && step < 5 && (
-          <button type="button" onClick={prevStep} className="flex items-center gap-2 text-text-muted hover:text-white transition-all mb-8">
-            <ChevronLeft size={16} /> Back
-          </button>
-        )}
+        <button 
+          type="button" 
+          onClick={step === 1 ? () => navigate('/') : prevStep} 
+          className="absolute top-6 left-6 p-2 rounded-full bg-white/5 hover:bg-white/10 text-text-muted hover:text-white transition-all z-20 group"
+        >
+          <ChevronLeft size={20} className="group-hover:-translate-x-0.5 transition-transform" />
+        </button>
 
         <div className="auth-header text-center mb-10">
           {step === 1 && <h2 className="text-3xl font-bold text-white">Choose your journey</h2>}
@@ -78,7 +102,12 @@ function Signup() {
           
           <div className="flex justify-center gap-2 mt-4">
             {[1,2,3,4,5].map(s => (
-              <div key={s} className={`h-1 rounded-full transition-all ${s <= step ? 'w-8 bg-primary' : 'w-4 bg-white/10'}`}></div>
+              <div key={s} className={`h-1 rounded-full transition-all duration-500 ${
+                s <= step ? (
+                  formData.role === 'FREELANCER' ? 'w-8 bg-secondary' : 
+                  formData.role === 'CLUB' ? 'w-8 bg-accent' : 'w-8 bg-primary'
+                ) : 'w-4 bg-white/10'
+              }`}></div>
             ))}
           </div>
           {reduxError && <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg text-sm text-center">{reduxError}</div>}
@@ -109,39 +138,99 @@ function Signup() {
 
         {step === 2 && (
           <div className="flex flex-col gap-6">
-            <div className="input-group">
+            <div className="input-group relative">
               <label className="block text-sm font-medium text-text-muted mb-2">Full Name</label>
               <div className="relative flex items-center">
                 <User className="absolute left-3 text-text-muted" size={18} />
-                <input type="text" name="name" placeholder="Alex Mercer" value={formData.name} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" required />
+                <input 
+                  type="text" 
+                  name="name" 
+                  placeholder="Alex Mercer" 
+                  value={formData.name} 
+                  onChange={handleChange} 
+                  onFocus={() => setFocusedField('name')}
+                  onBlur={() => setFocusedField(null)}
+                  className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" 
+                  required 
+                />
               </div>
+              {renderTooltip('name', 'Enter your full legal name')}
             </div>
 
-            <div className="input-group">
+            <div className="input-group relative">
               <label className="block text-sm font-medium text-text-muted mb-2">College or Personal Email</label>
               <div className="relative flex items-center">
                 <Mail className="absolute left-3 text-text-muted" size={18} />
-                <input type="email" name="email" placeholder="alex@example.com" value={formData.email} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" required />
+                <input 
+                  type="email" 
+                  name="email" 
+                  placeholder="alex@example.com" 
+                  value={formData.email} 
+                  onChange={handleChange} 
+                  onFocus={() => setFocusedField('email')}
+                  onBlur={() => setFocusedField(null)}
+                  className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" 
+                  required 
+                />
               </div>
+              {renderTooltip('email', 'Use your .edu or personal email')}
             </div>
 
-            <div className="input-group">
+            <div className="input-group relative">
               <label className="block text-sm font-medium text-text-muted mb-2">Mobile Number</label>
               <div className="relative flex items-center">
                 <Phone className="absolute left-3 text-text-muted" size={18} />
-                <input type="tel" name="mobile" placeholder="+91 9876543210" value={formData.mobile} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" required />
+                <input 
+                  type="tel" 
+                  name="mobile" 
+                  placeholder="+91 9876543210" 
+                  value={formData.mobile} 
+                  onChange={handleChange} 
+                  onFocus={() => setFocusedField('mobile')}
+                  onBlur={() => setFocusedField(null)}
+                  className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" 
+                  required 
+                />
               </div>
+              {renderTooltip('mobile', 'Include country code (e.g. +91)')}
             </div>
             
-            <div className="input-group">
+            <div className="input-group relative">
               <label className="block text-sm font-medium text-text-muted mb-2">Password</label>
               <div className="relative flex items-center">
                 <Lock className="absolute left-3 text-text-muted" size={18} />
-                <input type="password" name="password" placeholder="••••••••" value={formData.password} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" required />
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  name="password" 
+                  placeholder="••••••••" 
+                  value={formData.password} 
+                  onChange={handleChange} 
+                  onFocus={() => setFocusedField('password')}
+                  onBlur={() => setFocusedField(null)}
+                  className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-12 text-white focus:border-primary outline-none" 
+                  required 
+                />
+                <button 
+                  type="button" 
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 text-text-muted hover:text-primary transition-colors focus:outline-none"
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
               </div>
+              {renderTooltip('password', 'Min 8 characters required')}
             </div>
             
-            <button type="button" onClick={nextStep} className="btn-primary w-full py-4 mt-4 flex items-center justify-center gap-2" disabled={!formData.name || !formData.email || !formData.password || !formData.mobile}>
+            <button 
+              type="button" 
+              onClick={nextStep} 
+              className={`w-full py-4 mt-4 flex items-center justify-center gap-2 transition-all duration-300 rounded-xl font-bold ${
+                formData.role === 'FREELANCER' ? 'bg-secondary hover:bg-secondary-hover text-white' : 
+                formData.role === 'CLUB' ? 'bg-accent hover:bg-accent-hover text-white' : 
+                'bg-primary hover:bg-primary-hover text-white'
+              }`} 
+              disabled={!formData.name || !formData.email || !formData.password || !formData.mobile}
+            >
               Continue <ArrowRight size={18} />
             </button>
           </div>
@@ -154,20 +243,42 @@ function Signup() {
               <p>Email format valid. Let's setup your campus profile.</p>
             </div>
 
-            <div className="input-group">
+            <div className="input-group relative">
               <label className="block text-sm font-medium text-text-muted mb-2">College / University Name</label>
               <div className="relative flex items-center">
                 <Building className="absolute left-3 text-text-muted" size={18} />
-                <input type="text" name="collegeName" placeholder="e.g. IIT Bombay" value={formData.collegeName} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" required />
+                <input 
+                  type="text" 
+                  name="collegeName" 
+                  placeholder="e.g. IIT Bombay" 
+                  value={formData.collegeName} 
+                  onChange={handleChange} 
+                  onFocus={() => setFocusedField('collegeName')}
+                  onBlur={() => setFocusedField(null)}
+                  className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" 
+                  required 
+                />
               </div>
+              {renderTooltip('collegeName', 'Enter official college name')}
             </div>
 
-            <div className="input-group">
+            <div className="input-group relative">
               <label className="block text-sm font-medium text-text-muted mb-2">Department / Major</label>
               <div className="relative flex items-center">
                 <Book className="absolute left-3 text-text-muted" size={18} />
-                <input type="text" name="department" placeholder="e.g. Computer Science" value={formData.department} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" required />
+                <input 
+                  type="text" 
+                  name="department" 
+                  placeholder="e.g. Computer Science" 
+                  value={formData.department} 
+                  onChange={handleChange} 
+                  onFocus={() => setFocusedField('department')}
+                  onBlur={() => setFocusedField(null)}
+                  className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" 
+                  required 
+                />
               </div>
+              {renderTooltip('department', 'e.g. B.Tech, MBA, etc.')}
             </div>
 
             {formData.role !== 'CLUB' && (
@@ -187,7 +298,16 @@ function Signup() {
               </div>
             )}
             
-            <button type="button" onClick={nextStep} className="btn-primary w-full py-4 mt-4 flex items-center justify-center gap-2" disabled={!formData.collegeName || !formData.department}>
+            <button 
+              type="button" 
+              onClick={nextStep} 
+              className={`w-full py-4 mt-4 flex items-center justify-center gap-2 transition-all duration-300 rounded-xl font-bold ${
+                formData.role === 'FREELANCER' ? 'bg-secondary hover:bg-secondary-hover text-white' : 
+                formData.role === 'CLUB' ? 'bg-accent hover:bg-accent-hover text-white' : 
+                'bg-primary hover:bg-primary-hover text-white'
+              }`} 
+              disabled={!formData.collegeName || !formData.department}
+            >
               Continue <ArrowRight size={18} />
             </button>
           </div>
@@ -211,7 +331,15 @@ function Signup() {
               <input type="text" name="skillsToLearn" placeholder="e.g. Python, Marketing" value={formData.skillsToLearn} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 px-4 text-white focus:border-primary outline-none" />
             </div>
             
-            <button type="submit" disabled={loading} className="btn-primary w-full py-4 mt-4 bg-gradient-to-r from-success to-emerald-600 border-none">
+            <button 
+              type="submit" 
+              disabled={loading} 
+              className={`w-full py-4 mt-4 transition-all duration-300 rounded-xl font-bold text-white shadow-lg ${
+                formData.role === 'FREELANCER' ? 'bg-gradient-to-r from-secondary to-pink-600' : 
+                formData.role === 'CLUB' ? 'bg-gradient-to-r from-accent to-blue-600' : 
+                'bg-gradient-to-r from-success to-emerald-600'
+              }`}
+            >
               {loading ? 'Creating Account...' : 'Complete Setup & Send OTP'}
             </button>
           </form>

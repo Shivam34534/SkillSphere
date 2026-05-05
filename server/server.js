@@ -10,6 +10,7 @@ import chatRoutes from './routes/chatRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
 import serviceRoutes from './routes/serviceRoutes.js';
 import matchRoutes from './routes/matchRoutes.js';
+import eventRoutes from './routes/eventRoutes.js';
 
 // Load env
 dotenv.config();
@@ -32,6 +33,7 @@ app.use('/api/v1/chats', chatRoutes);
 app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/services', serviceRoutes);
 app.use('/api/v1/matches', matchRoutes);
+app.use('/api/v1/events', eventRoutes);
 
 app.get('/', (req, res) => {
   res.send('<h1>Server is running! 🚀</h1><p>Welcome to the SkillSphere API Backend.</p>');

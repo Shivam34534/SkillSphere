@@ -93,6 +93,9 @@ const authSlice = createSlice({
         state.token = action.payload.token; 
       })
       .addCase(login.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
+      .addCase(register.pending, (state) => { state.loading = true; state.error = null; })
+      .addCase(register.fulfilled, (state) => { state.loading = false; })
+      .addCase(register.rejected, (state, action) => { state.loading = false; state.error = action.payload; })
       .addCase(verifyOTP.fulfilled, (state, action) => { 
         state.user = action.payload.user; 
         state.token = action.payload.token; 

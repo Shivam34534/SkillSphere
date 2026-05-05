@@ -34,6 +34,15 @@ export const getOpenGigs = async (req, res) => {
   }
 };
 
+export const getClubGigs = async (req, res) => {
+  try {
+    const gigs = await Gig.find({ clubId: req.user._id }).populate('applicants.userId', 'name email');
+    res.json(gigs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const applyForGig = async (req, res) => {
   try {
     const gig = await Gig.findById(req.params.id);
@@ -84,6 +93,54 @@ export const hireFreelancer = async (req, res) => {
     gig.status = 'IN_PROGRESS';
     await gig.save();
     res.json({ message: 'User hired successfully', gig });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const completeGig = async (req, res) => {
+  try {
+    const gig = await Gig.findById(req.params.id);
+    if (!gig) return res.status(404).json({ message: 'Gig not found' });
+    
+    if (gig.clubId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Not authorized' });
+    }
+
+    // Find the accepted applicant
+    const hiredApplicant = gig.applicants.find(a => a.status === 'ACCEPTED');
+    if (!hiredApplicant) {
+      return res.status(400).json({ message: 'No hired freelancer found for this gig' });
+    }
+
+    const studentId = hiredApplicant.userId;
+    const clubId = gig.clubId;
+
+    const student = await User.findById(studentId);
+    const club = await User.findById(clubId);
+
+    if (gig.type === 'PAID') {
+      // Currency Logic
+      if (club.walletBalance < gig.budget) {
+        return res.status(400).json({ message: 'Insufficient club balance to pay freelancer' });
+      }
+      club.walletBalance -= gig.budget;
+      student.walletBalance += gig.budget;
+      student.xpLevel += 50; // Bonus XP for work
+    } else {
+      // Volunteer Logic (No money, more XP)
+      student.xpLevel += 200;
+      club.trustScore = Math.min(100, club.trustScore + 5); // Club trust grows
+    }
+
+    gig.status = 'COMPLETED';
+    await Promise.all([
+      gig.save(),
+      student.save(),
+      club.save()
+    ]);
+
+    res.json({ message: 'Gig completed and rewards distributed!', gig });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
