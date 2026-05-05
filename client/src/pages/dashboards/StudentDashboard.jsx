@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser } from '../../store/slices/authSlice';
 import { BookOpen, Users, Briefcase, Zap, Star, Shield, Search, ArrowRight, Video, FileText, Code, Palette, Presentation, Plus } from 'lucide-react';
 
 const StudentDashboard = () => {
-  const { user, updateUser } = React.useContext(AuthContext);
+  const { user, token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [matches, setMatches] = useState([]);
   const [services, setServices] = useState([]);
   const [showServices, setShowServices] = useState(false);
@@ -17,7 +19,7 @@ const StudentDashboard = () => {
   const fetchMatches = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/v1/matches', {
-        headers: { Authorization: `Bearer ${user.token}` }
+        headers: { Authorization: `Bearer ${token}` }
       });
       if (response.ok) {
         const data = await response.json();
@@ -42,7 +44,7 @@ const StudentDashboard = () => {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}` 
+            Authorization: `Bearer ${token}` 
           },
           body: JSON.stringify({ userBEmail, skillOfferedByA, skillOfferedByB, exchangeType: 'BARTER' })
         });
@@ -66,7 +68,7 @@ const StudentDashboard = () => {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}` 
+          Authorization: `Bearer ${token}` 
         },
         body: JSON.stringify({ status })
       });
@@ -95,7 +97,7 @@ const StudentDashboard = () => {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}` 
+            Authorization: `Bearer ${token}` 
           },
           body: JSON.stringify({ 
             title, description, category, 
@@ -122,7 +124,7 @@ const StudentDashboard = () => {
     }
     try {
       const response = await fetch('http://localhost:5000/api/v1/services', {
-        headers: { Authorization: `Bearer ${user.token}` }
+        headers: { Authorization: `Bearer ${token}` }
       });
       if (response.ok) {
         const data = await response.json();
@@ -145,15 +147,12 @@ const StudentDashboard = () => {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}`
+            Authorization: `Bearer ${token}`
           }
         });
         
         if (response.ok) {
-          updateUser({ walletBalance: user.walletBalance - amount });
-          
-          // Force a page reload to update the Context and navbar instantly
-          window.location.reload();
+          dispatch(updateUser({ walletBalance: user.walletBalance - amount }));
         } else {
           const data = await response.json();
           alert(data.message || 'Purchase failed');
@@ -176,8 +175,7 @@ const StudentDashboard = () => {
           onClick={() => {
             const amount = window.prompt("🚀 MVP TEST MODE: How many free credits do you want to add to your wallet?", "100");
             if (amount && !isNaN(amount)) {
-              updateUser({ walletBalance: (user.walletBalance || 0) + parseInt(amount) });
-              window.location.reload();
+              dispatch(updateUser({ walletBalance: (user.walletBalance || 0) + parseInt(amount) }));
             }
           }}
           style={{cursor: 'pointer', transition: 'transform 0.2s'}}

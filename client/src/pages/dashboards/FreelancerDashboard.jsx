@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Briefcase, DollarSign, Star, TrendingUp, Users, Activity, ExternalLink, CheckCircle, Plus } from 'lucide-react';
 
-const FreelancerDashboard = ({ user }) => {
+const FreelancerDashboard = () => {
+  const { user, token } = useSelector((state) => state.auth);
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -12,7 +14,7 @@ const FreelancerDashboard = ({ user }) => {
   const fetchServices = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/v1/services', {
-        headers: { Authorization: `Bearer ${user.token}` }
+        headers: { Authorization: `Bearer ${token}` }
       });
       if (response.ok) {
         const data = await response.json();
@@ -39,7 +41,7 @@ const FreelancerDashboard = ({ user }) => {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}` 
+            Authorization: `Bearer ${token}` 
           },
           body: JSON.stringify({ 
             title, description, category, 

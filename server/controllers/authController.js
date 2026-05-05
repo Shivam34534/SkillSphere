@@ -6,12 +6,13 @@ const generateToken = (id) => {
 };
 
 export const registerUser = async (req, res) => {
+  console.log("Registration Request Body:", req.body);
   try {
     const { name, email, password, role, mobile, collegeName, department, year, skillsToTeach, skillsToLearn } = req.body;
-    // 1. Validate Campus Email (.edu or campus domain)
-    const campusEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(edu|ac\.in|org)$/;
+    // 1. Validate Campus Email (Relaxed for development/testing)
+    const campusEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!campusEmailRegex.test(email)) {
-      return res.status(400).json({ message: 'Please use a valid campus email (.edu, .ac.in, etc.)' });
+      return res.status(400).json({ message: 'Please use a valid email address.' });
     }
 
     const userExists = await User.findOne({ email });
@@ -53,8 +54,14 @@ export const registerUser = async (req, res) => {
       res.status(400).json({ message: 'Invalid user data' });
     }
   } catch (error) {
-    console.error("Register Error:", error);
-    res.status(400).json({ message: error.message });
+    console.error("CRITICAL REGISTRATION ERROR:", error);
+    if (error.name === 'ValidationError') {
+      return res.status(400).json({ message: Object.values(error.errors).map(val => val.message).join(', ') });
+    }
+    if (error.code === 11000) {
+      return res.status(400).json({ message: 'Email already exists. Please use a different email.' });
+    }
+    res.status(500).json({ message: 'Internal server error during registration. Check server logs.' });
   }
 };
 

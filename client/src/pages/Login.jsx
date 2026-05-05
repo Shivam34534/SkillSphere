@@ -41,12 +41,12 @@ function Login() {
           )}
           
           <div className="input-group">
-            <label className="block text-sm font-medium text-text-muted mb-2">College Email</label>
+            <label className="block text-sm font-medium text-text-muted mb-2">Email Address</label>
             <div className="input-wrapper relative flex items-center">
               <Mail className="input-icon absolute left-3 text-text-muted" size={18} />
               <input 
                 type="email" 
-                placeholder="student@university.edu" 
+                placeholder="alex@example.com" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full bg-black/20 border border-glass-border rounded-lg py-2.5 pl-10 pr-4 text-white focus:border-primary outline-none transition-all"

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Building, Users, Calendar, Target, DollarSign, ArrowRight, Activity, Plus } from 'lucide-react';
 
-const ClubDashboard = ({ user }) => {
+const ClubDashboard = () => {
+  const { user, token } = useSelector((state) => state.auth);
   const [gigs, setGigs] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -12,7 +14,7 @@ const ClubDashboard = ({ user }) => {
   const fetchGigs = async () => {
     try {
       const response = await fetch('http://localhost:5000/api/v1/gigs', {
-        headers: { Authorization: `Bearer ${user.token}` }
+        headers: { Authorization: `Bearer ${token}` }
       });
       if (response.ok) {
         const data = await response.json();
@@ -40,7 +42,7 @@ const ClubDashboard = ({ user }) => {
           method: 'POST',
           headers: { 
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${user.token}` 
+            Authorization: `Bearer ${token}` 
           },
           body: JSON.stringify({ 
             title, description, type, 

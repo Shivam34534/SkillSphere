@@ -118,10 +118,10 @@ function Signup() {
             </div>
 
             <div className="input-group">
-              <label className="block text-sm font-medium text-text-muted mb-2">College Email (.edu required)</label>
+              <label className="block text-sm font-medium text-text-muted mb-2">College or Personal Email</label>
               <div className="relative flex items-center">
                 <Mail className="absolute left-3 text-text-muted" size={18} />
-                <input type="email" name="email" placeholder="alex@university.edu" value={formData.email} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" required />
+                <input type="email" name="email" placeholder="alex@example.com" value={formData.email} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none" required />
               </div>
             </div>
 

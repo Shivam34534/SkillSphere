@@ -1,7 +1,9 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Shield, AlertTriangle, Users, Database, Activity, Lock } from 'lucide-react';
 
-const AdminDashboard = ({ user }) => {
+const AdminDashboard = () => {
+  const { user } = useSelector((state) => state.auth);
   return (
     <div className="dashboard-content">
       <div className="dashboard-header">
