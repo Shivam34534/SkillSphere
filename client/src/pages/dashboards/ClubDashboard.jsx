@@ -32,7 +32,10 @@ const ClubDashboard = () => {
     const title = window.prompt("Gig Title (e.g., 'Need Web Dev for Fest'):");
     if (!title) return;
     const description = window.prompt("Gig Description:");
-    const type = window.prompt("Type ('VOLUNTEER' or 'PAID'):");
+    let type = window.prompt("Type ('VOLUNTEER' or 'PAID'):");
+    if (type) type = type.trim().toUpperCase();
+    if (type !== 'PAID') type = 'VOLUNTEER'; // Safe default
+    
     const budget = window.prompt("Budget (0 if volunteer):");
     const skill = window.prompt("Required Skill:");
     
