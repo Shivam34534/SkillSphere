@@ -111,7 +111,6 @@ function Signup() {
             ))}
           </div>
           {reduxError && <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg text-sm text-center">{reduxError}</div>}
-          {successMessage && <div className="mt-4 p-4 bg-success/10 border border-success/20 text-success rounded-lg text-sm text-center font-bold animate-in fade-in slide-in-from-top-2 duration-500">{successMessage}</div>}
         </div>
         
         {step === 1 && (

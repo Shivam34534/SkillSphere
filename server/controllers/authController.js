@@ -62,15 +62,21 @@ export const registerUser = async (req, res) => {
     }
 
     if (user) {
-      // 3. Send OTP via Email (Non-blocking for faster response)
-      sendEmail(user.email, 'Verify Your SkillSphere Account', otpTemplate(otp))
-        .then(() => console.log(`[AUTH] OTP sent to ${email}`))
-        .catch(emailError => console.error("Failed to send OTP email:", emailError));
+      // 3. Send OTP via Email
+      try {
+        await sendEmail(user.email, 'Verify Your SkillSphere Account', otpTemplate(otp));
+        console.log(`[AUTH] OTP sent successfully to ${email}`);
+      } catch (emailError) {
+        console.error("CRITICAL: Failed to send OTP email:", emailError);
+        return res.status(500).json({ 
+          message: 'Failed to send verification email. Please check your SMTP settings.',
+          error: emailError.message 
+        });
+      }
       
       res.status(201).json({
-        message: `Registration successful. ${process.env.NODE_ENV === 'development' ? 'TEST OTP: ' + otp : 'Please verify the OTP sent to your email.'}`,
-        email: user.email,
-        testOtp: process.env.NODE_ENV === 'development' ? otp : undefined 
+        message: 'Registration successful. Please verify the OTP sent to your email.',
+        email: user.email
       });
     } else {
       res.status(400).json({ message: 'Invalid user data' });
@@ -126,6 +132,19 @@ export const verifyOTP = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
+    }
+
+    // If user is already verified, just return success
+    if (user.isVerified) {
+      return res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        isVerified: user.isVerified,
+        token: generateToken(user._id),
+        message: 'Account already verified!'
+      });
     }
 
     if (user.otp !== otp || user.otpExpires < Date.now()) {
