@@ -18,6 +18,8 @@ const userSchema = new mongoose.Schema(
     xpLevel: { type: Number, default: 1 },
     trustScore: { type: Number, default: 50 },
     isVerified: { type: Boolean, default: false },
+    otp: { type: String },
+    otpExpires: { type: Date },
   },
   { timestamps: true }
 );

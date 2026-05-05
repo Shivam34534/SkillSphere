@@ -1,9 +1,11 @@
-import React, { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateUser } from '../store/slices/authSlice';
 import { User, Mail, GraduationCap, Shield, Award, Edit2, Save, X, Plus, Trash2, Github, Linkedin, Globe } from 'lucide-react';
 
 const Profile = () => {
-  const { user, updateUser } = useContext(AuthContext);
+  const { user, token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({ ...user });
   const [newSkillToTeach, setNewSkillToTeach] = useState('');
@@ -17,14 +19,14 @@ const Profile = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${user.token}`
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(editedUser)
       });
 
       if (response.ok) {
         const updatedData = await response.json();
-        updateUser(updatedData);
+        dispatch(updateUser(updatedData));
         setIsEditing(false);
         alert('Profile updated successfully!');
       } else {

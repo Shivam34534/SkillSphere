@@ -8,11 +8,21 @@ const generateToken = (id) => {
 export const registerUser = async (req, res) => {
   try {
     const { name, email, password, role, mobile, collegeName, department, year, skillsToTeach, skillsToLearn } = req.body;
+    // 1. Validate Campus Email (.edu or campus domain)
+    const campusEmailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.(edu|ac\.in|org)$/;
+    if (!campusEmailRegex.test(email)) {
+      return res.status(400).json({ message: 'Please use a valid campus email (.edu, .ac.in, etc.)' });
+    }
+
     const userExists = await User.findOne({ email });
 
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
+
+    // 2. Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 mins
 
     const user = await User.create({ 
       name, 
@@ -24,26 +34,20 @@ export const registerUser = async (req, res) => {
       department,
       year,
       skillsToTeach: skillsToTeach || [],
-      skillsToLearn: skillsToLearn || []
+      skillsToLearn: skillsToLearn || [],
+      otp,
+      otpExpires
     });
 
     if (user) {
+      // 3. (Mock) Send OTP via Email
+      console.log(`[AUTH] OTP for ${email}: ${otp}`);
+      
       res.status(201).json({
-        _id: user._id, 
-        name: user.name, 
-        email: user.email, 
-        role: user.role,
-        isVerified: user.isVerified,
-        mobile: user.mobile,
-        collegeName: user.collegeName,
-        department: user.department,
-        year: user.year,
-        skillsToTeach: user.skillsToTeach,
-        skillsToLearn: user.skillsToLearn,
-        walletBalance: user.walletBalance,
-        xpLevel: user.xpLevel,
-        trustScore: user.trustScore,
-        token: generateToken(user._id),
+        message: 'Registration successful. Please verify the OTP sent to your email.',
+        email: user.email,
+        // In a real app, don't send OTP in response. This is for MVP testing.
+        testOtp: otp 
       });
     } else {
       res.status(400).json({ message: 'Invalid user data' });
@@ -83,5 +87,37 @@ export const loginUser = async (req, res) => {
   } catch (error) {
     console.error("Login Error:", error);
     res.status(401).json({ message: error.message });
+  }
+};
+
+export const verifyOTP = async (req, res) => {
+  try {
+    const { email, otp } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    if (user.otp !== otp || user.otpExpires < Date.now()) {
+      return res.status(400).json({ message: 'Invalid or expired OTP' });
+    }
+
+    user.isVerified = true;
+    user.otp = undefined;
+    user.otpExpires = undefined;
+    await user.save();
+
+    res.json({
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      isVerified: user.isVerified,
+      token: generateToken(user._id),
+      message: 'Email verified successfully!'
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };

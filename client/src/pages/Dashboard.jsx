@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
 
 // Import Role Dashboards
 import StudentDashboard from './dashboards/StudentDashboard';
@@ -9,7 +8,7 @@ import ClubDashboard from './dashboards/ClubDashboard';
 import AdminDashboard from './dashboards/AdminDashboard';
 
 function Dashboard() {
-  const { user } = useContext(AuthContext);
+  const { user } = useSelector((state) => state.auth);
 
   // Protected Route Logic
   if (!user) {

@@ -7,17 +7,18 @@ import Dashboard from './pages/Dashboard';
 import MeetingRoom from './pages/MeetingRoom';
 import Marketplace from './pages/Marketplace';
 import Profile from './pages/Profile';
-import { AuthProvider, AuthContext } from './context/AuthContext';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from './store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
 
 function Navigation() {
-  const { user, logout } = useContext(AuthContext);
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    logout();
+    dispatch(logout());
     navigate('/');
   };
   
@@ -56,25 +57,23 @@ function Navigation() {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-        <div className="app-container">
-          <Navigation />
-          
-          <div style={{ paddingTop: '80px', width: '100%' }}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/marketplace" element={<Marketplace />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/meeting/:id" element={<MeetingRoom />} />
-              <Route path="/profile" element={<Profile />} />
-            </Routes>
-          </div>
+    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <div className="app-container">
+        <Navigation />
+        
+        <div style={{ paddingTop: '80px', width: '100%' }}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/marketplace" element={<Marketplace />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/meeting/:id" element={<MeetingRoom />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
         </div>
-      </Router>
-    </AuthProvider>
+      </div>
+    </Router>
   );
 }
 

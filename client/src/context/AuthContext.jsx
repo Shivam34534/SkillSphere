@@ -56,10 +56,26 @@ export const AuthProvider = ({ children }) => {
       
       if (!response.ok) throw new Error(data.message);
       
+      // We don't set user yet because we need OTP verification
+      return { success: true, message: data.message, email: data.email };
+    } catch (error) {
+      return { success: false, message: error.message };
+    }
+  };
+
+  const verifyOTP = async (email, otp) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/v1/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, otp }),
+      });
+      const data = await response.json();
+      
+      if (!response.ok) throw new Error(data.message);
+      
       setUser(data);
       setToken(data.token);
-      
-      // For registration, we can default to sessionStorage or prompt later
       sessionStorage.setItem('userInfo', JSON.stringify(data));
       
       return { success: true };
@@ -89,7 +105,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout, updateUser }}>
+    <AuthContext.Provider value={{ user, token, login, register, verifyOTP, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );
