@@ -17,7 +17,7 @@ function Signup() {
   
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { user, loading, error: reduxError } = useSelector((state) => state.auth);
+  const { user, loading, error: reduxError, successMessage } = useSelector((state) => state.auth);
 
   React.useEffect(() => {
     if (user) {
@@ -111,6 +111,7 @@ function Signup() {
             ))}
           </div>
           {reduxError && <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg text-sm text-center">{reduxError}</div>}
+          {successMessage && <div className="mt-4 p-4 bg-success/10 border border-success/20 text-success rounded-lg text-sm text-center font-bold animate-in fade-in slide-in-from-top-2 duration-500">{successMessage}</div>}
         </div>
         
         {step === 1 && (
@@ -351,13 +352,6 @@ function Signup() {
               <Mail size={20} />
               <p>Enter the 6-digit code sent to <b className="text-white">{formData.email}</b></p>
             </div>
-
-            {/* Test OTP Alert for Dev Mode */}
-            {process.env.NODE_ENV === 'development' && (
-              <div className="p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-xl text-yellow-500 text-sm font-bold text-center">
-                Check browser console for OTP if email is slow!
-              </div>
-            )}
 
             <div className="input-group">
               <label className="block text-sm font-medium text-text-muted mb-2 text-center">OTP Code</label>
