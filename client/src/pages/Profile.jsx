@@ -3,7 +3,7 @@ import { AuthContext } from '../context/AuthContext';
 import { User, Mail, GraduationCap, Shield, Award, Edit2, Save, X, Plus, Trash2, Github, Linkedin, Globe } from 'lucide-react';
 
 const Profile = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, updateUser } = useContext(AuthContext);
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({ ...user });
   const [newSkillToTeach, setNewSkillToTeach] = useState('');
@@ -24,10 +24,7 @@ const Profile = () => {
 
       if (response.ok) {
         const updatedData = await response.json();
-        // Update both local state and context
-        const fullUpdatedUser = { ...user, ...updatedData };
-        setUser(fullUpdatedUser);
-        localStorage.setItem('userInfo', JSON.stringify(fullUpdatedUser));
+        updateUser(updatedData);
         setIsEditing(false);
         alert('Profile updated successfully!');
       } else {

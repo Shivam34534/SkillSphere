@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { AuthContext } from '../../context/AuthContext';
 import { BookOpen, Users, Briefcase, Zap, Star, Shield, Search, ArrowRight, Video, FileText, Code, Palette, Presentation, Plus } from 'lucide-react';
 
-const StudentDashboard = ({ user }) => {
+const StudentDashboard = () => {
+  const { user, updateUser } = React.useContext(AuthContext);
   const [matches, setMatches] = useState([]);
   const [services, setServices] = useState([]);
   const [showServices, setShowServices] = useState(false);
@@ -148,8 +148,7 @@ const StudentDashboard = ({ user }) => {
         });
         
         if (response.ok) {
-          const updatedUser = { ...user, walletBalance: user.walletBalance - amount };
-          localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+          updateUser({ walletBalance: user.walletBalance - amount });
           
           // Force a page reload to update the Context and navbar instantly
           window.location.reload();
@@ -175,8 +174,7 @@ const StudentDashboard = ({ user }) => {
           onClick={() => {
             const amount = window.prompt("🚀 MVP TEST MODE: How many free credits do you want to add to your wallet?", "100");
             if (amount && !isNaN(amount)) {
-              const updatedUser = { ...user, walletBalance: (user.walletBalance || 0) + parseInt(amount) };
-              localStorage.setItem('userInfo', JSON.stringify(updatedUser));
+              updateUser({ walletBalance: (user.walletBalance || 0) + parseInt(amount) });
               window.location.reload();
             }
           }}

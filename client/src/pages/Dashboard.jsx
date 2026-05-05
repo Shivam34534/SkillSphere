@@ -20,15 +20,15 @@ function Dashboard() {
   const renderDashboard = () => {
     switch (user.role) {
       case 'STUDENT':
-        return <StudentDashboard user={user} />;
+        return <StudentDashboard />;
       case 'FREELANCER':
-        return <FreelancerDashboard user={user} />;
+        return <FreelancerDashboard />;
       case 'CLUB':
-        return <ClubDashboard user={user} />;
+        return <ClubDashboard />;
       case 'ADMIN':
-        return <AdminDashboard user={user} />;
+        return <AdminDashboard />;
       default:
-        return <StudentDashboard user={user} />;
+        return <StudentDashboard />;
     }
   };
 

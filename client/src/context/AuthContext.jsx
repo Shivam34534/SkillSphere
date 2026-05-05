@@ -3,20 +3,22 @@ import React, { createContext, useState, useEffect } from 'react';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
+  // Initialize state from either localStorage (persistent) or sessionStorage (session-only)
+  const [user, setUser] = useState(() => {
+    const storedLocal = localStorage.getItem('userInfo');
+    const storedSession = sessionStorage.getItem('userInfo');
+    const stored = storedLocal || storedSession;
+    return stored ? JSON.parse(stored) : null;
+  });
 
-  useEffect(() => {
-    // Check if token exists in localStorage on initial load
-    const storedUserInfo = localStorage.getItem('userInfo');
-    if (storedUserInfo) {
-      const parsedInfo = JSON.parse(storedUserInfo);
-      setUser(parsedInfo);
-      setToken(parsedInfo.token);
-    }
-  }, []);
+  const [token, setToken] = useState(() => {
+    const storedLocal = localStorage.getItem('userInfo');
+    const storedSession = sessionStorage.getItem('userInfo');
+    const stored = storedLocal || storedSession;
+    return stored ? JSON.parse(stored).token : null;
+  });
 
-  const login = async (email, password) => {
+  const login = async (email, password, rememberMe = false) => {
     try {
       const response = await fetch('http://localhost:5000/api/v1/auth/login', {
         method: 'POST',
@@ -29,7 +31,14 @@ export const AuthProvider = ({ children }) => {
       
       setUser(data);
       setToken(data.token);
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      
+      // Store in appropriate storage based on rememberMe
+      if (rememberMe) {
+        localStorage.setItem('userInfo', JSON.stringify(data));
+      } else {
+        sessionStorage.setItem('userInfo', JSON.stringify(data));
+      }
+      
       return { success: true };
     } catch (error) {
       return { success: false, message: error.message };
@@ -49,7 +58,10 @@ export const AuthProvider = ({ children }) => {
       
       setUser(data);
       setToken(data.token);
-      localStorage.setItem('userInfo', JSON.stringify(data));
+      
+      // For registration, we can default to sessionStorage or prompt later
+      sessionStorage.setItem('userInfo', JSON.stringify(data));
+      
       return { success: true };
     } catch (error) {
       return { success: false, message: error.message };
@@ -60,10 +72,24 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     setToken(null);
     localStorage.removeItem('userInfo');
+    sessionStorage.removeItem('userInfo');
+  };
+
+  const updateUser = (newData) => {
+    const fullUpdatedUser = { ...user, ...newData };
+    setUser(fullUpdatedUser);
+    
+    // Sync with whichever storage it was using
+    if (localStorage.getItem('userInfo')) {
+      localStorage.setItem('userInfo', JSON.stringify(fullUpdatedUser));
+    }
+    if (sessionStorage.getItem('userInfo')) {
+      sessionStorage.setItem('userInfo', JSON.stringify(fullUpdatedUser));
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, login, register, logout, updateUser }}>
       {children}
     </AuthContext.Provider>
   );

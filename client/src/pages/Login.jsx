@@ -6,6 +6,7 @@ import { AuthContext } from '../context/AuthContext';
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState('');
   const { login, user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -19,7 +20,7 @@ function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError('');
-    const result = await login(email, password);
+    const result = await login(email, password, rememberMe);
     
     if (result.success) {
       navigate('/dashboard');
@@ -68,7 +69,11 @@ function Login() {
           
           <div className="auth-options">
             <label className="checkbox-container">
-              <input type="checkbox" /> Remember me
+              <input 
+                type="checkbox" 
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              /> Remember me
             </label>
             <a href="#" className="forgot-link">Forgot password?</a>
           </div>
