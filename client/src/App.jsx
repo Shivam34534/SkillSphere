@@ -25,7 +25,7 @@ function Navigation() {
     <nav className="glass-nav">
       <div className="nav-content">
         <Link to="/" className="logo">
-          <div className="logo-icon new-logo"><Sparkles size={18} color="white" /></div>
+          <img src="/logo.svg" alt="SkillSphere Logo" style={{ width: '32px', height: '32px', borderRadius: '50%' }} />
           <span>SkillSphere</span>
         </Link>
         <div className="nav-links">
