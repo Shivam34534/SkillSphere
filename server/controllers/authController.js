@@ -1,5 +1,7 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
+import { sendEmail } from '../utils/emailService.js';
+import { otpTemplate, welcomeTemplate } from '../utils/emailTemplates.js';
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -41,14 +43,19 @@ export const registerUser = async (req, res) => {
     });
 
     if (user) {
-      // 3. (Mock) Send OTP via Email
-      console.log(`[AUTH] OTP for ${email}: ${otp}`);
+      // 3. Send OTP via Email
+      try {
+        await sendEmail(user.email, 'Verify Your SkillSphere Account', otpTemplate(otp));
+        console.log(`[AUTH] OTP sent to ${email}`);
+      } catch (emailError) {
+        console.error("Failed to send OTP email:", emailError);
+        // We still return 201 because the user was created, but we notify about the email failure
+      }
       
       res.status(201).json({
         message: 'Registration successful. Please verify the OTP sent to your email.',
         email: user.email,
-        // In a real app, don't send OTP in response. This is for MVP testing.
-        testOtp: otp 
+        testOtp: process.env.NODE_ENV === 'development' ? otp : undefined 
       });
     } else {
       res.status(400).json({ message: 'Invalid user data' });
@@ -114,6 +121,13 @@ export const verifyOTP = async (req, res) => {
     user.otp = undefined;
     user.otpExpires = undefined;
     await user.save();
+
+    // Send Welcome Email
+    try {
+      await sendEmail(user.email, 'Welcome to SkillSphere!', welcomeTemplate(user.name));
+    } catch (emailError) {
+      console.error("Failed to send welcome email:", emailError);
+    }
 
     res.json({
       _id: user._id,

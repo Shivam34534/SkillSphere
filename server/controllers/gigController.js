@@ -1,4 +1,7 @@
 import Gig from '../models/Gig.js';
+import { sendEmail } from '../utils/emailService.js';
+import { gigApplicationTemplate } from '../utils/emailTemplates.js';
+import User from '../models/User.js';
 
 export const createGig = async (req, res) => {
   try {
@@ -43,6 +46,20 @@ export const applyForGig = async (req, res) => {
 
     gig.applicants.push({ userId: req.user._id });
     await gig.save();
+
+    // Notify the club owner via email
+    try {
+      const club = await User.findById(gig.clubId);
+      if (club && club.email) {
+        await sendEmail(
+          club.email, 
+          'New Application for your Gig!', 
+          gigApplicationTemplate(req.user.name, gig.title)
+        );
+      }
+    } catch (emailError) {
+      console.error("Failed to send application notification email:", emailError);
+    }
     res.json({ message: 'Applied successfully', gig });
   } catch (error) {
     res.status(500).json({ message: error.message });
