@@ -27,9 +27,9 @@ function Home() {
               Join your campus <ArrowRight size={20} />
             </button>
           </Link>
-          <Link to="/demo">
+          <Link to="/marketplace">
             <button className="btn-secondary large" style={{padding: '1rem 2rem', fontSize: '1.1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.03)'}}>
-              <Sparkles size={20} style={{marginRight: '0.5rem'}} /> Watch the demo
+              Explore Marketplace <Briefcase size={20} style={{marginLeft: '0.5rem'}} />
             </button>
           </Link>
         </div>

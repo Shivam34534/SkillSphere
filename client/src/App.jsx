@@ -5,6 +5,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import MeetingRoom from './pages/MeetingRoom';
+import Marketplace from './pages/Marketplace';
+import Profile from './pages/Profile';
 import { AuthProvider, AuthContext } from './context/AuthContext';
 
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +29,7 @@ function Navigation() {
           <span>SkillSphere</span>
         </Link>
         <div className="nav-links">
+          <Link to="/marketplace">Marketplace</Link>
           <a href="/#features">Features</a>
           <a href="/#how-it-works">How it works</a>
           <a href="/#roles">Roles</a>
@@ -35,8 +38,9 @@ function Navigation() {
         <div className="nav-actions">
           {user ? (
             <>
+              <Link to="/profile" style={{color: 'var(--text-muted)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', marginRight: '1rem'}}>Profile</Link>
               <span style={{color: 'var(--text-muted)', display: 'flex', alignItems: 'center'}}>{user.name}</span>
-              <button className="btn-primary" onClick={handleLogout} style={{padding: '0.5rem 1.25rem', fontSize: '0.9rem'}}>Log Out</button>
+              <button className="btn-primary" onClick={handleLogout} style={{padding: '0.5rem 1.25rem', fontSize: '0.9rem', marginLeft: '1rem'}}>Log Out</button>
             </>
           ) : (
             <>
@@ -60,10 +64,12 @@ function App() {
           <div style={{ paddingTop: '80px', width: '100%' }}>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/marketplace" element={<Marketplace />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/meeting/:id" element={<MeetingRoom />} />
+              <Route path="/profile" element={<Profile />} />
             </Routes>
           </div>
         </div>
