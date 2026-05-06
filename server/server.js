@@ -4,7 +4,6 @@ import cors from 'cors';
 import http from 'http';
 import { Server } from 'socket.io';
 import connectDB from './config/db.js';
-import Notification from './models/Notification.js';
 
 // Route imports
 import authRoutes from './routes/authRoutes.js';
@@ -21,7 +20,7 @@ import leaderboardRoutes from './routes/leaderboardRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
 
-// Connect DB
+// Connect to Campus Database
 connectDB();
 
 const app = express();
@@ -33,7 +32,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-// Mount Routes
+// API Routes
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/skills', skillRoutes);
@@ -49,13 +48,10 @@ app.use('/api/v1/notifications', notificationRoutes);
 app.use('/api/v1/reviews', reviewRoutes);
 
 app.get('/', (req, res) => {
-  res.send('<h1>Server is running! 🚀</h1><p>Welcome to the SkillSphere API Backend.</p>');
+  res.send('<h1>SkillSphere API is Live! 🚀</h1>');
 });
 
-app.get('/api/health', (req, res) => {
-  res.status(200).json({ status: 'success', message: 'API is running' });
-});
-
+// Error Handling Middleware
 app.use((err, req, res, next) => {
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   res.status(statusCode).json({
@@ -67,6 +63,7 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 
+// Socket.io for Real-time Chat & WebRTC
 const io = new Server(server, {
   cors: {
     origin: process.env.FRONTEND_URL || "http://localhost:5173",
@@ -74,17 +71,8 @@ const io = new Server(server, {
   }
 });
 
-// Map of userId to socketId for notifications
-const userSockets = new Map();
-
 io.on('connection', (socket) => {
-  console.log('User connected to socket:', socket.id);
-
-  socket.on('register-user', (userId) => {
-    socket.join(userId);
-    userSockets.set(userId, socket.id);
-    console.log(`User ${userId} registered for notifications`);
-  });
+  console.log('User connected to SkillSphere Socket:', socket.id);
 
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId);
@@ -92,15 +80,10 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
       socket.to(roomId).emit('user-disconnected', userId);
-      for (const [uid, sid] of userSockets.entries()) {
-        if (sid === socket.id) {
-          userSockets.delete(uid);
-          break;
-        }
-      }
     });
   });
 
+  // Relay WebRTC signaling data
   socket.on('offer', (payload) => {
     io.to(payload.target).emit('offer', payload);
   });
@@ -113,32 +96,12 @@ io.on('connection', (socket) => {
     io.to(payload.target).emit('ice-candidate', payload);
   });
 
+  // Relay chat messages
   socket.on('send-chat', (roomId, message) => {
     socket.to(roomId).emit('receive-chat', message);
   });
 });
 
-export const sendNotification = async (userId, notificationData) => {
-  try {
-    const notification = await Notification.create({
-      userId,
-      ...notificationData
-    });
-    io.to(userId.toString()).emit('new-notification', notification);
-    return notification;
-  } catch (error) {
-    console.error('Socket notification error:', error);
-  }
-};
-
-server.on('error', (error) => {
-  if (error.code === 'EADDRINUSE') {
-    console.error(`Port ${PORT} is already in use.`);
-  } else {
-    console.error('Server error:', error);
-  }
-});
-
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server & Socket.io running on port ${PORT}`);
+  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 });
