@@ -29,10 +29,10 @@ function ForgotPassword() {
         setMessage(data.message);
         setSubmitted(true);
       } else {
-        setError(data.message || 'Something went wrong');
+        setError(data.message || 'The recovery service is currently unavailable. Please check your connection.');
       }
     } catch (err) {
-      setError('Network error. Please try again.');
+      setError('Connection failed. Please ensure the campus server is running.');
     } finally {
       setLoading(false);
     }

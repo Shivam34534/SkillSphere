@@ -179,12 +179,14 @@ export const verifyOTP = async (req, res) => {
 };
 
 export const forgotPassword = async (req, res) => {
+  console.log(`[AUTH] Forgot password request for: ${req.body.email}`);
   try {
     const { email } = req.body;
     const user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      console.log(`[AUTH] Forgot password failure: User ${email} not found`);
+      return res.status(404).json({ message: 'No student found with this email address.' });
     }
 
     // Generate Reset Token
@@ -193,20 +195,29 @@ export const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = Date.now() + 60 * 60 * 1000; // 1 hour
 
     await user.save();
+    console.log(`[AUTH] Reset token generated and saved for ${email}`);
 
     // Send Email
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+    const baseUrl = process.env.FRONTEND_URL || `${req.protocol}://${req.get('host')}`;
+    const resetUrl = `${baseUrl}/reset-password/${resetToken}`;
     try {
+      console.log(`[AUTH] Attempting to send recovery email to ${email}...`);
       await sendEmail(user.email, 'SkillSphere Password Recovery', resetPasswordTemplate(resetUrl));
-      res.json({ message: 'Password reset link sent to your email' });
+      console.log(`[AUTH] Recovery email sent successfully to ${email}`);
+      res.json({ message: 'A recovery link has been sent to your college email.' });
     } catch (emailError) {
+      console.error(`[AUTH] SMTP ERROR sending recovery link to ${email}:`, emailError);
       user.resetPasswordToken = undefined;
       user.resetPasswordExpires = undefined;
       await user.save();
-      res.status(500).json({ message: 'Error sending email' });
+      res.status(500).json({ 
+        message: 'The email server is currently busy. Please try again in a few minutes.',
+        error: emailError.message 
+      });
     }
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(`[AUTH] CRITICAL ERROR in forgotPassword for ${req.body.email}:`, error);
+    res.status(500).json({ message: 'Internal server error. Please contact campus support.' });
   }
 };
 
