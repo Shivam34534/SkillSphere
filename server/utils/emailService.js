@@ -22,9 +22,12 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: false
   },
-  family: 4, // Force IPv4 to avoid ENETUNREACH
-  logger: true, // Log SMTP traffic
-  debug: true, // Include debug info
+  lookup: (hostname, options, callback) => {
+    dns.lookup(hostname, { family: 4 }, callback);
+  },
+  family: 4, 
+  logger: true,
+  debug: true,
   connectionTimeout: 20000,
   greetingTimeout: 20000,
   socketTimeout: 30000
