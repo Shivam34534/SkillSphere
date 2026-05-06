@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema(
     xpLevel: { type: Number, default: 1 },
     trustScore: { type: Number, default: 50 },
     isVerified: { type: Boolean, default: false },
+    accountStatus: { type: String, enum: ['active', 'suspended', 'banned'], default: 'active' },
     completedGigs: { type: Number, default: 0 },
     badges: [{ 
       name: String, 

@@ -172,3 +172,51 @@ export const getUserMatches = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getMatchSuggestions = async (req, res) => {
+  try {
+    const { skillsToTeach, skillsToLearn } = req.user;
+
+    // Find users who want to learn what you teach AND can teach what you want to learn
+    const suggestions = await User.find({
+      _id: { $ne: req.user._id },
+      $or: [
+        { skillsToLearn: { $in: skillsToTeach } }, // They want what you have
+        { skillsToTeach: { $in: skillsToLearn } }  // They have what you want
+      ]
+    }).select('name email profilePhoto trustScore skillsToTeach skillsToLearn xpLevel');
+
+    // Score the suggestions
+    const scoredSuggestions = suggestions.map(s => {
+      let score = 0;
+      const mutualInterest = s.skillsToLearn.filter(skill => skillsToTeach.includes(skill));
+      const mutualOffer = s.skillsToTeach.filter(skill => skillsToLearn.includes(skill));
+      
+      if (mutualInterest.length > 0 && mutualOffer.length > 0) score += 100; // Perfect Match
+      score += mutualInterest.length * 20;
+      score += mutualOffer.length * 20;
+      
+      return { ...s.toObject(), score, mutualInterest, mutualOffer };
+    }).sort((a, b) => b.score - a.score).filter(s => s.score > 0);
+
+    res.json(scoredSuggestions);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getBarterHistory = async (req, res) => {
+  try {
+    const history = await Match.find({
+      $or: [{ userAId: req.user._id }, { userBId: req.user._id }],
+      status: 'COMPLETED'
+    })
+    .populate('userAId', 'name profilePhoto')
+    .populate('userBId', 'name profilePhoto')
+    .sort({ updatedAt: -1 });
+
+    res.json(history);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

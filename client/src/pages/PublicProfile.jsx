@@ -1,19 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { Mail, GraduationCap, Shield, Award, Github, Linkedin, Globe, MessageCircle, Star, Zap, Clock, UserCheck } from 'lucide-react';
+import { Mail, GraduationCap, Shield, Award, Github, Linkedin, Globe, MessageCircle, Star, Zap, Clock, UserCheck, ShieldAlert, X } from 'lucide-react';
+import ReviewModal from '../components/ReviewModal';
 
 const PublicProfile = () => {
   const { id } = useParams();
   const [user, setUser] = useState(null);
   const [history, setHistory] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showReportModal, setShowReportModal] = useState(false);
+  const [showReviewModal, setShowReviewModal] = useState(false);
+  const [selectedSession, setSelectedSession] = useState(null);
+  const [reportReason, setReportReason] = useState('');
+  const [reportDetails, setReportDetails] = useState('');
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const [userRes, historyRes] = await Promise.all([
+        const [userRes, historyRes, reviewRes] = await Promise.all([
           fetch(`http://localhost:5000/api/v1/users/${id}`),
-          fetch(`http://localhost:5000/api/v1/matches/user-history/${id}`)
+          fetch(`http://localhost:5000/api/v1/matches/user-history/${id}`),
+          fetch(`http://localhost:5000/api/v1/reviews/user/${id}`)
         ]);
 
         if (userRes.ok) {
@@ -23,6 +31,10 @@ const PublicProfile = () => {
         if (historyRes.ok) {
           const historyData = await historyRes.json();
           setHistory(historyData);
+        }
+        if (reviewRes.ok) {
+          const reviewData = await reviewRes.json();
+          setReviews(reviewData);
         }
       } catch (error) {
         console.error('Failed to fetch profile', error);
@@ -54,6 +66,9 @@ const PublicProfile = () => {
              </div>
            </div>
            <div className="absolute bottom-4 right-8 flex gap-3">
+              <button className="btn-secondary py-2 px-6 flex items-center gap-2 border-white/10 hover:bg-red-500/10 hover:border-red-500/30 text-text-muted hover:text-red-500 transition-all" onClick={() => setShowReportModal(true)}>
+                <ShieldAlert size={18} /> Report
+              </button>
               <button className="btn-primary py-2 px-6 flex items-center gap-2">
                 <MessageCircle size={18} /> Message
               </button>
@@ -151,13 +166,57 @@ const PublicProfile = () => {
                         <p className="text-[10px] text-text-muted">with {session.userAId?._id === user._id ? session.userBId?.name : session.userAId?.name} • {new Date(session.updatedAt).toLocaleDateString()}</p>
                       </div>
                    </div>
-                   <div className="flex gap-1">
-                      {[1, 2, 3, 4, 5].map(s => <Star key={s} size={10} className="text-yellow-400 fill-yellow-400" />)}
-                   </div>
+                    <div className="flex flex-col items-end gap-2">
+                       <div className="flex gap-1">
+                          {[1, 2, 3, 4, 5].map(s => <Star key={s} size={10} className="text-yellow-400 fill-yellow-400" />)}
+                       </div>
+                       <button 
+                         onClick={() => {
+                           setSelectedSession(session);
+                           setShowReviewModal(true);
+                         }}
+                         className="text-[10px] font-bold text-primary hover:underline"
+                       >
+                         Rate Session
+                       </button>
+                    </div>
                 </div>
               )) : (
                 <div className="text-center py-10 border-2 border-dashed border-glass-border rounded-3xl">
                    <p className="text-sm text-text-muted">No completed sessions found.</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div className="glass-card p-8">
+            <h3 className="text-xl font-bold text-white mb-8 flex items-center gap-2">
+              <Star size={24} className="text-yellow-400" /> Peer Reviews
+            </h3>
+            <div className="flex flex-col gap-6">
+              {reviews.length > 0 ? reviews.map((review, i) => (
+                <div key={i} className="flex flex-col gap-4 pb-6 border-b border-white/5 last:border-0">
+                   <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                         <div className="w-8 h-8 rounded-full overflow-hidden border border-white/10">
+                            <img src={review.reviewerId?.profilePhoto || `https://api.dicebear.com/7.x/avataaars/svg?seed=${review.reviewerId?.name}`} alt="" />
+                         </div>
+                         <div>
+                            <p className="text-xs font-bold text-white">{review.reviewerId?.name}</p>
+                            <p className="text-[10px] text-text-muted">{new Date(review.createdAt).toLocaleDateString()}</p>
+                         </div>
+                      </div>
+                      <div className="flex gap-0.5">
+                         {[1, 2, 3, 4, 5].map(s => (
+                           <Star key={s} size={12} className={s <= review.rating ? "text-yellow-400 fill-yellow-400" : "text-white/10"} />
+                         ))}
+                      </div>
+                   </div>
+                   <p className="text-sm text-text-muted leading-relaxed italic">"{review.comment}"</p>
+                </div>
+              )) : (
+                <div className="text-center py-10">
+                   <p className="text-sm text-text-muted">No reviews yet. Be the first to exchange skills!</p>
                 </div>
               )}
             </div>
@@ -176,6 +235,53 @@ const PublicProfile = () => {
           </div>
         </div>
       </div>
+
+      {/* Report Modal */}
+      {showReportModal && (
+        <div className="fixed inset-0 z-[4000] flex items-center justify-center p-6">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setShowReportModal(false)}></div>
+          <div className="glass-card w-full max-w-md p-8 relative animate-in zoom-in duration-300">
+             <button onClick={() => setShowReportModal(false)} className="absolute top-6 right-6 text-text-muted hover:text-white"><X size={20}/></button>
+             <h3 className="text-xl font-bold text-white mb-4">Report User</h3>
+             <div className="flex flex-col gap-4">
+                <select 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none"
+                  value={reportReason}
+                  onChange={(e) => setReportReason(e.target.value)}
+                >
+                  <option value="" className="bg-background-dark">Select a reason</option>
+                  <option value="Fake Profile" className="bg-background-dark">Fake Profile</option>
+                  <option value="Harassment" className="bg-background-dark">Harassment</option>
+                  <option value="Scam/Fraud" className="bg-background-dark">Scam/Fraud</option>
+                  <option value="Inappropriate Content" className="bg-background-dark">Inappropriate Content</option>
+                </select>
+                <textarea 
+                  className="w-full bg-white/5 border border-white/10 rounded-xl p-3 text-white outline-none min-h-[100px]"
+                  placeholder="Provide more details..."
+                  value={reportDetails}
+                  onChange={(e) => setReportDetails(e.target.value)}
+                ></textarea>
+                <button className="btn-primary py-3 bg-red-600 hover:bg-red-700" onClick={() => {
+                  alert('Report submitted for review.');
+                  setShowReportModal(false);
+                }}>Submit Report</button>
+             </div>
+          </div>
+        </div>
+      )}
+
+      <ReviewModal 
+        isOpen={showReviewModal}
+        onClose={() => setShowReviewModal(false)}
+        revieweeId={id}
+        revieweeName={user.name}
+        matchId={selectedSession?._id}
+        onReviewPosted={() => {
+           fetch(`http://localhost:5000/api/v1/reviews/user/${id}`)
+             .then(res => res.json())
+             .then(data => setReviews(data));
+        }}
+      />
     </div>
   );
 };

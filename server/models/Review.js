@@ -7,7 +7,7 @@ const reviewSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    providerId: {
+    revieweeId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
@@ -15,7 +15,10 @@ const reviewSchema = new mongoose.Schema(
     gigId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Gig',
-      required: true,
+    },
+    matchId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Match',
     },
     rating: {
       type: Number,

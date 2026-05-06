@@ -19,6 +19,7 @@ import eventRoutes from './routes/eventRoutes.js';
 import transactionRoutes from './routes/transactionRoutes.js';
 import leaderboardRoutes from './routes/leaderboardRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
+import reviewRoutes from './routes/reviewRoutes.js';
 
 // Load env
 // Env loaded via import 'dotenv/config' at top
@@ -45,6 +46,7 @@ app.use('/api/v1/events', eventRoutes);
 app.use('/api/v1/transactions', transactionRoutes);
 app.use('/api/v1/leaderboard', leaderboardRoutes);
 app.use('/api/v1/notifications', notificationRoutes);
+app.use('/api/v1/reviews', reviewRoutes);
 
 app.get('/', (req, res) => {
   res.send('<h1>Server is running! 🚀</h1><p>Welcome to the SkillSphere API Backend.</p>');
