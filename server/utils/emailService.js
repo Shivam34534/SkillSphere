@@ -1,5 +1,9 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import dns from 'dns';
+
+// Force IPv4 as priority for all network connections (Fixes Render/Gmail ENETUNREACH)
+dns.setDefaultResultOrder('ipv4first');
 
 dotenv.config();
 
