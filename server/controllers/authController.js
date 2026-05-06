@@ -189,27 +189,36 @@ export const forgotPassword = async (req, res) => {
       return res.status(404).json({ message: 'No student found with this email address.' });
     }
 
-    // Generate Reset Token
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-    user.resetPasswordExpires = Date.now() + 60 * 60 * 1000; // 1 hour
+    // Generate 6-digit OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    user.resetPasswordOTP = otp;
+    user.resetPasswordExpires = Date.now() + 10 * 60 * 1000; // 10 minutes
 
     await user.save();
-    console.log(`[AUTH] Reset token generated and saved for ${email}`);
+    console.log(`[AUTH] Reset OTP generated and saved for ${email}`);
 
     // Send Email
-    const baseUrl = process.env.FRONTEND_URL || `${req.protocol}://${req.get('host')}`;
-    const resetUrl = `${baseUrl}/reset-password/${resetToken}`;
     try {
-      console.log(`[AUTH] Attempting to send recovery email to ${email}...`);
-      await sendEmail(user.email, 'SkillSphere Password Recovery', resetPasswordTemplate(resetUrl));
-      console.log(`[AUTH] Recovery email sent successfully to ${email}`);
-      res.json({ message: 'A recovery link has been sent to your college email.' });
+      console.log(`[AUTH] Attempting to send recovery OTP to ${email}...`);
+      const subject = 'SkillSphere Password Reset OTP';
+      const html = `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e1e1e1; border-radius: 10px;">
+          <h2 style="color: #6366f1; text-align: center;">SkillSphere Recovery</h2>
+          <p>Hello,</p>
+          <p>You requested to reset your password. Use the following 6-digit OTP to continue:</p>
+          <div style="text-align: center; margin: 30px 0;">
+            <span style="font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #6366f1; background: #f3f4f6; padding: 10px 20px; border-radius: 8px;">${otp}</span>
+          </div>
+          <p style="color: #6b7280; font-size: 14px;">This code is valid for 10 minutes. If you did not request this, please ignore this email.</p>
+          <hr style="border: 0; border-top: 1px solid #e1e1e1; margin: 20px 0;">
+          <p style="text-align: center; color: #9ca3af; font-size: 12px;">SkillSphere Campus Marketplace</p>
+        </div>
+      `;
+      await sendEmail(user.email, subject, html);
+      console.log(`[AUTH] Recovery OTP sent successfully to ${email}`);
+      res.json({ message: 'A 6-digit verification code has been sent to your email.' });
     } catch (emailError) {
-      console.error(`[AUTH] SMTP ERROR sending recovery link to ${email}:`, emailError);
-      user.resetPasswordToken = undefined;
-      user.resetPasswordExpires = undefined;
-      await user.save();
+      console.error(`[AUTH] SMTP ERROR sending recovery OTP to ${email}:`, emailError);
       res.status(500).json({ 
         message: 'The email server is currently busy. Please try again in a few minutes.',
         error: emailError.message 
@@ -221,26 +230,46 @@ export const forgotPassword = async (req, res) => {
   }
 };
 
-export const resetPassword = async (req, res) => {
+export const verifyResetOTP = async (req, res) => {
   try {
-    const { token, password } = req.body;
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-
-    const user = await User.findOne({
-      resetPasswordToken: hashedToken,
+    const { email, otp } = req.body;
+    const user = await User.findOne({ 
+      email,
+      resetPasswordOTP: otp,
       resetPasswordExpires: { $gt: Date.now() }
     });
 
     if (!user) {
-      return res.status(400).json({ message: 'Invalid or expired reset token' });
+      return res.status(400).json({ message: 'Invalid or expired verification code.' });
     }
 
+    res.json({ message: 'OTP verified. You can now reset your password.' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { email, otp, password } = req.body;
+    
+    const user = await User.findOne({
+      email,
+      resetPasswordOTP: otp,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Session expired. Please request a new code.' });
+    }
+
+    // Set new password
     user.password = password;
-    user.resetPasswordToken = undefined;
+    user.resetPasswordOTP = undefined;
     user.resetPasswordExpires = undefined;
     await user.save();
 
-    res.json({ message: 'Password reset successful. You can now log in.' });
+    res.json({ message: 'Password reset successful! You can now log in.' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
