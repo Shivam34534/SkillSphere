@@ -762,14 +762,14 @@ button {
   justify-content: center;
 }
 
-.feature-card .icon-box.new-feature-icon {
-  margin-bottom: 1.5rem;
+.icon-box.new-feature-icon {
   background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow: 0 8px 16px rgba(139, 92, 246, 0.2);
   flex-shrink: 0;
+  border: none !important;
 }
 
 .new-logo {
@@ -1371,7 +1371,7 @@ button {
     radial-gradient(circle at bottom left, rgba(217, 70, 239, 0.15) 0%, transparent 40%);
 }
 
-.feature-card {
+.feature-card, .role-card {
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
   border: 1px solid rgba(255, 255, 255, 0.06);
@@ -1381,7 +1381,7 @@ button {
   backdrop-filter: blur(12px);
 }
 
-.feature-card:hover {
+.feature-card:hover, .role-card:hover {
   transform: translateY(-5px);
   border-color: rgba(139, 92, 246, 0.2);
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%);

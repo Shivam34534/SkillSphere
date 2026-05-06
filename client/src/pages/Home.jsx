@@ -211,9 +211,7 @@ function Home() {
         
         <div className="roles-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full px-4">
           <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
-            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-              <GraduationCap size={24} color="white" />
-            </div>
+            <div className="icon-box new-feature-icon w-12 h-12 rounded-2xl mb-6"><GraduationCap size={24} color="white" /></div>
             <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Student</h3>
             <ul className="role-list space-y-3">
               <li className="text-sm md:text-base">Browse skills</li>
@@ -223,9 +221,7 @@ function Home() {
           </div>
           
           <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
-            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors">
-              <Code size={24} color="white" />
-            </div>
+            <div className="icon-box new-feature-icon w-12 h-12 rounded-2xl mb-6"><Code size={24} color="white" /></div>
             <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Freelancer</h3>
             <ul className="role-list space-y-3">
               <li className="text-sm md:text-base">List services</li>
@@ -235,9 +231,7 @@ function Home() {
           </div>
 
           <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
-            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
-              <Users size={24} color="white" />
-            </div>
+            <div className="icon-box new-feature-icon w-12 h-12 rounded-2xl mb-6"><Users size={24} color="white" /></div>
             <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Club</h3>
             <ul className="role-list space-y-3">
               <li className="text-sm md:text-base">Recruit talent</li>
@@ -247,9 +241,7 @@ function Home() {
           </div>
 
           <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
-            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-              <ShieldCheck size={24} color="white" />
-            </div>
+            <div className="icon-box new-feature-icon w-12 h-12 rounded-2xl mb-6"><ShieldCheck size={24} color="white" /></div>
             <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Admin</h3>
             <ul className="role-list space-y-3">
               <li className="text-sm md:text-base">Verify users</li>
@@ -259,9 +251,7 @@ function Home() {
           </div>
 
           <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
-            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors">
-              <Award size={24} color="white" />
-            </div>
+            <div className="icon-box new-feature-icon w-12 h-12 rounded-2xl mb-6"><Award size={24} color="white" /></div>
             <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Alumni</h3>
             <ul className="role-list space-y-3">
               <li className="text-sm md:text-base">Mentor</li>
@@ -271,9 +261,7 @@ function Home() {
           </div>
 
           <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
-            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
-              <BookOpen size={24} color="white" />
-            </div>
+            <div className="icon-box new-feature-icon w-12 h-12 rounded-2xl mb-6"><BookOpen size={24} color="white" /></div>
             <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Faculty</h3>
             <ul className="role-list space-y-3">
               <li className="text-sm md:text-base">Research gigs</li>

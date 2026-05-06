@@ -78,6 +78,7 @@ function Navigation() {
       <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-4 mb-2 block">Platform</span>
       <div className="nav-links">
         <a href="/#features" className="nav-link" onClick={closeMenu}><Layout size={18} /> Features</a>
+        <a href="/#roles" className="nav-link" onClick={closeMenu}><Users size={18} /> Roles</a>
         <a href="/#how-it-works" className="nav-link" onClick={closeMenu}><Info size={18} /> How it works</a>
       </div>
     </div>
