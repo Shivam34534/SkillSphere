@@ -93,7 +93,13 @@ function Login() {
                 className="w-4 h-4 rounded border-glass-border bg-black/20 text-primary"
               /> Remember me
             </label>
-            <Link to="/forgot-password" id="forgot-password-link" className="forgot-link text-primary hover:underline transition-all">Forgot password?</Link>
+            <Link 
+              to="/forgot-password" 
+              id="forgot-password-link" 
+              className="forgot-link text-primary hover:text-primary-light transition-all relative z-30 py-1 px-2 -mr-2 hover:underline"
+            >
+              Forgot password?
+            </Link>
           </div>
           
           <button type="submit" disabled={loading} className="btn-primary w-full py-3 flex items-center justify-center gap-2">
