@@ -199,9 +199,10 @@ export const getMatchSuggestions = async (req, res) => {
       return { ...s.toObject(), score, mutualInterest, mutualOffer };
     }).sort((a, b) => b.score - a.score).filter(s => s.score > 0);
 
-    res.json(scoredSuggestions);
+    res.json(scoredSuggestions || []);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error in getMatchSuggestions:', error);
+    res.status(500).json({ message: 'Error generating suggestions: ' + error.message });
   }
 };
 
@@ -215,8 +216,9 @@ export const getBarterHistory = async (req, res) => {
     .populate('userBId', 'name profilePhoto')
     .sort({ updatedAt: -1 });
 
-    res.json(history);
+    res.json(history || []);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error in getBarterHistory:', error);
+    res.status(500).json({ message: 'Error fetching history: ' + error.message });
   }
 };

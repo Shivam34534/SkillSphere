@@ -197,45 +197,50 @@ const MeetingRoom = () => {
   };
 
   return (
-    <div style={{ height: '100vh', width: '100vw', backgroundColor: '#0f172a', color: 'white', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
+    <div className="h-screen w-full bg-slate-950 text-white flex flex-col overflow-hidden">
       {/* Header */}
-      <div style={{ padding: '1rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid rgba(255,255,255,0.1)', flexShrink: 0 }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          <div style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%)', padding: '0.5rem', borderRadius: '8px' }}>
-            <Video size={20} color="white" />
+      <div className="px-4 md:px-8 py-4 flex justify-between items-center border-b border-white/10 shrink-0">
+        <div className="flex items-center gap-3 md:gap-4">
+          <div className="bg-gradient-to-br from-primary to-accent p-2 rounded-lg">
+            <Video size={18} color="white" className="md:w-5 md:h-5" />
           </div>
-          <h2 style={{ margin: 0, fontSize: '1.2rem' }}>SkillSphere LIVE</h2>
-          <span style={{ backgroundColor: 'rgba(255,255,255,0.1)', padding: '0.2rem 0.6rem', borderRadius: '12px', fontSize: '0.8rem', color: '#cbd5e1' }}>Room: {id}</span>
+          <h2 className="m-0 text-sm md:text-lg font-bold">SkillSphere LIVE</h2>
+          <span className="hidden sm:inline-block bg-white/10 px-3 py-1 rounded-full text-[10px] md:text-xs text-slate-300">Room: {id}</span>
+        </div>
+        <div className="flex items-center gap-3">
+           <div className="flex items-center gap-1.5 bg-success/20 px-3 py-1 rounded-full border border-success/30">
+              <div className="w-1.5 h-1.5 bg-success rounded-full animate-pulse"></div>
+              <span className="text-[10px] font-black text-success uppercase tracking-widest">Connected</span>
+           </div>
         </div>
       </div>
 
-      <div style={{ flex: 1, display: 'flex', overflow: 'hidden' }}>
+      <div className="flex-1 flex overflow-hidden relative">
         {/* Main Video Area */}
-        <div style={{ flex: 1, padding: '2rem', display: 'flex', gap: '2rem', justifyContent: 'center', alignItems: 'center', backgroundColor: '#020617', position: 'relative' }}>
+        <div className="flex-1 p-4 md:p-8 flex flex-col md:flex-row gap-4 md:gap-8 justify-center items-center bg-slate-900 relative">
           {joining ? (
-             <div style={{ textAlign: 'center' }}>
-               <div className="spinner" style={{ width: '50px', height: '50px', border: '4px solid rgba(255,255,255,0.1)', borderTopColor: '#3b82f6', borderRadius: '50%', animation: 'spin 1s linear infinite', margin: '0 auto 1rem auto' }}></div>
-               <p style={{ color: '#cbd5e1' }}>Allow camera access & connecting to network...</p>
-               <style>{`@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }`}</style>
+             <div className="text-center">
+               <div className="w-12 h-12 border-4 border-white/10 border-t-primary rounded-full animate-spin mx-auto mb-6"></div>
+               <p className="text-slate-400 text-sm">Initializing encrypted P2P stream...</p>
              </div>
           ) : (
             <>
               {/* Peer Video */}
-              <div style={{ flex: 1, height: '100%', maxWidth: '1000px', backgroundColor: '#1e293b', borderRadius: '16px', display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
-                <video playsInline autoPlay ref={userVideo} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                <div style={{ position: 'absolute', bottom: '1rem', left: '1rem', backgroundColor: 'rgba(0,0,0,0.6)', padding: '0.4rem 1rem', borderRadius: '20px', fontSize: '0.9rem' }}>
+              <div className="flex-1 w-full h-full max-w-5xl bg-slate-800 rounded-2xl md:rounded-3xl flex justify-center items-center relative overflow-hidden border border-white/10 shadow-2xl">
+                <video playsInline autoPlay ref={userVideo} className="w-full h-full object-cover" />
+                <div className="absolute bottom-4 left-4 bg-black/60 backdrop-blur-md px-4 py-1.5 rounded-full text-xs font-bold border border-white/10">
                   Peer Partner
                 </div>
               </div>
 
-              {/* My Video */}
-              <div style={{ width: '250px', height: '160px', backgroundColor: '#334155', borderRadius: '12px', position: 'absolute', bottom: '2rem', right: '2rem', display: 'flex', justifyContent: 'center', alignItems: 'center', border: '2px solid rgba(255,255,255,0.2)', overflow: 'hidden', zIndex: 10 }}>
-                <video playsInline muted autoPlay ref={myVideo} style={{ width: '100%', height: '100%', objectFit: 'cover', display: videoOn ? 'block' : 'none' }} />
+              {/* My Video (PIP) */}
+              <div className="absolute bottom-4 right-4 md:bottom-8 md:right-8 w-32 h-44 sm:w-48 sm:h-32 md:w-64 md:h-44 bg-slate-700 rounded-xl md:rounded-2xl flex justify-center items-center border-2 border-white/20 shadow-2xl overflow-hidden z-20">
+                <video playsInline muted autoPlay ref={myVideo} className={`w-full h-full object-cover ${videoOn ? 'block' : 'hidden'}`} />
                 {!videoOn && (
-                  <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: '#475569', display: 'flex', justifyContent: 'center', alignItems: 'center', fontSize: '1.5rem', fontWeight: 'bold' }}>You</div>
+                  <div className="w-12 h-12 rounded-full bg-slate-600 flex items-center justify-center text-lg font-bold">You</div>
                 )}
-                <div style={{ position: 'absolute', bottom: '0.5rem', left: '0.5rem', backgroundColor: 'rgba(0,0,0,0.6)', padding: '0.2rem 0.6rem', borderRadius: '12px', fontSize: '0.7rem' }}>
-                  You {!micOn && <MicOff size={10} style={{ marginLeft: '4px', display: 'inline' }} color="#ef4444" />}
+                <div className="absolute bottom-2 left-2 bg-black/60 backdrop-blur-md px-2 py-1 rounded-lg text-[10px] font-medium border border-white/10">
+                  You {!micOn && <MicOff size={10} className="inline ml-1 text-red-500" />}
                 </div>
               </div>
             </>
@@ -244,37 +249,37 @@ const MeetingRoom = () => {
 
         {/* Chat Panel */}
         {chatOpen && (
-          <div style={{ width: '350px', backgroundColor: '#0f172a', borderLeft: '1px solid rgba(255,255,255,0.1)', display: 'flex', flexDirection: 'column' }}>
-            <div style={{ padding: '1.5rem', borderBottom: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3 style={{ margin: 0, fontSize: '1.1rem' }}>Live Chat</h3>
-              <button onClick={() => setChatOpen(false)} style={{ background: 'transparent', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
-                <X size={20} />
+          <div className="fixed inset-y-0 right-0 z-[100] w-full sm:w-[350px] bg-slate-900 border-l border-white/10 flex flex-col animate-scale-in">
+            <div className="p-6 border-b border-white/10 flex justify-between items-center">
+              <h3 className="m-0 text-lg font-bold">Live Chat</h3>
+              <button onClick={() => setChatOpen(false)} className="text-slate-400 hover:text-white transition-colors">
+                <X size={24} />
               </button>
             </div>
             
-            <div style={{ flex: 1, padding: '1rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="flex-1 p-4 overflow-y-auto flex flex-col gap-4 scrollbar-hide">
               {messages.map((msg, i) => (
-                <div key={i} style={{ alignSelf: msg.sender === 'You' ? 'flex-end' : 'flex-start', maxWidth: '85%' }}>
-                  <div style={{ fontSize: '0.75rem', color: '#94a3b8', marginBottom: '0.2rem', textAlign: msg.sender === 'You' ? 'right' : 'left' }}>
+                <div key={i} className={`max-w-[85%] ${msg.sender === 'You' ? 'self-end' : 'self-start'}`}>
+                  <div className={`text-[10px] text-slate-400 mb-1 ${msg.sender === 'You' ? 'text-right' : 'text-left'}`}>
                     {msg.sender} • {msg.time}
                   </div>
-                  <div style={{ padding: '0.8rem 1rem', borderRadius: '12px', backgroundColor: msg.sender === 'You' ? '#3b82f6' : '#1e293b', color: 'white', fontSize: '0.9rem' }}>
+                  <div className={`p-3 rounded-2xl text-sm ${msg.sender === 'You' ? 'bg-primary text-white rounded-tr-none' : 'bg-slate-800 text-white rounded-tl-none'}`}>
                     {msg.text}
                   </div>
                 </div>
               ))}
             </div>
 
-            <div style={{ padding: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-              <form onSubmit={handleSendMessage} style={{ display: 'flex', gap: '0.5rem' }}>
+            <div className="p-4 border-t border-white/10">
+              <form onSubmit={handleSendMessage} className="flex gap-2">
                 <input 
                   type="text" 
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
-                  placeholder="Send a message..." 
-                  style={{ flex: 1, padding: '0.8rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.2)', backgroundColor: '#1e293b', color: 'white', outline: 'none' }}
+                  placeholder="Type a message..." 
+                  className="flex-1 bg-slate-800 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-primary outline-none transition-all"
                 />
-                <button type="submit" style={{ padding: '0.8rem', borderRadius: '8px', border: 'none', backgroundColor: '#3b82f6', color: 'white', cursor: 'pointer' }}>
+                <button type="submit" className="p-3 bg-primary rounded-xl hover:bg-primary-hover transition-all shrink-0">
                   <Send size={18} />
                 </button>
               </form>
@@ -283,21 +288,25 @@ const MeetingRoom = () => {
         )}
       </div>
 
-      {/* Controls */}
-      <div style={{ padding: '1.5rem', backgroundColor: '#0f172a', display: 'flex', justifyContent: 'center', gap: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.1)', flexShrink: 0 }}>
-        <button onClick={toggleMic} style={{ width: '50px', height: '50px', borderRadius: '50%', border: 'none', backgroundColor: micOn ? '#334155' : '#ef4444', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
-          {micOn ? <Mic size={22} /> : <MicOff size={22} />}
+      {/* Controls Bar */}
+      <div className="px-4 py-6 md:py-8 bg-slate-950 flex flex-wrap justify-center items-center gap-3 md:gap-6 border-t border-white/10 shrink-0 z-[110]">
+        <button onClick={toggleMic} className={`w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all ${micOn ? 'bg-slate-800 hover:bg-slate-700' : 'bg-red-500 shadow-lg shadow-red-500/20'}`}>
+          {micOn ? <Mic size={20} /> : <MicOff size={20} />}
         </button>
-        <button onClick={toggleVideo} style={{ width: '50px', height: '50px', borderRadius: '50%', border: 'none', backgroundColor: videoOn ? '#334155' : '#ef4444', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
-          {videoOn ? <Video size={22} /> : <VideoOff size={22} />}
+        <button onClick={toggleVideo} className={`w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all ${videoOn ? 'bg-slate-800 hover:bg-slate-700' : 'bg-red-500 shadow-lg shadow-red-500/20'}`}>
+          {videoOn ? <Video size={20} /> : <VideoOff size={20} />}
         </button>
-        <button onClick={() => setChatOpen(!chatOpen)} style={{ width: '50px', height: '50px', borderRadius: '50%', border: 'none', backgroundColor: chatOpen ? '#3b82f6' : '#334155', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
+        <button onClick={() => setChatOpen(!chatOpen)} className={`w-12 h-12 md:w-14 md:h-14 rounded-full flex items-center justify-center transition-all ${chatOpen ? 'bg-primary shadow-lg shadow-primary/20' : 'bg-slate-800 hover:bg-slate-700'}`}>
           <MessageSquare size={20} />
         </button>
-        <button onClick={() => navigate('/dashboard')} style={{ width: '60px', height: '50px', borderRadius: '25px', border: 'none', backgroundColor: '#334155', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', marginLeft: '2rem' }}>
-          <PhoneMissed size={22} />
+        
+        <div className="w-px h-8 bg-white/10 mx-2 hidden sm:block"></div>
+
+        <button onClick={() => navigate('/dashboard')} className="w-16 md:w-20 h-12 md:h-14 rounded-3xl bg-slate-800 hover:bg-red-500 transition-all flex items-center justify-center group">
+          <PhoneMissed size={20} className="group-hover:scale-110 transition-transform" />
         </button>
-        <button onClick={handleCompleteSession} className="btn-primary" style={{ height: '50px', padding: '0 1.5rem', borderRadius: '25px', fontSize: '0.9rem', fontWeight: 'bold' }}>
+        
+        <button onClick={handleCompleteSession} className="btn-primary h-12 md:h-14 px-6 md:px-8 rounded-3xl text-xs md:text-sm font-black uppercase tracking-widest bg-gradient-to-r from-success to-emerald-600 shadow-lg shadow-success/20">
           Complete Session
         </button>
       </div>

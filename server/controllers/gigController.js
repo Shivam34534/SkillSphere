@@ -44,9 +44,10 @@ export const getOpenGigs = async (req, res) => {
     }
 
     const gigs = await Gig.find(query).populate('clubId', 'name trustScore profilePhoto');
-    res.json(gigs);
+    res.json(gigs || []);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error in getOpenGigs:', error);
+    res.status(500).json({ message: 'Error fetching gigs: ' + error.message });
   }
 };
 
@@ -251,7 +252,8 @@ export const getMyApplications = async (req, res) => {
   try {
     const gigs = await Gig.find({ 'applicants.userId': req.user._id }).populate('clubId', 'name trustScore');
     const applications = gigs.map(gig => {
-      const app = gig.applicants.find(a => a.userId.toString() === req.user._id.toString());
+      const app = gig.applicants.find(a => a.userId && a.userId.toString() === req.user._id.toString());
+      if (!app) return null;
       return {
         _id: gig._id,
         title: gig.title,
@@ -260,9 +262,10 @@ export const getMyApplications = async (req, res) => {
         appliedAt: app.appliedAt,
         gigStatus: gig.status
       };
-    });
-    res.json(applications);
+    }).filter(Boolean);
+    res.json(applications || []);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Error in getMyApplications:', error);
+    res.status(500).json({ message: 'Error fetching applications: ' + error.message });
   }
 };

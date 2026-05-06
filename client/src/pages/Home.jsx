@@ -12,23 +12,23 @@ function Home() {
           <span>Verified campus-only economy is live</span>
         </div>
         
-        <h1 className="hero-title">
+        <h1 className="hero-title text-4xl md:text-5xl lg:text-7xl px-4">
           The campus economy<br />
           <span className="gradient-text">built for students.</span>
         </h1>
         
-        <p className="hero-subtitle">
+        <p className="hero-subtitle text-base md:text-xl px-6">
           SkillSphere is the verified marketplace where students learn, earn and collaborate. Hire peers, monetize skills, recruit clubs — all inside your campus.
         </p>
         
-        <div className="hero-buttons">
-          <Link to="/signup">
-            <button className="btn-primary large">
+        <div className="hero-buttons flex-col sm:flex-row w-full max-w-xs sm:max-w-none px-6">
+          <Link to="/signup" className="w-full sm:w-auto">
+            <button className="btn-primary large w-full justify-center">
               Join your campus <ArrowRight size={20} />
             </button>
           </Link>
-          <Link to="/marketplace">
-            <button className="btn-secondary large">
+          <Link to="/marketplace" className="w-full sm:w-auto">
+            <button className="btn-secondary large w-full justify-center">
               Explore Marketplace <Briefcase size={20} style={{marginLeft: '0.5rem'}} />
             </button>
           </Link>
@@ -96,60 +96,60 @@ function Home() {
 
       <section className="features-section" id="features" style={{paddingTop: '6rem'}}>
         <div className="feature-tag">PLATFORM</div>
-        <h2 className="section-title" style={{textAlign: 'left', marginBottom: '1rem', fontSize: '3rem', maxWidth: '800px', lineHeight: '1.1'}}>
+        <h2 className="section-title text-3xl md:text-5xl lg:text-6xl text-left mb-4 max-w-3xl leading-tight">
           Everything a campus needs in one <span className="gradient-text">ecosystem.</span>
         </h2>
         <p className="section-subtitle" style={{textAlign: 'left', margin: '0 0 4rem 0', maxWidth: '800px'}}>
           A full operating system for student talent — from first gig to first paycheck.
         </p>
         
-        <div className="features-grid" style={{display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', width: '100%'}}>
-          <div className="feature-card" style={{padding: '2rem 1.5rem'}}>
-            <div className="icon-box new-feature-icon" style={{width: '44px', height: '44px', borderRadius: '12px'}}><Briefcase size={22} color="white" /></div>
-            <h3 style={{fontSize: '1.1rem'}}>Gig Marketplace</h3>
-            <p style={{fontSize: '0.85rem'}}>Post, discover and deliver paid, barter or volunteer gigs with milestone-based escrow.</p>
+        <div className="features-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+          <div className="feature-card p-6 md:p-8">
+            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><Briefcase size={22} color="white" /></div>
+            <h3 className="text-lg md:text-xl">Gig Marketplace</h3>
+            <p className="text-sm">Post, discover and deliver paid, barter or volunteer gigs with milestone-based escrow.</p>
           </div>
           
-          <div className="feature-card" style={{padding: '2rem 1.5rem'}}>
-            <div className="icon-box new-feature-icon" style={{width: '44px', height: '44px', borderRadius: '12px'}}><Wallet size={22} color="white" /></div>
-            <h3 style={{fontSize: '1.1rem'}}>Campus Wallet</h3>
-            <p style={{fontSize: '0.85rem'}}>Cash, credits and coins powered by Razorpay & Stripe with full refund protection.</p>
+          <div className="feature-card p-6 md:p-8">
+            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><Wallet size={22} color="white" /></div>
+            <h3 className="text-lg md:text-xl">Campus Wallet</h3>
+            <p className="text-sm">Cash, credits and coins powered by Razorpay & Stripe with full refund protection.</p>
           </div>
 
-          <div className="feature-card" style={{padding: '2rem 1.5rem'}}>
-            <div className="icon-box new-feature-icon" style={{width: '44px', height: '44px', borderRadius: '12px'}}><MessageSquare size={22} color="white" /></div>
-            <h3 style={{fontSize: '1.1rem'}}>Real-time Chat</h3>
-            <p style={{fontSize: '0.85rem'}}>Socket.io-powered DMs, presence and typing — built for fast collab.</p>
+          <div className="feature-card p-6 md:p-8">
+            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><MessageSquare size={22} color="white" /></div>
+            <h3 className="text-lg md:text-xl">Real-time Chat</h3>
+            <p className="text-sm">Socket.io-powered DMs, presence and typing — built for fast collab.</p>
           </div>
 
-          <div className="feature-card" style={{padding: '2rem 1.5rem'}}>
-            <div className="icon-box new-feature-icon" style={{width: '44px', height: '44px', borderRadius: '12px'}}><Trophy size={22} color="white" /></div>
-            <h3 style={{fontSize: '1.1rem'}}>XP & Badges</h3>
-            <p style={{fontSize: '0.85rem'}}>Skill badges, leaderboards and weekly challenges that make growth addictive.</p>
+          <div className="feature-card p-6 md:p-8">
+            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><Trophy size={22} color="white" /></div>
+            <h3 className="text-lg md:text-xl">XP & Badges</h3>
+            <p className="text-sm">Skill badges, leaderboards and weekly challenges that make growth addictive.</p>
           </div>
           
-          <div className="feature-card" style={{padding: '2rem 1.5rem'}}>
-            <div className="icon-box new-feature-icon" style={{width: '44px', height: '44px', borderRadius: '12px'}}><Shield size={22} color="white" /></div>
-            <h3 style={{fontSize: '1.1rem'}}>Verified Only</h3>
-            <p style={{fontSize: '0.85rem'}}>College-email gated. RBAC, audit logs, fraud detection, dispute resolution.</p>
+          <div className="feature-card p-6 md:p-8">
+            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><Shield size={22} color="white" /></div>
+            <h3 className="text-lg md:text-xl">Verified Only</h3>
+            <p className="text-sm">College-email gated. RBAC, audit logs, fraud detection, dispute resolution.</p>
           </div>
 
-          <div className="feature-card" style={{padding: '2rem 1.5rem'}}>
-            <div className="icon-box new-feature-icon" style={{width: '44px', height: '44px', borderRadius: '12px'}}><Bot size={22} color="white" /></div>
-            <h3 style={{fontSize: '1.1rem'}}>AI Matching</h3>
-            <p style={{fontSize: '0.85rem'}}>Smart gig recommendations, pricing suggestions and resume scoring.</p>
+          <div className="feature-card p-6 md:p-8">
+            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><Bot size={22} color="white" /></div>
+            <h3 className="text-lg md:text-xl">AI Matching</h3>
+            <p className="text-sm">Smart gig recommendations, pricing suggestions and resume scoring.</p>
           </div>
 
-          <div className="feature-card" style={{padding: '2rem 1.5rem'}}>
-            <div className="icon-box new-feature-icon" style={{width: '44px', height: '44px', borderRadius: '12px'}}><Users size={22} color="white" /></div>
-            <h3 style={{fontSize: '1.1rem'}}>Clubs & Teams</h3>
-            <p style={{fontSize: '0.85rem'}}>Recruit talent, plan events, manage budgets and assemble project teams.</p>
+          <div className="feature-card p-6 md:p-8">
+            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><Users size={22} color="white" /></div>
+            <h3 className="text-lg md:text-xl">Clubs & Teams</h3>
+            <p className="text-sm">Recruit talent, plan events, manage budgets and assemble project teams.</p>
           </div>
 
-          <div className="feature-card" style={{padding: '2rem 1.5rem'}}>
-            <div className="icon-box new-feature-icon" style={{width: '44px', height: '44px', borderRadius: '12px', transform: 'none'}}><Zap size={22} color="white" /></div>
-            <h3 style={{fontSize: '1.1rem'}}>Mobile + PWA</h3>
-            <p style={{fontSize: '0.85rem'}}>Same API across web, PWA and React Native — install on any device.</p>
+          <div className="feature-card p-6 md:p-8">
+            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl transform-none"><Zap size={22} color="white" /></div>
+            <h3 className="text-lg md:text-xl">Mobile + PWA</h3>
+            <p className="text-sm">Same API across web, PWA and React Native — install on any device.</p>
           </div>
         </div>
       </section>
@@ -205,65 +205,65 @@ function Home() {
             ROLE-BASED
           </div>
         </div>
-        <h2 className="section-title" style={{marginBottom: '4rem', fontSize: '3.5rem', lineHeight: '1.1'}}>
+        <h2 className="section-title text-3xl md:text-5xl lg:text-6xl mb-12 leading-tight">
           Built for every campus <br/><span className="gradient-text">persona.</span>
         </h2>
         
-        <div className="roles-grid" style={{display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem', width: '100%'}}>
-          <div className="role-card" style={{padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
+        <div className="roles-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+          <div className="role-card p-8 flex flex-col gap-6">
             <div><GraduationCap size={28} color="#f8f8fa" /></div>
-            <h3 style={{fontSize: '1.5rem', margin: 0}}>Student</h3>
-            <ul className="role-list" style={{margin: 0}}>
+            <h3 className="text-2xl m-0">Student</h3>
+            <ul className="role-list m-0">
               <li>Browse skills</li>
               <li>Hire peers</li>
               <li>Track learning</li>
             </ul>
           </div>
           
-          <div className="role-card" style={{padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
+          <div className="role-card p-8 flex flex-col gap-6">
             <div><Code size={28} color="#f8f8fa" /></div>
-            <h3 style={{fontSize: '1.5rem', margin: 0}}>Freelancer</h3>
-            <ul className="role-list" style={{margin: 0}}>
+            <h3 className="text-2xl m-0">Freelancer</h3>
+            <ul className="role-list m-0">
               <li>List services</li>
               <li>Manage orders</li>
               <li>Earn & withdraw</li>
             </ul>
           </div>
 
-          <div className="role-card" style={{padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
+          <div className="role-card p-8 flex flex-col gap-6">
             <div><Users size={28} color="#f8f8fa" /></div>
-            <h3 style={{fontSize: '1.5rem', margin: 0}}>Club</h3>
-            <ul className="role-list" style={{margin: 0}}>
+            <h3 className="text-2xl m-0">Club</h3>
+            <ul className="role-list m-0">
               <li>Recruit talent</li>
               <li>Plan events</li>
               <li>Track budget</li>
             </ul>
           </div>
 
-          <div className="role-card" style={{padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
+          <div className="role-card p-8 flex flex-col gap-6">
             <div><ShieldCheck size={28} color="#f8f8fa" /></div>
-            <h3 style={{fontSize: '1.5rem', margin: 0}}>Admin</h3>
-            <ul className="role-list" style={{margin: 0}}>
+            <h3 className="text-2xl m-0">Admin</h3>
+            <ul className="role-list m-0">
               <li>Verify users</li>
               <li>Moderate</li>
               <li>Revenue ops</li>
             </ul>
           </div>
 
-          <div className="role-card" style={{padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
+          <div className="role-card p-8 flex flex-col gap-6">
             <div><Award size={28} color="#f8f8fa" /></div>
-            <h3 style={{fontSize: '1.5rem', margin: 0}}>Alumni</h3>
-            <ul className="role-list" style={{margin: 0}}>
+            <h3 className="text-2xl m-0">Alumni</h3>
+            <ul className="role-list m-0">
               <li>Mentor</li>
               <li>Workshops</li>
               <li>Referrals</li>
             </ul>
           </div>
 
-          <div className="role-card" style={{padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
+          <div className="role-card p-8 flex flex-col gap-6">
             <div><BookOpen size={28} color="#f8f8fa" /></div>
-            <h3 style={{fontSize: '1.5rem', margin: 0}}>Faculty</h3>
-            <ul className="role-list" style={{margin: 0}}>
+            <h3 className="text-2xl m-0">Faculty</h3>
+            <ul className="role-list m-0">
               <li>Research gigs</li>
               <li>Supervise</li>
               <li>Mentor</li>
@@ -312,7 +312,7 @@ function Home() {
             PRICING
           </div>
         </div>
-        <h2 className="section-title" style={{fontSize: '3.5rem', lineHeight: '1.1', maxWidth: '800px', margin: '0 auto'}}>
+        <h2 className="section-title text-3xl md:text-5xl lg:text-6xl leading-tight max-w-4xl mx-auto">
           Free for students. Powerful <br/><span className="gradient-text">for campuses.</span>
         </h2>
 
@@ -381,7 +381,7 @@ function Home() {
           textAlign: 'center',
           boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
         }}>
-          <h2 style={{fontSize: '4rem', fontWeight: '800', lineHeight: '1.1', marginBottom: '1.5rem', letterSpacing: '-1px'}}>
+          <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold leading-tight mb-6 tracking-tight px-4">
             Your campus has untapped <br/>
             <span className="gradient-text">talent.</span><br/>
             Let's unlock it.
@@ -389,11 +389,11 @@ function Home() {
           <p style={{color: '#94a3b8', fontSize: '1.1rem', maxWidth: '500px', margin: '0 auto 3rem', lineHeight: '1.6'}}>
             Bring SkillSphere to your college and turn skills into a thriving internal economy.
           </p>
-          <div style={{display: 'flex', gap: '1rem', justifyContent: 'center'}}>
-            <button className="btn-primary" style={{padding: '0.8rem 1.5rem'}}>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center px-6">
+            <button className="btn-primary py-3.5 px-8">
               Launch on your campus <ArrowRight size={18} />
             </button>
-            <button className="btn-secondary" style={{padding: '0.8rem 1.5rem'}}>
+            <button className="btn-secondary py-3.5 px-8">
               Book a demo
             </button>
           </div>

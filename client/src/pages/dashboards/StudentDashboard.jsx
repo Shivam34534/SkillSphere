@@ -167,22 +167,22 @@ const StudentDashboard = () => {
 
   return (
     <div className="dashboard-content animate-fade-in-up">
-      <div className="dashboard-header flex-col md:flex-row items-start md:items-end gap-6 mb-12">
-        <div className="flex-1">
-          <h1 className="text-4xl font-extrabold mb-2 tracking-tight">Howdy, {user.name.split(' ')[0]}! 👋</h1>
-          <p className="text-text-muted text-lg">Your campus learning hub is buzzing today.</p>
+      <div className="dashboard-header flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-12 px-4">
+        <div className="flex-1 w-full text-center md:text-left">
+          <h1 className="text-3xl md:text-5xl font-extrabold mb-2 tracking-tight">Howdy, {user.name.split(' ')[0]}! 👋</h1>
+          <p className="text-text-muted text-base md:text-lg">Your campus learning hub is buzzing today.</p>
         </div>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-center md:justify-end gap-3 w-full md:w-auto">
           <Link
             to="/wallet"
-            className="wallet-pill px-6 py-3 bg-white/5 hover:bg-white/10 transition-all border border-white/10"
+            className="wallet-pill px-5 py-2.5 md:px-6 md:py-3 bg-white/5 hover:bg-white/10 transition-all border border-white/10"
           >
-            <Zap size={20} className="text-yellow-400" />
-            <span className="text-lg font-bold">{user.walletBalance || 0} Credits</span>
+            <Zap size={18} className="text-yellow-400" />
+            <span className="text-base md:text-lg font-bold">{user.walletBalance || 0} Credits</span>
           </Link>
-          <div className="bg-primary/20 text-primary px-4 py-3 rounded-2xl border border-primary/20 flex flex-col items-center min-w-[80px]">
-             <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Level</span>
-             <span className="text-xl font-black">{user.xpLevel || 1}</span>
+          <div className="bg-primary/20 text-primary px-3 py-2 md:px-4 md:py-3 rounded-2xl border border-primary/20 flex flex-col items-center min-w-[70px] md:min-w-[80px]">
+             <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-widest opacity-60">Level</span>
+             <span className="text-lg md:text-xl font-black">{user.xpLevel || 1}</span>
           </div>
         </div>
       </div>
@@ -269,9 +269,9 @@ const StudentDashboard = () => {
 
           {/* Active Exchanges */}
           <div className="section-container">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold flex items-center gap-3"><Star className="text-yellow-400" /> Active Exchanges</h2>
-              <button onClick={handleCreateMatch} className="btn-primary flex items-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white py-2 px-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 px-4">
+              <h2 className="text-xl md:text-2xl font-bold flex items-center gap-3"><Star className="text-yellow-400" /> Active Exchanges</h2>
+              <button onClick={handleCreateMatch} className="btn-primary w-full sm:w-auto flex items-center justify-center gap-2 bg-white/5 border border-white/10 hover:bg-white/10 text-white py-2 px-4">
                 <Plus size={18} /> New Request
               </button>
             </div>

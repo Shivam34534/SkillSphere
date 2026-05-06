@@ -109,12 +109,12 @@ const BarterHub = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-4 md:p-8 animate-fade-in-up pb-20">
-      <div className="mb-16">
+      <div className="mb-12 md:mb-16 px-4">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-6">
            <Sparkles size={14} /> Peer-to-Peer Exchange
         </div>
-        <h1 className="text-6xl font-black text-white mb-6 tracking-tighter">Barter <span className="gradient-text">Hub</span></h1>
-        <p className="text-lg text-text-muted max-w-2xl leading-relaxed">Exchange skills, build trust, and grow together without spending a single credit. The true campus economy starts here.</p>
+        <h1 className="text-4xl md:text-5xl lg:text-7xl font-black text-white mb-6 tracking-tighter">Barter <span className="gradient-text">Hub</span></h1>
+        <p className="text-base md:text-lg text-text-muted max-w-2xl leading-relaxed">Exchange skills, build trust, and grow together without spending a single credit. The true campus economy starts here.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -187,25 +187,25 @@ const BarterHub = () => {
               </h2>
               <div className="flex flex-col gap-4">
                 {pendingRequests.map(req => (
-                  <div key={req._id} className="glass-card p-8 flex flex-col md:flex-row items-center justify-between border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/10 transition-all gap-8">
-                    <div className="flex items-center gap-6">
-                      <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center font-black text-2xl text-primary border border-primary/20 shadow-2xl">
+                  <div key={req._id} className="glass-card p-6 md:p-8 flex flex-col md:flex-row items-center justify-between border-yellow-500/30 bg-yellow-500/5 hover:bg-yellow-500/10 transition-all gap-8">
+                    <div className="flex items-center gap-6 w-full md:w-auto">
+                      <div className="w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-primary/20 flex items-center justify-center font-black text-xl md:text-2xl text-primary border border-primary/20 shadow-2xl">
                         {req.userAId?.name?.charAt(0)}
                       </div>
-                      <div>
-                        <h4 className="text-xl font-bold text-white mb-2">{req.userAId?.name}</h4>
-                        <div className="flex flex-wrap items-center gap-3 text-sm">
+                      <div className="flex-1">
+                        <h4 className="text-lg md:text-xl font-bold text-white mb-2">{req.userAId?.name}</h4>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 text-xs md:text-sm">
                            <span className="text-text-muted">Offers <span className="text-primary font-bold">{req.skillOfferedByA}</span></span>
-                           <ArrowRight size={14} className="text-text-muted opacity-50" />
+                           <ArrowRight size={14} className="text-text-muted opacity-50 hidden sm:block" />
                            <span className="text-text-muted">Needs your <span className="text-accent font-bold">{req.skillOfferedByB}</span></span>
                         </div>
                       </div>
                     </div>
                     <div className="flex gap-4 w-full md:w-auto">
-                      <button onClick={() => handleResponse(req._id, 'ACCEPTED')} className="flex-1 md:flex-none py-3 px-8 rounded-xl bg-success text-white font-bold hover:scale-105 transition-all shadow-lg shadow-success/20">
+                      <button onClick={() => handleResponse(req._id, 'ACCEPTED')} className="flex-1 md:flex-none py-3 px-6 md:px-8 rounded-xl bg-success text-white font-bold hover:scale-105 transition-all shadow-lg shadow-success/20 text-sm">
                         Accept
                       </button>
-                      <button onClick={() => handleResponse(req._id, 'DECLINED')} className="flex-1 md:flex-none py-3 px-8 rounded-xl bg-white/5 text-red-400 font-bold hover:bg-red-500/10 hover:text-red-500 transition-all border border-white/10">
+                      <button onClick={() => handleResponse(req._id, 'DECLINED')} className="flex-1 md:flex-none py-3 px-6 md:px-8 rounded-xl bg-white/5 text-red-400 font-bold hover:bg-red-500/10 hover:text-red-500 transition-all border border-white/10 text-sm">
                         Ignore
                       </button>
                     </div>

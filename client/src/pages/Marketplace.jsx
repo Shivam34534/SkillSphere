@@ -42,10 +42,10 @@ const Marketplace = () => {
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-6">
            <Sparkles size={14} /> The Campus Economy
         </div>
-        <h1 className="text-6xl font-black mb-6 tracking-tighter">
+        <h1 className="text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tighter px-4">
           Discover <span className="gradient-text">Top Talent</span>
         </h1>
-        <p className="text-lg text-text-muted max-w-2xl mx-auto leading-relaxed">
+        <p className="text-base md:text-lg text-text-muted max-w-2xl mx-auto leading-relaxed px-6">
           The ultimate marketplace for student freelancers, peer tutors, and campus creators. Get things done with SkillSphere.
         </p>
       </div>
