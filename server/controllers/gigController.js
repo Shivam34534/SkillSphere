@@ -18,7 +18,10 @@ export const createGig = async (req, res) => {
       description,
       type,
       budget,
-      skillsRequired
+      skillsRequired,
+      category: req.body.category || 'General',
+      deadline: req.body.deadline,
+      requirements: req.body.requirements
     });
     res.status(201).json(gig);
   } catch (error) {
@@ -28,7 +31,15 @@ export const createGig = async (req, res) => {
 
 export const getOpenGigs = async (req, res) => {
   try {
-    const gigs = await Gig.find({ status: 'OPEN' }).populate('clubId', 'name trustScore');
+    const query = { status: 'OPEN' };
+    if (req.query.category && req.query.category !== 'All') {
+      query.category = req.query.category;
+    }
+    if (req.query.type && req.query.type !== 'All') {
+      query.type = req.query.type;
+    }
+
+    const gigs = await Gig.find(query).populate('clubId', 'name trustScore profilePhoto');
     res.json(gigs);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -178,6 +189,75 @@ export const completeGig = async (req, res) => {
     });
 
     res.json({ message: 'Gig completed and rewards distributed!', gig });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getGigById = async (req, res) => {
+  try {
+    const gig = await Gig.findById(req.params.id)
+      .populate('clubId', 'name trustScore bio profilePhoto')
+      .populate('applicants.userId', 'name email profilePhoto');
+    if (!gig) return res.status(404).json({ message: 'Gig not found' });
+    res.json(gig);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const saveGig = async (req, res) => {
+  try {
+    const gig = await Gig.findById(req.params.id);
+    if (!gig) return res.status(404).json({ message: 'Gig not found' });
+    
+    if (!gig.savedBy.includes(req.user._id)) {
+      gig.savedBy.push(req.user._id);
+      await gig.save();
+    }
+    res.json({ message: 'Gig saved' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const unsaveGig = async (req, res) => {
+  try {
+    const gig = await Gig.findById(req.params.id);
+    if (!gig) return res.status(404).json({ message: 'Gig not found' });
+    
+    gig.savedBy = gig.savedBy.filter(id => id.toString() !== req.user._id.toString());
+    await gig.save();
+    res.json({ message: 'Gig unsaved' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getSavedGigs = async (req, res) => {
+  try {
+    const gigs = await Gig.find({ savedBy: req.user._id }).populate('clubId', 'name trustScore');
+    res.json(gigs);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const getMyApplications = async (req, res) => {
+  try {
+    const gigs = await Gig.find({ 'applicants.userId': req.user._id }).populate('clubId', 'name trustScore');
+    const applications = gigs.map(gig => {
+      const app = gig.applicants.find(a => a.userId.toString() === req.user._id.toString());
+      return {
+        _id: gig._id,
+        title: gig.title,
+        clubId: gig.clubId,
+        status: app.status,
+        appliedAt: app.appliedAt,
+        gigStatus: gig.status
+      };
+    });
+    res.json(applications);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

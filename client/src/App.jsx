@@ -10,10 +10,12 @@ import Profile from './pages/Profile';
 import Wallet from './pages/Wallet';
 import Leaderboard from './pages/Leaderboard';
 import PublicProfile from './pages/PublicProfile';
+import Gigs from './pages/Gigs';
+import GigDetails from './pages/GigDetails';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { Wallet as WalletIcon, Sparkles, Briefcase, Zap, Trophy, UserCheck, Home as HomeIcon, Layout, Info } from 'lucide-react';
+import { Wallet as WalletIcon, Sparkles, Briefcase, Zap, Trophy, UserCheck, Home as HomeIcon, Layout, Info, Users, X } from 'lucide-react';
 import { SocketProvider } from './context/SocketContext';
 import NotificationBell from './components/NotificationBell';
 
@@ -42,7 +44,8 @@ function Navigation() {
             <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-4 mb-2 block">Main Menu</span>
             <div className="nav-links">
               <Link to="/" className="nav-link"><HomeIcon size={18} /> Home</Link>
-              <Link to="/marketplace" className="nav-link"><Briefcase size={18} /> Marketplace</Link>
+              <Link to="/marketplace" className="nav-link"><Users size={18} /> Skill Exchange</Link>
+              <Link to="/gigs" className="nav-link"><Briefcase size={18} /> Gigs</Link>
               <Link to="/leaderboard" className="nav-link"><Trophy size={18} /> Leaderboard</Link>
             </div>
           </div>
@@ -109,6 +112,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/marketplace" element={<Marketplace />} />
+              <Route path="/gigs" element={<Gigs />} />
+              <Route path="/gigs/:id" element={<GigDetails />} />
               <Route path="/login" element={<Login />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/dashboard" element={<Dashboard />} />
