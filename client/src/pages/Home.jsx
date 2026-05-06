@@ -12,7 +12,7 @@ function Home() {
           <span>Verified campus-only economy is live</span>
         </div>
         
-        <h1 className="hero-title text-4xl md:text-5xl lg:text-7xl px-4">
+        <h1 className="hero-title text-3xl sm:text-4xl md:text-5xl lg:text-7xl px-4 font-black">
           The campus economy<br />
           <span className="gradient-text">built for students.</span>
         </h1>
@@ -96,60 +96,60 @@ function Home() {
 
       <section className="features-section" id="features" style={{paddingTop: '6rem'}}>
         <div className="feature-tag">PLATFORM</div>
-        <h2 className="section-title text-3xl md:text-5xl lg:text-6xl text-left mb-4 max-w-3xl leading-tight">
+        <h2 className="section-title text-3xl md:text-5xl lg:text-6xl text-left mb-4 max-w-3xl leading-tight px-4">
           Everything a campus needs in one <span className="gradient-text">ecosystem.</span>
         </h2>
-        <p className="section-subtitle" style={{textAlign: 'left', margin: '0 0 4rem 0', maxWidth: '800px'}}>
-          A full operating system for student talent — from first gig to first paycheck.
+        <p className="section-subtitle text-sm md:text-base text-left px-4 mb-12 max-w-2xl">
+          SkillSphere unifies all campus activities into a single high-trust network.
         </p>
         
-        <div className="features-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
-          <div className="feature-card p-6 md:p-8">
-            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><Briefcase size={22} color="white" /></div>
-            <h3 className="text-lg md:text-xl">Gig Marketplace</h3>
-            <p className="text-sm">Post, discover and deliver paid, barter or volunteer gigs with milestone-based escrow.</p>
+        <div className="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full px-4">
+          <div className="feature-card p-5 md:p-8">
+            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Briefcase size={20} color="white" /></div>
+            <h3 className="text-base md:text-xl font-bold">Gig Marketplace</h3>
+            <p className="text-[12px] md:text-sm text-text-muted">Post, discover and deliver paid, barter or volunteer gigs with milestone-based escrow.</p>
           </div>
           
-          <div className="feature-card p-6 md:p-8">
-            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><Wallet size={22} color="white" /></div>
-            <h3 className="text-lg md:text-xl">Campus Wallet</h3>
-            <p className="text-sm">Cash, credits and coins powered by Razorpay & Stripe with full refund protection.</p>
+          <div className="feature-card p-5 md:p-8">
+            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Wallet size={20} color="white" /></div>
+            <h3 className="text-base md:text-xl font-bold">Campus Wallet</h3>
+            <p className="text-[12px] md:text-sm text-text-muted">Cash, credits and coins powered by Razorpay & Stripe with full refund protection.</p>
           </div>
 
-          <div className="feature-card p-6 md:p-8">
-            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><MessageSquare size={22} color="white" /></div>
-            <h3 className="text-lg md:text-xl">Real-time Chat</h3>
-            <p className="text-sm">Socket.io-powered DMs, presence and typing — built for fast collab.</p>
+          <div className="feature-card p-5 md:p-8">
+            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><MessageSquare size={20} color="white" /></div>
+            <h3 className="text-base md:text-xl font-bold">Real-time Chat</h3>
+            <p className="text-[12px] md:text-sm text-text-muted">Socket.io-powered DMs, presence and typing — built for fast collab.</p>
           </div>
 
-          <div className="feature-card p-6 md:p-8">
-            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><Trophy size={22} color="white" /></div>
-            <h3 className="text-lg md:text-xl">XP & Badges</h3>
-            <p className="text-sm">Skill badges, leaderboards and weekly challenges that make growth addictive.</p>
+          <div className="feature-card p-5 md:p-8">
+            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Trophy size={20} color="white" /></div>
+            <h3 className="text-base md:text-xl font-bold">XP & Badges</h3>
+            <p className="text-[12px] md:text-sm text-text-muted">Skill badges, leaderboards and weekly challenges that make growth addictive.</p>
           </div>
           
-          <div className="feature-card p-6 md:p-8">
-            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><Shield size={22} color="white" /></div>
-            <h3 className="text-lg md:text-xl">Verified Only</h3>
-            <p className="text-sm">College-email gated. RBAC, audit logs, fraud detection, dispute resolution.</p>
+          <div className="feature-card p-5 md:p-8">
+            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Shield size={20} color="white" /></div>
+            <h3 className="text-base md:text-xl font-bold">Verified Only</h3>
+            <p className="text-[12px] md:text-sm text-text-muted">College-email gated. RBAC, audit logs, fraud detection, dispute resolution.</p>
           </div>
 
-          <div className="feature-card p-6 md:p-8">
-            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><Bot size={22} color="white" /></div>
-            <h3 className="text-lg md:text-xl">AI Matching</h3>
-            <p className="text-sm">Smart gig recommendations, pricing suggestions and resume scoring.</p>
+          <div className="feature-card p-5 md:p-8">
+            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Bot size={20} color="white" /></div>
+            <h3 className="text-base md:text-xl font-bold">AI Matching</h3>
+            <p className="text-[12px] md:text-sm text-text-muted">Smart gig recommendations, pricing suggestions and resume scoring.</p>
           </div>
 
-          <div className="feature-card p-6 md:p-8">
-            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl"><Users size={22} color="white" /></div>
-            <h3 className="text-lg md:text-xl">Clubs & Teams</h3>
-            <p className="text-sm">Recruit talent, plan events, manage budgets and assemble project teams.</p>
+          <div className="feature-card p-5 md:p-8">
+            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Users size={20} color="white" /></div>
+            <h3 className="text-base md:text-xl font-bold">Clubs & Teams</h3>
+            <p className="text-[12px] md:text-sm text-text-muted">Recruit talent, plan events, manage budgets and assemble project teams.</p>
           </div>
 
-          <div className="feature-card p-6 md:p-8">
-            <div className="icon-box new-feature-icon w-11 h-11 rounded-xl transform-none"><Zap size={22} color="white" /></div>
-            <h3 className="text-lg md:text-xl">Mobile + PWA</h3>
-            <p className="text-sm">Same API across web, PWA and React Native — install on any device.</p>
+          <div className="feature-card p-5 md:p-8">
+            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl transform-none"><Zap size={20} color="white" /></div>
+            <h3 className="text-base md:text-xl font-bold">Mobile + PWA</h3>
+            <p className="text-[12px] md:text-sm text-text-muted">Same API across web, PWA and React Native — install on any device.</p>
           </div>
         </div>
       </section>
@@ -205,68 +205,68 @@ function Home() {
             ROLE-BASED
           </div>
         </div>
-        <h2 className="section-title text-3xl md:text-5xl lg:text-6xl mb-12 leading-tight">
+        <h2 className="section-title text-3xl md:text-5xl lg:text-6xl mb-12 leading-tight px-4">
           Built for every campus <br/><span className="gradient-text">persona.</span>
         </h2>
         
-        <div className="roles-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-          <div className="role-card p-8 flex flex-col gap-6">
-            <div><GraduationCap size={28} color="#f8f8fa" /></div>
-            <h3 className="text-2xl m-0">Student</h3>
-            <ul className="role-list m-0">
-              <li>Browse skills</li>
-              <li>Hire peers</li>
-              <li>Track learning</li>
+        <div className="roles-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full px-4">
+          <div className="role-card p-6 md:p-8 flex flex-col gap-4">
+            <div><GraduationCap size={24} color="#f8f8fa" /></div>
+            <h3 className="text-xl md:text-2xl m-0 font-bold">Student</h3>
+            <ul className="role-list m-0 space-y-2">
+              <li className="text-xs md:text-sm">Browse skills</li>
+              <li className="text-xs md:text-sm">Hire peers</li>
+              <li className="text-xs md:text-sm">Track learning</li>
             </ul>
           </div>
           
-          <div className="role-card p-8 flex flex-col gap-6">
-            <div><Code size={28} color="#f8f8fa" /></div>
-            <h3 className="text-2xl m-0">Freelancer</h3>
-            <ul className="role-list m-0">
-              <li>List services</li>
-              <li>Manage orders</li>
-              <li>Earn & withdraw</li>
+          <div className="role-card p-6 md:p-8 flex flex-col gap-4">
+            <div><Code size={24} color="#f8f8fa" /></div>
+            <h3 className="text-xl md:text-2xl m-0 font-bold">Freelancer</h3>
+            <ul className="role-list m-0 space-y-2">
+              <li className="text-xs md:text-sm">List services</li>
+              <li className="text-xs md:text-sm">Manage orders</li>
+              <li className="text-xs md:text-sm">Earn & withdraw</li>
             </ul>
           </div>
 
-          <div className="role-card p-8 flex flex-col gap-6">
-            <div><Users size={28} color="#f8f8fa" /></div>
-            <h3 className="text-2xl m-0">Club</h3>
-            <ul className="role-list m-0">
-              <li>Recruit talent</li>
-              <li>Plan events</li>
-              <li>Track budget</li>
+          <div className="role-card p-6 md:p-8 flex flex-col gap-4">
+            <div><Users size={24} color="#f8f8fa" /></div>
+            <h3 className="text-xl md:text-2xl m-0 font-bold">Club</h3>
+            <ul className="role-list m-0 space-y-2">
+              <li className="text-xs md:text-sm">Recruit talent</li>
+              <li className="text-xs md:text-sm">Plan events</li>
+              <li className="text-xs md:text-sm">Track budget</li>
             </ul>
           </div>
 
-          <div className="role-card p-8 flex flex-col gap-6">
-            <div><ShieldCheck size={28} color="#f8f8fa" /></div>
-            <h3 className="text-2xl m-0">Admin</h3>
-            <ul className="role-list m-0">
-              <li>Verify users</li>
-              <li>Moderate</li>
-              <li>Revenue ops</li>
+          <div className="role-card p-6 md:p-8 flex flex-col gap-4">
+            <div><ShieldCheck size={24} color="#f8f8fa" /></div>
+            <h3 className="text-xl md:text-2xl m-0 font-bold">Admin</h3>
+            <ul className="role-list m-0 space-y-2">
+              <li className="text-xs md:text-sm">Verify users</li>
+              <li className="text-xs md:text-sm">Moderate</li>
+              <li className="text-xs md:text-sm">Revenue ops</li>
             </ul>
           </div>
 
-          <div className="role-card p-8 flex flex-col gap-6">
-            <div><Award size={28} color="#f8f8fa" /></div>
-            <h3 className="text-2xl m-0">Alumni</h3>
-            <ul className="role-list m-0">
-              <li>Mentor</li>
-              <li>Workshops</li>
-              <li>Referrals</li>
+          <div className="role-card p-6 md:p-8 flex flex-col gap-4">
+            <div><Award size={24} color="#f8f8fa" /></div>
+            <h3 className="text-xl md:text-2xl m-0 font-bold">Alumni</h3>
+            <ul className="role-list m-0 space-y-2">
+              <li className="text-xs md:text-sm">Mentor</li>
+              <li className="text-xs md:text-sm">Workshops</li>
+              <li className="text-xs md:text-sm">Referrals</li>
             </ul>
           </div>
 
-          <div className="role-card p-8 flex flex-col gap-6">
-            <div><BookOpen size={28} color="#f8f8fa" /></div>
-            <h3 className="text-2xl m-0">Faculty</h3>
-            <ul className="role-list m-0">
-              <li>Research gigs</li>
-              <li>Supervise</li>
-              <li>Mentor</li>
+          <div className="role-card p-6 md:p-8 flex flex-col gap-4">
+            <div><BookOpen size={24} color="#f8f8fa" /></div>
+            <h3 className="text-xl md:text-2xl m-0 font-bold">Faculty</h3>
+            <ul className="role-list m-0 space-y-2">
+              <li className="text-xs md:text-sm">Research gigs</li>
+              <li className="text-xs md:text-sm">Supervise</li>
+              <li className="text-xs md:text-sm">Mentor</li>
             </ul>
           </div>
         </div>
