@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Bell, Wallet as WalletIcon, Briefcase, Zap } from 'lucide-react';
+import { Bell, Wallet as WalletIcon, Briefcase, Zap, X } from 'lucide-react';
 import { useSocket } from '../context/SocketContext';
 
 const NotificationBell = () => {
@@ -25,10 +25,19 @@ const NotificationBell = () => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-80 glass-card p-0 overflow-hidden shadow-2xl z-[100] animate-in fade-in zoom-in slide-in-from-top-2">
+        <div className="fixed inset-0 z-[1999]" onClick={() => setIsOpen(false)}></div>
+      )}
+
+      {isOpen && (
+        <div className="fixed top-6 right-6 w-96 glass-card p-0 overflow-hidden shadow-2xl z-[2000] animate-in fade-in zoom-in slide-in-from-top-4">
           <div className="p-4 border-b border-glass-border flex justify-between items-center bg-white/5">
-            <h3 className="font-bold text-sm">Notifications</h3>
-            <button onClick={markAllRead} className="text-[10px] text-primary hover:underline font-bold uppercase tracking-widest">Mark all as read</button>
+            <div className="flex items-center gap-3">
+               <h3 className="font-bold text-sm">Notifications</h3>
+               <button onClick={markAllRead} className="text-[10px] text-primary hover:underline font-bold uppercase tracking-widest">Mark all as read</button>
+            </div>
+            <button onClick={() => setIsOpen(false)} className="text-text-muted hover:text-white transition-colors">
+               <X size={18} />
+            </button>
           </div>
           <div className="max-h-96 overflow-y-auto">
             {notifications.length > 0 ? (

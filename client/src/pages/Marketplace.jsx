@@ -95,12 +95,12 @@ const Marketplace = () => {
                 <p className="text-text-muted text-sm mb-6 leading-relaxed line-clamp-3">
                   {service.description}
                 </p>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center font-bold text-xs">
+                <Link to={`/profile/${service.freelancerId?._id || service.freelancerId}`} className="flex items-center gap-3 no-underline group">
+                  <div className="w-8 h-8 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center font-bold text-xs text-primary group-hover:bg-primary group-hover:text-white transition-all">
                     {service.freelancerId?.name?.charAt(0) || 'U'}
                   </div>
-                  <span className="text-sm text-text-main font-medium">{service.freelancerId?.name || 'Anonymous'}</span>
-                </div>
+                  <span className="text-sm text-text-main font-medium group-hover:text-primary transition-colors">{service.freelancerId?.name || 'Anonymous'}</span>
+                </Link>
               </div>
               <div className="service-card-footer">
                 <div className="flex flex-col">

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Trophy, Medal, Crown, Star, TrendingUp, Users, Award, Zap, Shield, Search } from 'lucide-react';
 
 const Leaderboard = () => {
@@ -119,8 +120,8 @@ const Leaderboard = () => {
                   </span>
                 </td>
                 <td className="p-6">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full overflow-hidden border border-glass-border">
+                  <Link to={`/profile/${user._id}`} className="flex items-center gap-4 group no-underline">
+                    <div className="w-10 h-10 rounded-full overflow-hidden border border-glass-border group-hover:border-primary transition-all">
                       <img src={user.profilePhoto || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} alt="" className="w-full h-full object-cover" />
                     </div>
                     <div>
@@ -133,7 +134,7 @@ const Leaderboard = () => {
                         ))}
                       </div>
                     </div>
-                  </div>
+                  </Link>
                 </td>
                 <td className="p-6">
                   <span className="text-xs py-1 px-3 rounded-full bg-white/5 border border-white/5 text-text-muted uppercase tracking-tighter">

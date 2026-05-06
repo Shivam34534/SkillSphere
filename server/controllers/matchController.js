@@ -156,3 +156,19 @@ export const completeMatch = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getUserMatches = async (req, res) => {
+  try {
+    const matches = await Match.find({
+      $or: [{ userAId: req.params.id }, { userBId: req.params.id }],
+      status: 'COMPLETED'
+    })
+    .populate('userAId', 'name profilePhoto')
+    .populate('userBId', 'name profilePhoto')
+    .limit(5);
+    
+    res.json(matches);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
