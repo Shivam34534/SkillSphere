@@ -102,6 +102,23 @@ io.on('connection', (socket) => {
   });
 });
 
+// Helper function to send real-time notifications
+export const sendNotification = async (userId, notificationData) => {
+  try {
+    const Notification = (await import('./models/Notification.js')).default;
+    const notification = await Notification.create({
+      userId,
+      ...notificationData
+    });
+    
+    // Push to socket if user is online
+    io.to(userId.toString()).emit('new-notification', notification);
+    return notification;
+  } catch (error) {
+    console.error('Socket notification error:', error);
+  }
+};
+
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
 });
