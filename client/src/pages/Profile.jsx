@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../store/slices/authSlice';
-import { User, Mail, GraduationCap, Shield, Award, Edit2, Save, X, Plus, Trash2, Github, Linkedin, Globe } from 'lucide-react';
+import { Mail, GraduationCap, Shield, Award, Edit2, Save, Plus, Trash2, Github, Linkedin, Globe, Zap, Inbox } from 'lucide-react';
 import { API_URL } from '../config';
 
 const Profile = () => {
@@ -12,7 +12,16 @@ const Profile = () => {
   const [newSkillToTeach, setNewSkillToTeach] = useState('');
   const [newSkillToLearn, setNewSkillToLearn] = useState('');
 
-  if (!user) return <div style={{ padding: '5rem', textAlign: 'center', color: 'white' }}>Please log in to view your profile.</div>;
+  if (!user) return (
+    <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
+       <div className="icon-box new-feature-icon w-20 h-20 rounded-3xl mb-8 opacity-20">
+          <Shield size={32} color="white" />
+       </div>
+       <h2 className="text-3xl font-black text-white mb-4">Access Restricted</h2>
+       <p className="text-text-muted max-w-sm mb-8">Please log in to your SkillSphere account to view and manage your profile identity.</p>
+       <button className="btn-primary px-10 py-4 text-xs">Log In Now</button>
+    </div>
+  );
 
   const handleSave = async () => {
     try {
@@ -74,136 +83,160 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container" style={{ maxWidth: '900px', margin: '2rem auto', padding: '0 1rem' }}>
-      <div className="glass-card" style={{ padding: 0, overflow: 'hidden' }}>
-        {/* Profile Header Background */}
-        <div style={{ height: '150px', background: 'linear-gradient(135deg, #4f46e5 0%, #d946ef 100%)', position: 'relative' }}>
-          <div style={{ position: 'absolute', bottom: '-40px', left: '2rem', display: 'flex', alignItems: 'flex-end', gap: '1.5rem' }}>
-            <div style={{ width: '100px', height: '100px', borderRadius: '24px', backgroundColor: '#1e293b', border: '4px solid #0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', fontWeight: 'bold', color: 'white', boxShadow: '0 10px 25px rgba(0,0,0,0.3)' }}>
-              {user.name?.charAt(0)}
-            </div>
-            <div style={{ paddingBottom: '0.5rem' }}>
-              <h1 style={{ margin: 0, fontSize: '2rem', color: 'white', textShadow: '0 2px 4px rgba(0,0,0,0.3)' }}>{user.name}</h1>
-              <p style={{ margin: 0, color: '#e2e8f0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <GraduationCap size={16} /> {user.department} • Level {user.xpLevel} {user.role === 'FREELANCER' ? 'Expert' : 'Learner'}
-              </p>
-            </div>
-          </div>
-          <button 
+    <div className="profile-container px-6 py-12 md:px-12 lg:px-24 max-w-6xl mx-auto">
+      {/* Header Banner */}
+      <div className="feature-card p-0 overflow-hidden mb-12">
+        <div className="h-48 md:h-64 bg-gradient-to-r from-primary via-accent to-secondary relative group">
+           <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-700"></div>
+           <div className="absolute -bottom-16 left-8 md:left-12 flex items-end gap-6 md:gap-8">
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-background-dark border-4 border-background-dark shadow-2xl relative group/avatar">
+                 <img src={user.profilePhoto || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} alt="" className="w-full h-full object-cover rounded-2xl" />
+                 {isEditing && (
+                   <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-2xl cursor-pointer opacity-0 group-hover/avatar:opacity-100 transition-opacity">
+                      <Edit2 size={24} className="text-white" />
+                   </div>
+                 )}
+              </div>
+              <div className="pb-4">
+                 <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter mb-1">{user.name}</h1>
+                 <div className="flex items-center gap-3">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-white/80 flex items-center gap-1">
+                       <GraduationCap size={12} /> {user.department || 'Campus Student'}
+                    </span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-white/30"></span>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-white/80">Lvl {user.xpLevel} Elite</span>
+                 </div>
+              </div>
+           </div>
+           <button 
             onClick={() => isEditing ? handleSave() : setIsEditing(true)}
-            className="btn-primary" 
-            style={{ position: 'absolute', right: '1.5rem', bottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', backgroundColor: isEditing ? '#10b981' : 'rgba(255,255,255,0.1)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.2)' }}
+            className={`absolute right-8 bottom-8 flex items-center gap-2 py-3 px-8 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-xl transition-all ${
+               isEditing ? 'bg-success text-white shadow-success/20' : 'bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white/20'
+            }`}
           >
-            {isEditing ? <><Save size={18} /> Save Changes</> : <><Edit2 size={18} /> Edit Profile</>}
+            {isEditing ? <><Save size={16} /> Update Identity</> : <><Edit2 size={16} /> Edit Profile</>}
           </button>
         </div>
 
-        {/* Profile Content */}
-        <div style={{ marginTop: '50px', padding: '2rem', display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '2rem' }}>
-          {/* Left Column: Info */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div className="info-group">
-              <h3 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.8rem', letterSpacing: '1px' }}>Contact Information</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: '#cbd5e1' }}>
-                  <Mail size={18} color="var(--text-muted)" /> {user.email}
-                </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: '#cbd5e1' }}>
-                  <Shield size={18} color="var(--text-muted)" /> Verified Student
-                </div>
+        <div className="pt-24 pb-12 px-8 md:px-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
+           {/* Sidebar Info */}
+           <div className="space-y-10">
+              <div className="space-y-6">
+                 <h3 className="text-[10px] font-black text-text-muted uppercase tracking-widest border-b border-white/5 pb-4">Verification</h3>
+                 <div className="space-y-4">
+                    <div className="flex items-center gap-4 text-white/80 group">
+                       <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-text-muted group-hover:text-primary group-hover:bg-primary/10 transition-all border border-white/5">
+                          <Mail size={18} />
+                       </div>
+                       <span className="text-sm font-bold truncate">{user.email}</span>
+                    </div>
+                    <div className="flex items-center gap-4 text-white/80 group">
+                       <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center text-success bg-success/10 border border-success/20">
+                          <Shield size={18} />
+                       </div>
+                       <span className="text-sm font-bold">Verified Persona</span>
+                    </div>
+                 </div>
               </div>
-            </div>
 
-            <div className="info-group">
-              <h3 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.8rem', letterSpacing: '1px' }}>Social Presence</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-                <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: '#cbd5e1', textDecoration: 'none' }}><Github size={18} /> GitHub</a>
-                <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: '#cbd5e1', textDecoration: 'none' }}><Linkedin size={18} /> LinkedIn</a>
-                <a href="#" style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', color: '#cbd5e1', textDecoration: 'none' }}><Globe size={18} /> Portfolio</a>
+              <div className="space-y-6">
+                 <h3 className="text-[10px] font-black text-text-muted uppercase tracking-widest border-b border-white/5 pb-4">Synergy Links</h3>
+                 <div className="grid grid-cols-3 gap-4">
+                    <a href="#" className="w-full h-12 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-white hover:bg-white/10 transition-all border border-white/5">
+                       <Github size={20} />
+                    </a>
+                    <a href="#" className="w-full h-12 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-white hover:bg-white/10 transition-all border border-white/5">
+                       <Linkedin size={20} />
+                    </a>
+                    <a href="#" className="w-full h-12 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-white hover:bg-white/10 transition-all border border-white/5">
+                       <Globe size={20} />
+                    </a>
+                 </div>
               </div>
-            </div>
 
-            <div className="info-group" style={{ padding: '1.5rem', borderRadius: '16px', background: 'rgba(251, 191, 36, 0.05)', border: '1px solid rgba(251, 191, 36, 0.1)' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#fbbf24', fontWeight: 'bold', marginBottom: '0.5rem' }}>
-                <Award size={20} /> Trust Statistics
+              <div className="p-8 rounded-3xl bg-gradient-to-br from-success/10 to-transparent border border-success/20 relative overflow-hidden group">
+                 <Award className="absolute -bottom-6 -right-6 text-success/5 group-hover:scale-150 transition-transform duration-1000" size={100} />
+                 <div className="flex items-center gap-3 text-success font-black text-xs uppercase tracking-widest mb-4">
+                    <Award size={18} /> Reputation
+                 </div>
+                 <div className="flex justify-between items-end mb-4">
+                    <span className="text-4xl font-black text-white tracking-tighter">{user.trustScore}%</span>
+                    <span className="text-[10px] font-bold text-success uppercase">Trust Score</span>
+                 </div>
+                 <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-full bg-success" style={{ width: `${user.trustScore}%` }}></div>
+                 </div>
               </div>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0 0 1rem 0' }}>Reputation based on peer reviews and successful gig completion.</p>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                <span style={{ fontSize: '0.9rem', color: 'white' }}>Trust Score</span>
-                <span style={{ color: '#10b981', fontWeight: 'bold' }}>{user.trustScore}%</span>
-              </div>
-              <div style={{ width: '100%', height: '4px', background: 'rgba(255,255,255,0.1)', borderRadius: '2px' }}>
-                <div style={{ width: `${user.trustScore}%`, height: '100%', background: '#10b981' }}></div>
-              </div>
-            </div>
-          </div>
+           </div>
 
-          {/* Right Column: Bio & Skills */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            <div className="bio-section">
-              <h3 style={{ fontSize: '1.1rem', color: 'white', marginBottom: '1rem' }}>About Me</h3>
-              {isEditing ? (
-                <textarea 
-                  value={editedUser.bio || ''}
-                  onChange={(e) => setEditedUser({ ...editedUser, bio: e.target.value })}
-                  style={{ width: '100%', padding: '1rem', borderRadius: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: 'white', minHeight: '120px', outline: 'none' }}
-                  placeholder="Tell your peers what you do best..."
-                />
-              ) : (
-                <p style={{ color: '#94a3b8', lineHeight: '1.6' }}>
-                  {user.bio || "This user hasn't added a bio yet. They are likely busy mastering new skills on SkillSphere!"}
-                </p>
-              )}
-            </div>
-
-            <div className="skills-section">
-              <h3 style={{ fontSize: '1.1rem', color: 'white', marginBottom: '1rem' }}>Skills I'm Offering</h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.8rem', marginBottom: isEditing ? '1rem' : 0 }}>
-                {(isEditing ? editedUser.skillsToTeach : user.skillsToTeach)?.map(skill => (
-                  <span key={skill} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '0.4rem 1rem', borderRadius: '20px', fontSize: '0.9rem', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-                    {skill}
-                    {isEditing && <Trash2 size={14} style={{ cursor: 'pointer' }} onClick={() => removeSkillToTeach(skill)} />}
-                  </span>
-                ))}
+           {/* Main Profile Info */}
+           <div className="lg:col-span-2 space-y-12">
+              <div className="space-y-6">
+                 <h3 className="text-[10px] font-black text-text-muted uppercase tracking-widest border-b border-white/5 pb-4">Personal Narrative</h3>
+                 {isEditing ? (
+                   <textarea 
+                     value={editedUser.bio || ''}
+                     onChange={(e) => setEditedUser({ ...editedUser, bio: e.target.value })}
+                     className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white text-sm focus:border-primary outline-none min-h-[150px] transition-all"
+                     placeholder="Tell your campus story..."
+                   />
+                 ) : (
+                   <p className="text-text-muted leading-relaxed text-base">
+                     {user.bio || "No narrative established yet. This user is actively building their presence on SkillSphere."}
+                   </p>
+                 )}
               </div>
-              {isEditing && (
-                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-                  <input 
-                    type="text" 
-                    value={newSkillToTeach}
-                    onChange={(e) => setNewSkillToTeach(e.target.value)}
-                    placeholder="Add a skill to teach..."
-                    style={{ flex: 1, padding: '0.5rem 1rem', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: 'white', outline: 'none' }}
-                  />
-                  <button onClick={addSkillToTeach} className="btn-secondary" style={{ padding: '0.5rem' }}><Plus size={20} /></button>
-                </div>
-              )}
-            </div>
 
-            <div className="skills-section">
-              <h3 style={{ fontSize: '1.1rem', color: 'white', marginBottom: '1rem' }}>Skills I'm Learning</h3>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.8rem', marginBottom: isEditing ? '1rem' : 0 }}>
-                {(isEditing ? editedUser.skillsToLearn : user.skillsToLearn)?.map(skill => (
-                  <span key={skill} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: 'rgba(139, 92, 246, 0.1)', color: '#a855f7', padding: '0.4rem 1rem', borderRadius: '20px', fontSize: '0.9rem', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
-                    {skill}
-                    {isEditing && <Trash2 size={14} style={{ cursor: 'pointer' }} onClick={() => removeSkillToLearn(skill)} />}
-                  </span>
-                ))}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                 <div className="space-y-6">
+                    <h3 className="text-[10px] font-black text-primary uppercase tracking-widest border-b border-primary/10 pb-4">Skills I Offer</h3>
+                    <div className="flex flex-wrap gap-2">
+                       {(isEditing ? editedUser.skillsToTeach : user.skillsToTeach)?.map(skill => (
+                         <span key={skill} className="px-4 py-2 rounded-xl bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest border border-primary/10 flex items-center gap-3">
+                           {skill}
+                           {isEditing && <Trash2 size={12} className="cursor-pointer hover:text-white" onClick={() => removeSkillToTeach(skill)} />}
+                         </span>
+                       ))}
+                       {isEditing && (
+                         <div className="flex w-full gap-2 mt-4">
+                           <input 
+                             type="text" 
+                             value={newSkillToTeach}
+                             onChange={(e) => setNewSkillToTeach(e.target.value)}
+                             className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:border-primary outline-none"
+                             placeholder="Add skill..."
+                           />
+                           <button onClick={addSkillToTeach} className="w-10 h-10 rounded-xl bg-primary text-white flex items-center justify-center"><Plus size={18} /></button>
+                         </div>
+                       )}
+                    </div>
+                 </div>
+
+                 <div className="space-y-6">
+                    <h3 className="text-[10px] font-black text-accent uppercase tracking-widest border-b border-accent/10 pb-4">Skills I Seek</h3>
+                    <div className="flex flex-wrap gap-2">
+                       {(isEditing ? editedUser.skillsToLearn : user.skillsToLearn)?.map(skill => (
+                         <span key={skill} className="px-4 py-2 rounded-xl bg-accent/10 text-accent text-[10px] font-black uppercase tracking-widest border border-accent/10 flex items-center gap-3">
+                           {skill}
+                           {isEditing && <Trash2 size={12} className="cursor-pointer hover:text-white" onClick={() => removeSkillToLearn(skill)} />}
+                         </span>
+                       ))}
+                       {isEditing && (
+                         <div className="flex w-full gap-2 mt-4">
+                           <input 
+                             type="text" 
+                             value={newSkillToLearn}
+                             onChange={(e) => setNewSkillToLearn(e.target.value)}
+                             className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:border-accent outline-none"
+                             placeholder="Add skill..."
+                           />
+                           <button onClick={addSkillToLearn} className="w-10 h-10 rounded-xl bg-accent text-white flex items-center justify-center"><Plus size={18} /></button>
+                         </div>
+                       )}
+                    </div>
+                 </div>
               </div>
-              {isEditing && (
-                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-                  <input 
-                    type="text" 
-                    value={newSkillToLearn}
-                    onChange={(e) => setNewSkillToLearn(e.target.value)}
-                    placeholder="Add a skill to learn..."
-                    style={{ flex: 1, padding: '0.5rem 1rem', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: 'white', outline: 'none' }}
-                  />
-                  <button onClick={addSkillToLearn} className="btn-secondary" style={{ padding: '0.5rem' }}><Plus size={20} /></button>
-                </div>
-              )}
-            </div>
-          </div>
+           </div>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Filter, BookOpen, Star, Zap, Code, Palette, Presentation, Languages, Music, Video, User, Inbox, ArrowRight, Sparkles } from 'lucide-react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { API_URL } from '../config';
+import { Search, Zap, Code, Palette, Presentation, Music, Video, Star, Inbox, ArrowRight } from 'lucide-react';
 
 const Marketplace = () => {
   const [services, setServices] = useState([]);
@@ -9,7 +9,7 @@ const Marketplace = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
-  const categories = ['All', 'Web Dev', 'Design', 'Tutoring', 'Writing', 'Music', 'Video', 'Other'];
+  const categories = ['All', 'Web Dev', 'Design', 'Tutoring', 'Music', 'Video', 'Writing', 'Marketing'];
 
   useEffect(() => {
     fetchServices();
@@ -17,43 +17,39 @@ const Marketplace = () => {
 
   const fetchServices = async () => {
     try {
-      const response = await fetch(`${API_URL}/services`);
-      if (response.ok) {
-        const data = await response.json();
-        setServices(data);
-      }
+      const response = await axios.get('https://skillsphere-backend-8cju.onrender.com/api/v1/services');
+      setServices(response.data || []);
+      setLoading(false);
     } catch (error) {
-      console.error('Failed to fetch services', error);
-    } finally {
+      console.error('Error fetching services:', error);
       setLoading(false);
     }
   };
 
   const filteredServices = services.filter(service => {
-    const matchesSearch = service.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          service.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         service.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'All' || service.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
 
   return (
-    <div className="marketplace-container animate-fade-in-up pb-20">
-      <div className="marketplace-header mb-16">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest mb-6">
-           <Sparkles size={14} /> The Campus Economy
-        </div>
-        <h1 className="text-4xl md:text-5xl lg:text-7xl font-black mb-6 tracking-tighter px-4">
-          Discover <span className="gradient-text">Top Talent</span>
+    <div className="marketplace-container px-6 py-12 md:px-12 lg:px-24">
+      {/* Header */}
+      <div className="flex flex-col mb-12">
+        <div className="feature-tag mb-4">MARKETPLACE</div>
+        <h1 className="text-4xl md:text-6xl font-black mb-6">
+          Find student <span className="gradient-text">talent.</span>
         </h1>
-        <p className="text-base md:text-lg text-text-muted max-w-2xl mx-auto leading-relaxed px-6">
-          The ultimate marketplace for student freelancers, peer tutors, and campus creators. Get things done with SkillSphere.
+        <p className="text-text-muted max-w-2xl text-base md:text-lg">
+          The largest verified network of campus freelancers, mentors, and club talent.
         </p>
       </div>
 
       {/* Search & Filter Bar */}
       <div className="glass-card p-4 mb-12 sticky top-20 z-50 shadow-2xl shadow-black/40">
         <div className="flex flex-col lg:flex-row gap-4">
-          <div className="search-input-wrapper flex-1">
+          <div className="search-input-wrapper flex-1 relative">
             <Search size={20} className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
             <input 
               type="text" 
@@ -98,7 +94,7 @@ const Marketplace = () => {
       ) : (
         <div className="services-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredServices.length > 0 ? filteredServices.map((service) => (
-            <div key={service._id} className="glass-card group overflow-hidden border border-white/10 hover:border-primary/40 transition-all duration-500 hover:-translate-y-2 flex flex-col h-full">
+            <div key={service._id} className="feature-card p-0 flex flex-col group overflow-hidden border border-white/5 hover:border-primary/40 transition-all duration-500 hover:-translate-y-2 h-full">
               <div className="h-48 bg-gradient-to-br from-primary/10 to-accent/5 relative overflow-hidden">
                  <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:scale-110 transition-transform duration-700">
                     {service.category === 'Web Dev' && <Code size={120} />}
@@ -112,10 +108,6 @@ const Marketplace = () => {
                     <span className="px-3 py-1 rounded-lg bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-black uppercase tracking-widest text-primary">
                        {service.category}
                     </span>
-                 </div>
-                 <div className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-md px-3 py-1 rounded-lg border border-white/10 flex items-center gap-1">
-                    <Star size={12} className="text-yellow-400 fill-yellow-400" />
-                    <span className="text-xs font-bold text-white">4.9</span>
                  </div>
               </div>
               
@@ -138,7 +130,7 @@ const Marketplace = () => {
                 </div>
               </div>
               
-              <Link to="/login" className="w-full py-4 bg-white/5 border-t border-white/10 text-center text-sm font-bold text-white group-hover:bg-primary group-hover:border-primary transition-all flex items-center justify-center gap-2">
+              <Link to={`/gigs/${service._id}`} className="w-full py-4 bg-white/5 border-t border-white/10 text-center text-sm font-bold text-white group-hover:bg-primary group-hover:border-primary transition-all flex items-center justify-center gap-2">
                  Book Service <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
