@@ -240,6 +240,8 @@ const Wallet = () => {
                 <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest mb-3">Recipient Email</label>
                 <input 
                   type="email" 
+                  id="receiver-email"
+                  name="receiverEmail"
                   required
                   placeholder="name@college.edu"
                   className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-white focus:border-primary outline-none transition-all"
@@ -252,6 +254,8 @@ const Wallet = () => {
                   <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest mb-3">Amount</label>
                   <input 
                     type="number" 
+                    id="transfer-amount"
+                    name="amount"
                     required
                     placeholder="0"
                     className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-white focus:border-primary outline-none transition-all"
@@ -263,6 +267,8 @@ const Wallet = () => {
                   <label className="block text-[10px] font-black text-text-muted uppercase tracking-widest mb-3">Reason</label>
                   <input 
                     type="text" 
+                    id="transfer-reason"
+                    name="reason"
                     required
                     placeholder="e.g. Design Gig"
                     className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-5 text-white focus:border-primary outline-none transition-all"

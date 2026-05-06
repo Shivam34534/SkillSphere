@@ -175,6 +175,8 @@ const Profile = () => {
                  <h3 className="text-[10px] font-black text-text-muted uppercase tracking-widest border-b border-white/5 pb-4">Personal Narrative</h3>
                  {isEditing ? (
                    <textarea 
+                     id="profile-bio"
+                     name="bio"
                      value={editedUser.bio || ''}
                      onChange={(e) => setEditedUser({ ...editedUser, bio: e.target.value })}
                      className="w-full bg-white/5 border border-white/10 rounded-2xl p-6 text-white text-sm focus:border-primary outline-none min-h-[150px] transition-all"
@@ -201,6 +203,8 @@ const Profile = () => {
                          <div className="flex w-full gap-2 mt-4">
                            <input 
                              type="text" 
+                             id="add-skill-teach"
+                             name="newSkillToTeach"
                              value={newSkillToTeach}
                              onChange={(e) => setNewSkillToTeach(e.target.value)}
                              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:border-primary outline-none"
@@ -225,6 +229,8 @@ const Profile = () => {
                          <div className="flex w-full gap-2 mt-4">
                            <input 
                              type="text" 
+                             id="add-skill-learn"
+                             name="newSkillToLearn"
                              value={newSkillToLearn}
                              onChange={(e) => setNewSkillToLearn(e.target.value)}
                              className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:border-accent outline-none"

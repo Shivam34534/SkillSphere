@@ -128,3 +128,26 @@ export const paymentReceivedTemplate = (amount, gigTitle) => `
     </div>
   </div>
 `;
+/**
+ * Password Reset Template
+ */
+export const resetPasswordTemplate = (resetUrl) => `
+  <div style="${baseStyle}">
+    <div style="${headerStyle}">
+      <h1 style="margin: 0;">Reset Your Password 🔒</h1>
+    </div>
+    <div style="${bodyStyle}">
+      <p>Hi there,</p>
+      <p>You requested a password reset for your SkillSphere account. Click the button below to set a new password. This link is valid for 1 hour.</p>
+      <div style="text-align: center;">
+        <a href="${resetUrl}" style="${buttonStyle}">Reset My Password</a>
+      </div>
+      <p style="margin-top: 20px; font-size: 12px; color: #6b7280;">If you didn't request this, you can safely ignore this email. Your password will remain unchanged.</p>
+      <p style="margin-top: 10px; font-size: 12px; color: #6b7280;">If the button above doesn't work, copy and paste this link into your browser:</p>
+      <p style="font-size: 12px; color: #4F46E5; word-break: break-all;">${resetUrl}</p>
+    </div>
+    <div style="${footerStyle}">
+      <p>&copy; 2026 SkillSphere Campus Marketplace. All rights reserved.</p>
+    </div>
+  </div>
+`;

@@ -74,6 +74,8 @@ const Gigs = () => {
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={20} />
             <input 
               type="text" 
+              id="gigs-search"
+              name="searchTerm"
               placeholder="Search gigs, skills, or clubs..." 
               className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white focus:border-primary transition-all outline-none"
               value={searchTerm}
@@ -95,6 +97,8 @@ const Gigs = () => {
              </div>
              <div className="h-10 w-px bg-white/10 shrink-0"></div>
              <select 
+               id="category-filter"
+               name="category"
                className="bg-white/5 border border-white/10 rounded-xl px-6 py-3.5 text-xs font-black uppercase tracking-widest text-white outline-none focus:border-primary shrink-0 appearance-none cursor-pointer hover:bg-white/10 transition-all"
                value={selectedCategory}
                onChange={(e) => setSelectedCategory(e.target.value)}

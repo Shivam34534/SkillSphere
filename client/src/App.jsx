@@ -14,6 +14,8 @@ import Gigs from './pages/Gigs';
 import GigDetails from './pages/GigDetails';
 import BarterHub from './pages/BarterHub';
 import AdminPanel from './pages/AdminPanel';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
@@ -153,6 +155,8 @@ function App() {
               <Route path="/profile/:id" element={<PublicProfile />} />
               <Route path="/wallet" element={<Wallet />} />
               <Route path="/leaderboard" element={<Leaderboard />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/reset-password/:token" element={<ResetPassword />} />
             </Routes>
           </main>
         </div>

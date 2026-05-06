@@ -1,7 +1,8 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { sendEmail } from '../utils/emailService.js';
-import { otpTemplate, welcomeTemplate } from '../utils/emailTemplates.js';
+import { otpTemplate, welcomeTemplate, resetPasswordTemplate } from '../utils/emailTemplates.js';
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -172,6 +173,63 @@ export const verifyOTP = async (req, res) => {
       token: generateToken(user._id),
       message: 'Email verified successfully!'
     });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Generate Reset Token
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    user.resetPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+    user.resetPasswordExpires = Date.now() + 60 * 60 * 1000; // 1 hour
+
+    await user.save();
+
+    // Send Email
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
+    try {
+      await sendEmail(user.email, 'SkillSphere Password Recovery', resetPasswordTemplate(resetUrl));
+      res.json({ message: 'Password reset link sent to your email' });
+    } catch (emailError) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+      await user.save();
+      res.status(500).json({ message: 'Error sending email' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const resetPassword = async (req, res) => {
+  try {
+    const { token, password } = req.body;
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpires: { $gt: Date.now() }
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: 'Invalid or expired reset token' });
+    }
+
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save();
+
+    res.json({ message: 'Password reset successful. You can now log in.' });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
