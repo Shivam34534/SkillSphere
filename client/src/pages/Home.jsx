@@ -39,68 +39,118 @@ function Home() {
         </div>
       </header>
 
-      <section style={{maxWidth: '1000px', margin: '0 auto', padding: '0 2rem 4rem', position: 'relative', zIndex: 10}}>
-        <div className="hero-visual-container">
-          <div style={{position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(17, 14, 23, 0.4)'}}></div>
-          
-          <div className="floating-stat-card" style={{ top: '2rem', left: '-2rem' }}>
-            <div style={{width: '8px', height: '8px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 10px #10b981'}}></div>
-            <div>
-              <div style={{color: '#94a3b8', fontSize: '0.75rem'}}>New gig matched</div>
-              <div style={{color: '#f8f8fa', fontSize: '0.9rem', fontWeight: '600'}}>UI design - ₹2,400</div>
+      <section className="px-6 py-12 md:px-12 lg:px-24 max-w-7xl mx-auto -mt-20 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          {/* Live Showcase Card */}
+          <div className="lg:col-span-8 feature-card p-1 bg-gradient-to-br from-primary/30 via-accent/10 to-transparent border-primary/20 overflow-hidden group">
+            <div className="bg-background-dark/80 backdrop-blur-2xl rounded-[22px] p-8 md:p-12 h-full relative overflow-hidden">
+               {/* Background Glows */}
+               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-[100px] -mr-32 -mt-32 group-hover:bg-primary/30 transition-all duration-1000"></div>
+               <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/20 rounded-full blur-[100px] -ml-32 -mb-32 group-hover:bg-accent/30 transition-all duration-1000"></div>
+               
+               <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                  <div>
+                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-success/10 border border-success/20 text-success text-[10px] font-black uppercase tracking-widest mb-6">
+                       <div className="w-1.5 h-1.5 rounded-full bg-success animate-ping"></div>
+                       Live Platform Pulse
+                    </div>
+                    <h2 className="text-3xl md:text-5xl font-black text-white mb-6 leading-tight tracking-tighter">
+                       Where campus talent <span className="gradient-text">meets opportunity.</span>
+                    </h2>
+                    <div className="flex gap-4">
+                       <div className="flex flex-col">
+                          <span className="text-2xl font-black text-white tracking-tighter">1.2K+</span>
+                          <span className="text-[10px] text-text-muted font-bold uppercase tracking-widest">Active Gigs</span>
+                       </div>
+                       <div className="w-px h-10 bg-white/10"></div>
+                       <div className="flex flex-col">
+                          <span className="text-2xl font-black text-white tracking-tighter">98%</span>
+                          <span className="text-[10px] text-text-muted font-bold uppercase tracking-widest">Trust Score</span>
+                       </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-4 relative">
+                     {/* Floating Live Cards */}
+                     <div className="feature-card p-5 bg-white/5 border-white/10 flex items-center gap-4 animate-float">
+                        <div className="w-10 h-10 rounded-xl bg-success/20 flex items-center justify-center text-success border border-success/20">
+                           <Check size={20} />
+                        </div>
+                        <div>
+                           <p className="text-[10px] font-black text-text-muted uppercase">New Match</p>
+                           <p className="text-sm font-bold text-white">UI Design <span className="text-success ml-2">₹2,400</span></p>
+                        </div>
+                     </div>
+                     
+                     <div className="feature-card p-5 bg-white/5 border-white/10 flex items-center gap-4 animate-float" style={{animationDelay: '-2s', marginLeft: '2rem'}}>
+                        <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary border border-primary/20 font-black text-xs">
+                           +10
+                        </div>
+                        <div>
+                           <p className="text-[10px] font-black text-text-muted uppercase">XP Earned</p>
+                           <p className="text-sm font-bold text-white">Top 3% on campus</p>
+                        </div>
+                     </div>
+
+                     <div className="feature-card p-5 bg-white/5 border-white/10 flex items-center gap-4 animate-float" style={{animationDelay: '-4s', marginLeft: '1rem'}}>
+                        <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center text-accent border border-accent/20">
+                           <Shield size={20} />
+                        </div>
+                        <div>
+                           <p className="text-[10px] font-black text-text-muted uppercase">Verified</p>
+                           <p className="text-sm font-bold text-white">Student ID Secure</p>
+                        </div>
+                     </div>
+                  </div>
+               </div>
             </div>
           </div>
 
-          <div className="floating-stat-card" style={{ bottom: '3rem', right: '-2rem' }}>
-            <div style={{
-              background: 'linear-gradient(135deg, #d946ef 0%, #a855f7 100%)',
-              color: 'white',
-              fontSize: '0.75rem',
-              fontWeight: '700',
-              padding: '0.4rem',
-              borderRadius: '8px'
-            }}>+10</div>
-            <div>
-              <div style={{color: '#94a3b8', fontSize: '0.75rem'}}>XP earned today</div>
-              <div style={{color: '#f8f8fa', fontSize: '0.9rem', fontWeight: '600'}}>Top 3% on campus</div>
-            </div>
-          </div>
-        </div>
-
-        <div style={{marginTop: '4rem', textAlign: 'center'}}>
-          <div style={{color: '#64748b', fontSize: '0.75rem', fontWeight: '700', letterSpacing: '2px', textTransform: 'uppercase', marginBottom: '2rem'}}>
-            Trusted by students across 40+ campuses
-          </div>
-          <div style={{
-            display: 'flex', 
-            justifyContent: 'space-around', 
-            alignItems: 'center', 
-            color: '#94a3b8', 
-            fontWeight: '600',
-            opacity: '0.6',
-            fontSize: '1rem',
-            flexWrap: 'wrap',
-            gap: '2rem'
-          }}>
-            <span>IIT Bombay</span>
-            <span>BITS Pilani</span>
-            <span>NIT Trichy</span>
-            <span>VIT</span>
-            <span>Manipal</span>
-            <span>SRM</span>
-            <span>Ashoka</span>
-            <span>Christ</span>
+          {/* Side Stats */}
+          <div className="lg:col-span-4 space-y-6 h-full">
+             <div className="feature-card p-8 bg-gradient-to-br from-primary/10 to-transparent border-primary/20 h-1/2 flex flex-col justify-center group">
+                <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform">
+                   <Trophy size={24} />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">Campus Rankings</h3>
+                <p className="text-sm text-text-muted">Join the elite 1% of campus earners and mentors.</p>
+                <Link to="/leaderboard" className="mt-6 text-primary text-[10px] font-black uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all">
+                   View Board <ArrowRight size={14} />
+                </Link>
+             </div>
+             
+             <div className="feature-card p-8 bg-gradient-to-br from-accent/10 to-transparent border-accent/20 h-1/2 flex flex-col justify-center group">
+                <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform">
+                   <Users size={24} />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">Student Clubs</h3>
+                <p className="text-sm text-text-muted">Power your organization with verified talent.</p>
+                <Link to="/signup" className="mt-6 text-accent text-[10px] font-black uppercase tracking-widest flex items-center gap-2 group-hover:gap-4 transition-all">
+                   Recruit Now <ArrowRight size={14} />
+                </Link>
+             </div>
           </div>
         </div>
       </section>
 
-      <section className="features-section" id="features" style={{paddingTop: '6rem'}}>
-        <div className="feature-tag">PLATFORM</div>
-        <h2 className="section-title text-3xl md:text-5xl lg:text-6xl text-left mb-4 max-w-3xl leading-tight px-4">
+      <section className="px-6 py-20 max-w-7xl mx-auto text-center">
+        <div className="text-[10px] font-black text-text-muted uppercase tracking-[0.3em] mb-12">
+          Trusted by students across 40+ premier campuses
+        </div>
+        <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 opacity-40 grayscale hover:grayscale-0 transition-all duration-700">
+          {['IIT Bombay', 'BITS Pilani', 'NIT Trichy', 'VIT', 'Manipal', 'SRM', 'Ashoka', 'Christ'].map(college => (
+            <span key={college} className="text-sm font-black text-white hover:text-primary transition-colors cursor-default">{college}</span>
+          ))}
+        </div>
+      </section>
+
+      <section className="features-section py-20" id="features">
+        <div className="feature-tag mb-6 mx-auto uppercase">PLATFORM</div>
+        <h2 className="section-title text-center text-3xl md:text-5xl lg:text-7xl mb-6 tracking-tighter leading-tight max-w-4xl mx-auto">
           Everything a campus needs in one <span className="gradient-text">ecosystem.</span>
         </h2>
-        <p className="section-subtitle text-sm md:text-base text-left px-4 mb-12 max-w-2xl">
-          SkillSphere unifies all campus activities into a single high-trust network.
+        <p className="section-subtitle text-center text-base md:text-lg mx-auto mb-16 max-w-2xl opacity-70">
+          SkillSphere unifies all campus activities—from skill sharing to club management—into a single high-trust network.
         </p>
         
         <div className="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full px-4">
@@ -127,355 +177,200 @@ function Home() {
             <h3 className="text-base md:text-xl font-bold">XP & Badges</h3>
             <p className="text-[12px] md:text-sm text-text-muted">Skill badges, leaderboards and weekly challenges that make growth addictive.</p>
           </Link>
-          
-          <Link to="/signup" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
-            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Shield size={20} color="white" /></div>
-            <h3 className="text-base md:text-xl font-bold">Verified Only</h3>
-            <p className="text-[12px] md:text-sm text-text-muted">College-email gated. RBAC, audit logs, fraud detection, dispute resolution.</p>
-          </Link>
-
-          <Link to="/barter-hub" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
-            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Bot size={20} color="white" /></div>
-            <h3 className="text-base md:text-xl font-bold">AI Matching</h3>
-            <p className="text-[12px] md:text-sm text-text-muted">Smart gig recommendations, pricing suggestions and resume scoring.</p>
-          </Link>
-
-          <Link to="/dashboard" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
-            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Users size={20} color="white" /></div>
-            <h3 className="text-base md:text-xl font-bold">Clubs & Teams</h3>
-            <p className="text-[12px] md:text-sm text-text-muted">Recruit talent, plan events, manage budgets and assemble project teams.</p>
-          </Link>
-
-          <div className="feature-card p-5 md:p-8">
-            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl transform-none"><Zap size={20} color="white" /></div>
-            <h3 className="text-base md:text-xl font-bold">Mobile + PWA</h3>
-            <p className="text-[12px] md:text-sm text-text-muted">Same API across web, PWA and React Native — install on any device.</p>
-          </div>
         </div>
       </section>
 
-      <section className="how-it-works-section" id="how-it-works" style={{paddingTop: '4rem', paddingBottom: '4rem'}}>
-        <div style={{display: 'flex', justifyContent: 'center', marginBottom: '1rem'}}>
-          <div style={{color: '#c4b5fd', fontWeight: '600', letterSpacing: '1.5px', fontSize: '0.8rem', textTransform: 'uppercase'}}>
-            HOW IT WORKS
-          </div>
-        </div>
-        <h2 className="section-title">
+      <section className="how-it-works-section py-20" id="how-it-works">
+        <div className="feature-tag mb-6 mx-auto">HOW IT WORKS</div>
+        <h2 className="section-title text-center max-w-3xl mx-auto">
           From signup to first paycheck in under <span className="gradient-text">a week.</span>
         </h2>
         
-        <div className="timeline-container" style={{marginTop: '4rem'}}>
-          <div className="timeline-item">
-            <div className="timeline-number">01</div>
+        <div className="timeline-container mt-16 max-w-3xl mx-auto space-y-6">
+          <div className="timeline-item feature-card p-8 flex items-center gap-8 group">
+            <div className="timeline-number w-12 h-12 rounded-xl bg-primary flex items-center justify-center font-black text-white shrink-0 shadow-lg shadow-primary/20">01</div>
             <div className="timeline-content">
-              <h3>Verify with college email</h3>
-              <p>OTP + domain validation gates the whole platform — only real students inside.</p>
+              <h3 className="text-xl font-bold text-white mb-2">Verify with college email</h3>
+              <p className="text-sm text-text-muted">OTP + domain validation gates the whole platform — only real students inside.</p>
             </div>
           </div>
           
-          <div className="timeline-item">
-            <div className="timeline-number">02</div>
+          <div className="timeline-item feature-card p-8 flex items-center gap-8 group">
+            <div className="timeline-number w-12 h-12 rounded-xl bg-primary flex items-center justify-center font-black text-white shrink-0 shadow-lg shadow-primary/20">02</div>
             <div className="timeline-content">
-              <h3>Build your skill profile</h3>
-              <p>Add skills, portfolio, availability. Our AI scores and suggests improvements.</p>
+              <h3 className="text-xl font-bold text-white mb-2">Build your skill profile</h3>
+              <p className="text-sm text-text-muted">Add skills, portfolio, availability. Our AI scores and suggests improvements.</p>
             </div>
           </div>
           
-          <div className="timeline-item">
-            <div className="timeline-number">03</div>
+          <div className="timeline-item feature-card p-8 flex items-center gap-8 group">
+            <div className="timeline-number w-12 h-12 rounded-xl bg-primary flex items-center justify-center font-black text-white shrink-0 shadow-lg shadow-primary/20">03</div>
             <div className="timeline-content">
-              <h3>Discover or post gigs</h3>
-              <p>Match with peers, clubs and faculty. Apply, negotiate, sign milestones.</p>
-            </div>
-          </div>
-          
-          <div className="timeline-item">
-            <div className="timeline-number">04</div>
-            <div className="timeline-content">
-              <h3>Deliver, get paid, level up</h3>
-              <p>Escrow releases on approval. Earn XP, badges and climb the campus leaderboard.</p>
+              <h3 className="text-xl font-bold text-white mb-2">Discover or post gigs</h3>
+              <p className="text-sm text-text-muted">Match with peers, clubs and faculty. Apply, negotiate, sign milestones.</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="roles-section" id="roles" style={{paddingTop: '6rem', paddingBottom: '6rem'}}>
-        <div style={{display: 'flex', justifyContent: 'center', marginBottom: '1rem'}}>
-          <div style={{color: '#c4b5fd', fontWeight: '600', letterSpacing: '1.5px', fontSize: '0.8rem', textTransform: 'uppercase'}}>
-            ROLE-BASED
-          </div>
-        </div>
-        <h2 className="section-title text-3xl md:text-5xl lg:text-6xl mb-12 leading-tight px-4">
-          Built for every campus <br/><span className="gradient-text">persona.</span>
-        </h2>
-        
-        <div className="roles-grid grid grid-cols-1 md:grid-cols-2 gap-6 w-full px-4">
-          <div className="role-card p-6 md:p-8 flex flex-row items-center gap-6 group">
-            <div className="icon-box new-feature-icon w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center">
-              <GraduationCap size={26} color="white" />
-            </div>
-            <div className="flex flex-col">
-              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">Student</h3>
-              <ul className="role-list space-y-1">
-                <li className="text-sm md:text-base">Browse skills & hire peers</li>
-                <li className="text-sm md:text-base">Track learning & earn XP</li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="role-card p-6 md:p-8 flex flex-row items-center gap-6 group">
-            <div className="icon-box new-feature-icon w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center">
-              <Code size={26} color="white" />
-            </div>
-            <div className="flex flex-col">
-              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">Freelancer</h3>
-              <ul className="role-list space-y-1">
-                <li className="text-sm md:text-base">List services & manage orders</li>
-                <li className="text-sm md:text-base">Earn & withdraw earnings</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="role-card p-6 md:p-8 flex flex-row items-center gap-6 group">
-            <div className="icon-box new-feature-icon w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center">
-              <Users size={26} color="white" />
-            </div>
-            <div className="flex flex-col">
-              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">Club</h3>
-              <ul className="role-list space-y-1">
-                <li className="text-sm md:text-base">Recruit talent & plan events</li>
-                <li className="text-sm md:text-base">Track budget & assemble teams</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="role-card p-6 md:p-8 flex flex-row items-center gap-6 group">
-            <div className="icon-box new-feature-icon w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center">
-              <ShieldCheck size={26} color="white" />
-            </div>
-            <div className="flex flex-col">
-              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">Admin</h3>
-              <ul className="role-list space-y-1">
-                <li className="text-sm md:text-base">Verify users & moderate platform</li>
-                <li className="text-sm md:text-base">Manage revenue operations</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="role-card p-6 md:p-8 flex flex-row items-center gap-6 group">
-            <div className="icon-box new-feature-icon w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center">
-              <Award size={26} color="white" />
-            </div>
-            <div className="flex flex-col">
-              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">Alumni</h3>
-              <ul className="role-list space-y-1">
-                <li className="text-sm md:text-base">Mentor students & referrals</li>
-                <li className="text-sm md:text-base">Conduct workshops & networking</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="role-card p-6 md:p-8 flex flex-row items-center gap-6 group">
-            <div className="icon-box new-feature-icon w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center">
-              <BookOpen size={26} color="white" />
-            </div>
-            <div className="flex flex-col">
-              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">Faculty</h3>
-              <ul className="role-list space-y-1">
-                <li className="text-sm md:text-base">Research gigs & supervision</li>
-                <li className="text-sm md:text-base">Mentor student startups</li>
-              </ul>
-            </div>
-          </div>
+      <section className="px-6 py-20 max-w-7xl mx-auto">
+        <div className="feature-card p-12 md:p-20 bg-gradient-to-br from-white/5 to-transparent border-white/5 relative overflow-hidden group">
+           <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-[100px] -mr-48 -mt-48 group-hover:bg-primary/10 transition-all duration-1000"></div>
+           
+           <div className="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-12 md:gap-16 text-center">
+              <div>
+                 <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-2">40+</h3>
+                 <p className="text-[10px] md:text-xs font-black text-text-muted uppercase tracking-widest">Campuses</p>
+              </div>
+              <div>
+                 <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-2">12K</h3>
+                 <p className="text-[10px] md:text-xs font-black text-text-muted uppercase tracking-widest">Students</p>
+              </div>
+              <div>
+                 <h3 className="text-4xl md:text-6xl font-black text-secondary tracking-tighter mb-2">₹38L</h3>
+                 <p className="text-[10px] md:text-xs font-black text-text-muted uppercase tracking-widest">Earnings</p>
+              </div>
+              <div>
+                 <h3 className="text-4xl md:text-6xl font-black text-white tracking-tighter mb-2">4.9</h3>
+                 <p className="text-[10px] md:text-xs font-black text-text-muted uppercase tracking-widest">Rating</p>
+              </div>
+           </div>
         </div>
       </section>
 
-      <section style={{maxWidth: '1200px', margin: '0 auto', padding: '0 2rem 6rem'}}>
-        <div style={{
-          background: '#161320', 
-          border: '1px solid rgba(255, 255, 255, 0.05)',
-          borderRadius: '16px',
-          padding: '4rem 6rem',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-start',
-          flexWrap: 'wrap',
-          gap: '2rem'
-        }}>
-          <div style={{textAlign: 'left'}}>
-            <h3 style={{fontSize: '3.5rem', fontWeight: '700', margin: '0 0 0.5rem 0', color: '#f8f8fa', letterSpacing: '-1px'}}>40+</h3>
-            <p style={{color: '#94a3b8', fontSize: '0.9rem', margin: 0, fontWeight: '500'}}>Campuses onboarded</p>
-          </div>
-          
-          <div style={{textAlign: 'left'}}>
-            <h3 style={{fontSize: '3.5rem', fontWeight: '700', margin: '0 0 0.5rem 0', color: '#f8f8fa', letterSpacing: '-1px'}}>12k</h3>
-            <p style={{color: '#94a3b8', fontSize: '0.9rem', margin: 0, fontWeight: '500'}}>Verified students</p>
-          </div>
-
-          <div style={{textAlign: 'left'}}>
-            <h3 style={{fontSize: '3.5rem', fontWeight: '700', margin: '0 0 0.5rem 0', letterSpacing: '-1px', background: 'linear-gradient(135deg, #e9d5ff 0%, #c084fc 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent'}}>₹38L</h3>
-            <p style={{color: '#94a3b8', fontSize: '0.9rem', margin: 0, fontWeight: '500'}}>Earned by students</p>
-          </div>
-
-          <div style={{textAlign: 'left'}}>
-            <h3 style={{fontSize: '3.5rem', fontWeight: '700', margin: '0 0 0.5rem 0', color: '#f8f8fa', letterSpacing: '-1px'}}>4.9</h3>
-            <p style={{color: '#94a3b8', fontSize: '0.9rem', margin: 0, fontWeight: '500'}}>Avg gig rating</p>
-          </div>
-        </div>
-      </section>
-
-      <section className="pricing-section" id="pricing" style={{paddingTop: '4rem', paddingBottom: '8rem'}}>
-        <div style={{display: 'flex', justifyContent: 'center', marginBottom: '1rem'}}>
-          <div style={{color: '#c4b5fd', fontWeight: '600', letterSpacing: '1.5px', fontSize: '0.8rem', textTransform: 'uppercase'}}>
-            PRICING
-          </div>
-        </div>
-        <h2 className="section-title text-3xl md:text-5xl lg:text-6xl leading-tight max-w-4xl mx-auto">
+      <section className="pricing-section py-20 px-6" id="pricing">
+        <div className="feature-tag mb-6 mx-auto">PRICING</div>
+        <h2 className="section-title text-center max-w-4xl mx-auto mb-16">
           Free for students. Powerful <br/><span className="gradient-text">for campuses.</span>
         </h2>
-
-        <div className="pricing-grid">
+ 
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {/* Student Plan */}
-          <div className="pricing-card">
-            <h3 style={{fontSize: '1.25rem', fontWeight: '600', marginBottom: '1rem'}}>Student</h3>
-            <div style={{display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '2rem'}}>
-              <span style={{fontSize: '3.5rem', fontWeight: '700', lineHeight: '1'}}>Free</span>
-              <span style={{color: '#94a3b8', fontSize: '0.9rem'}}>Forever</span>
+          <div className="feature-card p-10 flex flex-col group">
+            <h3 className="text-xl font-bold text-white mb-6">Student</h3>
+            <div className="flex items-baseline gap-2 mb-8">
+              <span className="text-5xl font-black text-white">Free</span>
+              <span className="text-[10px] font-black text-text-muted uppercase tracking-widest">Forever</span>
             </div>
-            <button className="btn-secondary" style={{width: '100%', padding: '0.75rem', marginBottom: '1rem'}}>Start free</button>
-            <ul className="pricing-features">
-              <li><Check size={18} color="#10b981" /> Verified profile</li>
-              <li><Check size={18} color="#10b981" /> Browse & apply to gigs</li>
-              <li><Check size={18} color="#10b981" /> Wallet & escrow</li>
-              <li><Check size={18} color="#10b981" /> Community chat</li>
+            <Link to="/signup" className="no-underline mb-8">
+               <button className="btn-secondary w-full py-4 text-[10px] font-black uppercase tracking-widest">Join Platform</button>
+            </Link>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-success" /> Verified identity</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-success" /> Marketplace access</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-success" /> P2P Barter hub</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-success" /> Smart wallet</li>
             </ul>
           </div>
-
+ 
           {/* Pro Plan */}
-          <div className="pricing-card popular">
-            <div className="popular-badge">MOST POPULAR</div>
-            <h3 style={{fontSize: '1.25rem', fontWeight: '600', marginBottom: '1rem'}}>Pro</h3>
-            <div style={{display: 'flex', alignItems: 'baseline', gap: '0.5rem', marginBottom: '2rem'}}>
-              <span style={{fontSize: '3.5rem', fontWeight: '700', lineHeight: '1'}}>₹149</span>
-              <span style={{color: '#94a3b8', fontSize: '0.9rem'}}>/month</span>
+          <div className="feature-card p-10 flex flex-col border-primary/30 bg-primary/5 relative group">
+            <div className="absolute top-4 right-4 text-[9px] font-black bg-primary px-3 py-1 rounded-md text-white tracking-widest uppercase">Popular</div>
+            <h3 className="text-xl font-bold text-white mb-6">Synergy Pro</h3>
+            <div className="flex items-baseline gap-2 mb-8">
+              <span className="text-5xl font-black text-white">₹149</span>
+              <span className="text-[10px] font-black text-text-muted uppercase tracking-widest">/ Month</span>
             </div>
-            <button className="btn-primary" style={{width: '100%', padding: '0.75rem', marginBottom: '1rem'}}>Go Pro</button>
-            <ul className="pricing-features">
-              <li><Check size={18} color="#10b981" /> Everything in Student</li>
-              <li><Check size={18} color="#10b981" /> Featured profile boost</li>
-              <li><Check size={18} color="#10b981" /> Priority gig matching</li>
-              <li><Check size={18} color="#10b981" /> AI resume scoring</li>
-              <li><Check size={18} color="#10b981" /> 0% withdrawal fees</li>
+            <button className="btn-primary w-full py-4 text-[10px] font-black uppercase tracking-widest mb-8">Upgrade Now</button>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3 text-sm text-white font-bold"><CheckCircle size={16} className="text-primary" /> Profile boost x10</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-primary" /> Priority matching</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-primary" /> AI listing boost</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-primary" /> Zero withdrawal fee</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-primary" /> Early gig access</li>
             </ul>
           </div>
-
+ 
           {/* Campus Plan */}
-          <div className="pricing-card">
-            <h3 style={{fontSize: '1.25rem', fontWeight: '600', marginBottom: '1rem'}}>Campus</h3>
-            <div style={{display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '2rem'}}>
-              <span style={{fontSize: '3.5rem', fontWeight: '700', lineHeight: '1'}}>Custom</span>
-              <span style={{color: '#94a3b8', fontSize: '0.8rem', maxWidth: '80px', lineHeight: '1.2'}}>For colleges & clubs</span>
+          <div className="feature-card p-10 flex flex-col group">
+            <h3 className="text-xl font-bold text-white mb-6">Campus Hub</h3>
+            <div className="flex items-baseline gap-2 mb-8">
+              <span className="text-5xl font-black text-white">Custom</span>
+              <span className="text-[10px] font-black text-text-muted uppercase tracking-widest">Enterprise</span>
             </div>
-            <button className="btn-secondary" style={{width: '100%', padding: '0.75rem', marginBottom: '1rem'}}>Talk to us</button>
-            <ul className="pricing-features">
-              <li><Check size={18} color="#10b981" /> SSO & domain controls</li>
-              <li><Check size={18} color="#10b981" /> Admin dashboard</li>
-              <li><Check size={18} color="#10b981" /> Bulk verification</li>
-              <li><Check size={18} color="#10b981" /> Analytics & exports</li>
-              <li><Check size={18} color="#10b981" /> Dedicated success manager</li>
+            <button className="btn-secondary w-full py-4 text-[10px] font-black uppercase tracking-widest mb-8">Contact Sales</button>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-accent" /> SSO Integration</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-accent" /> Admin dashboard</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-accent" /> Custom audit logs</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-accent" /> Managed payouts</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted font-medium"><CheckCircle size={16} className="text-accent" /> Dedicated support</li>
             </ul>
           </div>
         </div>
       </section>
 
-      <section style={{padding: '4rem 2rem 8rem', display: 'flex', justifyContent: 'center'}}>
-        <div style={{
-          background: 'radial-gradient(circle at center, rgba(139, 92, 246, 0.15) 0%, rgba(17, 14, 23, 0.8) 70%), #110e17',
-          border: '1px solid rgba(255, 255, 255, 0.05)',
-          borderRadius: '24px',
-          padding: '6rem 2rem',
-          maxWidth: '1000px',
-          width: '100%',
-          textAlign: 'center',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.5)'
-        }}>
-          <h2 className="text-3xl sm:text-4xl md:text-6xl font-extrabold leading-tight mb-6 tracking-tight px-4">
-            Your campus has untapped <br/>
-            <span className="gradient-text">talent.</span><br/>
-            Let's unlock it.
-          </h2>
-          <p style={{color: '#94a3b8', fontSize: '1.1rem', maxWidth: '500px', margin: '0 auto 3rem', lineHeight: '1.6'}}>
-            Bring SkillSphere to your college and turn skills into a thriving internal economy.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center px-6">
-            <button className="btn-primary py-3.5 px-8">
-              Launch on your campus <ArrowRight size={18} />
-            </button>
-            <button className="btn-secondary py-3.5 px-8">
-              Book a demo
-            </button>
-          </div>
+      <section className="px-6 py-24 flex justify-center">
+        <div className="feature-card max-w-5xl w-full p-16 md:p-24 bg-gradient-to-br from-primary/20 via-background-dark to-transparent border-primary/20 text-center relative overflow-hidden group">
+           <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+           <h2 className="text-3xl md:text-7xl font-black text-white mb-8 tracking-tighter leading-tight">
+              Unlock your campus <br />
+              <span className="gradient-text">potential.</span>
+           </h2>
+           <p className="text-text-muted text-base md:text-lg max-w-xl mx-auto mb-12 leading-relaxed">
+              Join thousands of students building the future of campus collaboration.
+           </p>
+           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link to="/signup" className="no-underline">
+                 <button className="btn-primary py-4 px-10 text-xs font-black uppercase tracking-widest flex items-center gap-2">
+                    Get Started <ArrowRight size={18} />
+                 </button>
+              </Link>
+              <button className="btn-secondary py-4 px-10 text-xs font-black uppercase tracking-widest">
+                 Partner with us
+              </button>
+           </div>
         </div>
       </section>
 
-      <footer style={{borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '4rem', paddingBottom: '2rem'}}>
-        <div style={{maxWidth: '1200px', margin: '0 auto', padding: '0 2rem'}}>
-          <div style={{display: 'grid', gridTemplateColumns: '2fr 1fr 1fr 1fr 1fr', gap: '2rem', marginBottom: '4rem'}}>
-            
-            <div style={{paddingRight: '2rem'}}>
-              <div className="logo" style={{marginBottom: '1rem'}}>
+      <footer className="border-t border-white/5 pt-20 pb-10 px-6">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-12 mb-20">
+            <div className="col-span-2 lg:col-span-2 pr-0 lg:pr-16">
+              <div className="logo mb-6">
                 <div className="logo-icon new-logo"><Sparkles size={20} color="white" /></div>
-                <span>SkillSphere</span>
+                <span className="text-2xl font-black tracking-tighter">SkillSphere</span>
               </div>
-              <p style={{color: '#94a3b8', fontSize: '0.95rem', lineHeight: '1.6'}}>
-                Learn. Earn. Collaborate. The verified campus skill exchange.
+              <p className="text-text-muted text-sm md:text-base leading-relaxed">
+                The unified skill exchange for modern campuses. Learn, earn, and build your professional network inside your verified ecosystem.
               </p>
             </div>
-
+ 
             <div>
-              <h4 style={{color: '#f8f8fa', fontWeight: '600', marginBottom: '1.5rem', fontSize: '1rem'}}>Product</h4>
-              <ul style={{listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Features</a></li>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Pricing</a></li>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Roadmap</a></li>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Mobile app</a></li>
+              <h4 className="text-white font-bold text-sm uppercase tracking-widest mb-6">Platform</h4>
+              <ul className="space-y-4">
+                <li><Link to="/marketplace" className="text-text-muted text-sm hover:text-primary transition-colors no-underline font-medium">Marketplace</Link></li>
+                <li><Link to="/gigs" className="text-text-muted text-sm hover:text-primary transition-colors no-underline font-medium">Opportunities</Link></li>
+                <li><Link to="/leaderboard" className="text-text-muted text-sm hover:text-primary transition-colors no-underline font-medium">Rankings</Link></li>
+                <li><Link to="/barter-hub" className="text-text-muted text-sm hover:text-primary transition-colors no-underline font-medium">Barter Hub</Link></li>
               </ul>
             </div>
-
+ 
             <div>
-              <h4 style={{color: '#f8f8fa', fontWeight: '600', marginBottom: '1.5rem', fontSize: '1rem'}}>Company</h4>
-              <ul style={{listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>About</a></li>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Blog</a></li>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Careers</a></li>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Press</a></li>
+              <h4 className="text-white font-bold text-sm uppercase tracking-widest mb-6">Resources</h4>
+              <ul className="space-y-4">
+                <li><a href="#" className="text-text-muted text-sm hover:text-primary transition-colors no-underline font-medium">Docs</a></li>
+                <li><a href="#" className="text-text-muted text-sm hover:text-primary transition-colors no-underline font-medium">Guidelines</a></li>
+                <li><a href="#" className="text-text-muted text-sm hover:text-primary transition-colors no-underline font-medium">Support</a></li>
+                <li><a href="#" className="text-text-muted text-sm hover:text-primary transition-colors no-underline font-medium">Status</a></li>
               </ul>
             </div>
-
+ 
             <div>
-              <h4 style={{color: '#f8f8fa', fontWeight: '600', marginBottom: '1.5rem', fontSize: '1rem'}}>Resources</h4>
-              <ul style={{listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Docs</a></li>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Community</a></li>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Support</a></li>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Status</a></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 style={{color: '#f8f8fa', fontWeight: '600', marginBottom: '1.5rem', fontSize: '1rem'}}>Legal</h4>
-              <ul style={{listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem'}}>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Privacy</a></li>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Terms</a></li>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Security</a></li>
-                <li><a href="#" style={{color: '#94a3b8', textDecoration: 'none', fontSize: '0.95rem', transition: 'color 0.2s'}}>Cookies</a></li>
+              <h4 className="text-white font-bold text-sm uppercase tracking-widest mb-6">Legal</h4>
+              <ul className="space-y-4">
+                <li><a href="#" className="text-text-muted text-sm hover:text-primary transition-colors no-underline font-medium">Privacy</a></li>
+                <li><a href="#" className="text-text-muted text-sm hover:text-primary transition-colors no-underline font-medium">Terms</a></li>
+                <li><a href="#" className="text-text-muted text-sm hover:text-primary transition-colors no-underline font-medium">Security</a></li>
               </ul>
             </div>
           </div>
-
-          <div style={{borderTop: '1px solid rgba(255,255,255,0.05)', paddingTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', color: '#64748b', fontSize: '0.85rem'}}>
-            <div>© 2026 SkillSphere. Built for students, by students.</div>
-            <div>Made with care in India TN</div>
+ 
+          <div className="border-t border-white/5 pt-10 flex flex-col md:flex-row justify-between items-center gap-6 text-[10px] font-black text-text-muted uppercase tracking-widest">
+            <div>© 2026 SkillSphere. Built for the next gen.</div>
+            <div className="flex items-center gap-2">
+               Made with <div className="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></div> in India
+            </div>
           </div>
         </div>
       </footer>
