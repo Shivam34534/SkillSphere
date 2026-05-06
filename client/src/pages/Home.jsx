@@ -104,47 +104,47 @@ function Home() {
         </p>
         
         <div className="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full px-4">
-          <div className="feature-card p-5 md:p-8">
+          <Link to="/marketplace" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
             <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Briefcase size={20} color="white" /></div>
             <h3 className="text-base md:text-xl font-bold">Gig Marketplace</h3>
             <p className="text-[12px] md:text-sm text-text-muted">Post, discover and deliver paid, barter or volunteer gigs with milestone-based escrow.</p>
-          </div>
+          </Link>
           
-          <div className="feature-card p-5 md:p-8">
+          <Link to="/wallet" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
             <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Wallet size={20} color="white" /></div>
             <h3 className="text-base md:text-xl font-bold">Campus Wallet</h3>
             <p className="text-[12px] md:text-sm text-text-muted">Cash, credits and coins powered by Razorpay & Stripe with full refund protection.</p>
-          </div>
+          </Link>
 
-          <div className="feature-card p-5 md:p-8">
+          <Link to="/dashboard" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
             <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><MessageSquare size={20} color="white" /></div>
             <h3 className="text-base md:text-xl font-bold">Real-time Chat</h3>
             <p className="text-[12px] md:text-sm text-text-muted">Socket.io-powered DMs, presence and typing — built for fast collab.</p>
-          </div>
+          </Link>
 
-          <div className="feature-card p-5 md:p-8">
+          <Link to="/leaderboard" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
             <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Trophy size={20} color="white" /></div>
             <h3 className="text-base md:text-xl font-bold">XP & Badges</h3>
             <p className="text-[12px] md:text-sm text-text-muted">Skill badges, leaderboards and weekly challenges that make growth addictive.</p>
-          </div>
+          </Link>
           
-          <div className="feature-card p-5 md:p-8">
+          <Link to="/signup" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
             <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Shield size={20} color="white" /></div>
             <h3 className="text-base md:text-xl font-bold">Verified Only</h3>
             <p className="text-[12px] md:text-sm text-text-muted">College-email gated. RBAC, audit logs, fraud detection, dispute resolution.</p>
-          </div>
+          </Link>
 
-          <div className="feature-card p-5 md:p-8">
+          <Link to="/barter-hub" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
             <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Bot size={20} color="white" /></div>
             <h3 className="text-base md:text-xl font-bold">AI Matching</h3>
             <p className="text-[12px] md:text-sm text-text-muted">Smart gig recommendations, pricing suggestions and resume scoring.</p>
-          </div>
+          </Link>
 
-          <div className="feature-card p-5 md:p-8">
+          <Link to="/dashboard" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
             <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Users size={20} color="white" /></div>
             <h3 className="text-base md:text-xl font-bold">Clubs & Teams</h3>
             <p className="text-[12px] md:text-sm text-text-muted">Recruit talent, plan events, manage budgets and assemble project teams.</p>
-          </div>
+          </Link>
 
           <div className="feature-card p-5 md:p-8">
             <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl transform-none"><Zap size={20} color="white" /></div>
