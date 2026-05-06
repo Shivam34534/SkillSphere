@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../config';
 import { Trophy, Medal, Crown, Star, TrendingUp, Users, Award, Zap, Shield, Search } from 'lucide-react';
 
 const Leaderboard = () => {
@@ -13,7 +14,7 @@ const Leaderboard = () => {
 
   const fetchLeaderboard = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/v1/leaderboard');
+      const response = await fetch(`${API_URL}/leaderboard`);
       if (response.ok) {
         const result = await response.json();
         setData(result);

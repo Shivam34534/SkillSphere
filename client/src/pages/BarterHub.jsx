@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { API_URL } from '../config';
 import { 
   Users, Zap, Star, Shield, ArrowRight, CheckCircle, 
   XCircle, Clock, Video, Award, Sparkles, MessageCircle, ArrowUpRight, Inbox
@@ -23,9 +24,9 @@ const BarterHub = () => {
     setLoading(true);
     try {
       const [sugRes, matchRes, histRes] = await Promise.all([
-        fetch('http://localhost:5000/api/v1/matches/suggestions', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5000/api/v1/matches', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5000/api/v1/matches/history', { headers: { Authorization: `Bearer ${token}` } })
+        fetch(`${API_URL}/matches/suggestions`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_URL}/matches`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_URL}/matches/history`, { headers: { Authorization: `Bearer ${token}` } })
       ]);
 
       if (sugRes.ok) setSuggestions(await sugRes.json());
@@ -40,7 +41,7 @@ const BarterHub = () => {
 
   const handleRequest = async (targetUser, offer, need) => {
     try {
-      const response = await fetch('http://localhost:5000/api/v1/matches', {
+      const response = await fetch(`${API_URL}/matches`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,7 +65,7 @@ const BarterHub = () => {
 
   const handleResponse = async (id, status) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/matches/${id}/respond`, {
+      const response = await fetch(`${API_URL}/matches/${id}/respond`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +82,7 @@ const BarterHub = () => {
   const handleComplete = async (id) => {
     if (window.confirm('Mark this session as complete? XP rewards will be distributed.')) {
       try {
-        const response = await fetch(`http://localhost:5000/api/v1/matches/${id}/complete`, {
+        const response = await fetch(`${API_URL}/matches/${id}/complete`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` }
         });

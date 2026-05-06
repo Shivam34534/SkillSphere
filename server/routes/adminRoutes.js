@@ -6,7 +6,8 @@ import {
   updateUserStatus, 
   getAllReports, 
   resolveReport, 
-  moderateGig 
+  moderateGig,
+  grantCredits
 } from '../controllers/adminController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
@@ -15,6 +16,7 @@ const router = express.Router();
 router.get('/stats', protect, admin, getSystemStats);
 router.get('/users', protect, admin, getAllUsers);
 router.put('/users/:id/status', protect, admin, updateUserStatus);
+router.post('/users/:id/grant-credits', protect, admin, grantCredits);
 router.put('/verify-user/:id', protect, admin, verifyUser);
 router.get('/reports', protect, admin, getAllReports);
 router.put('/reports/:id/resolve', protect, admin, resolveReport);

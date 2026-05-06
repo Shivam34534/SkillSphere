@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { API_URL } from '../config';
 import { Mail, GraduationCap, Shield, Award, Github, Linkedin, Globe, MessageCircle, Star, Zap, Clock, UserCheck, ShieldAlert, X } from 'lucide-react';
 import ReviewModal from '../components/ReviewModal';
 
@@ -19,9 +20,9 @@ const PublicProfile = () => {
     const fetchProfile = async () => {
       try {
         const [userRes, historyRes, reviewRes] = await Promise.all([
-          fetch(`http://localhost:5000/api/v1/users/${id}`),
-          fetch(`http://localhost:5000/api/v1/matches/user-history/${id}`),
-          fetch(`http://localhost:5000/api/v1/reviews/user/${id}`)
+          fetch(`${API_URL}/users/${id}`),
+          fetch(`${API_URL}/matches/user-history/${id}`),
+          fetch(`${API_URL}/reviews/user/${id}`)
         ]);
 
         if (userRes.ok) {
@@ -277,7 +278,7 @@ const PublicProfile = () => {
         revieweeName={user.name}
         matchId={selectedSession?._id}
         onReviewPosted={() => {
-           fetch(`http://localhost:5000/api/v1/reviews/user/${id}`)
+           fetch(`${API_URL}/reviews/user/${id}`)
              .then(res => res.json())
              .then(data => setReviews(data));
         }}

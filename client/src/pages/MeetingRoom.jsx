@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Video, Mic, MicOff, VideoOff, PhoneMissed, MessageSquare, Share, Users, X, Send } from 'lucide-react';
 import io from 'socket.io-client';
+import { SOCKET_URL, API_URL } from '../config';
 
 const MeetingRoom = () => {
   const { id } = useParams();
@@ -24,7 +25,7 @@ const MeetingRoom = () => {
 
   useEffect(() => {
     // 1. Initialize Socket
-    socketRef.current = io('http://localhost:5000');
+    socketRef.current = io(SOCKET_URL);
     
     // 2. Get User Media gracefully
     const getMedia = async () => {
@@ -176,7 +177,7 @@ const MeetingRoom = () => {
   const handleCompleteSession = async () => {
     if (window.confirm("Ready to complete this session? You will earn XP and increase your Trust Score!")) {
       try {
-        const response = await fetch(`http://localhost:5000/api/v1/matches/${id}/complete`, {
+        const response = await fetch(`${API_URL}/matches/${id}/complete`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`

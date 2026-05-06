@@ -27,6 +27,10 @@ export const transferCredits = async (req, res) => {
   const { receiverEmail, amount, reason } = req.body;
 
   try {
+    if (!amount || Number(amount) <= 0) {
+      return res.status(400).json({ message: 'Amount must be a positive number' });
+    }
+
     const sender = await User.findById(req.user._id);
     const receiver = await User.findOne({ email: receiverEmail });
 

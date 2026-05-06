@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Wallet as WalletIcon, ArrowUpRight, ArrowDownLeft, Zap, Clock, Send, Plus, Shield, TrendingUp, History } from 'lucide-react';
 import { updateUser } from '../store/slices/authSlice';
+import { API_URL } from '../config';
 
 const Wallet = () => {
   const { user, token } = useSelector((state) => state.auth);
@@ -20,10 +21,10 @@ const Wallet = () => {
   const fetchWalletData = async () => {
     try {
       const [summaryRes, transRes] = await Promise.all([
-        fetch('http://localhost:5000/api/v1/transactions/summary', {
+        fetch(`${API_URL}/transactions/summary`, {
           headers: { Authorization: `Bearer ${token}` }
         }),
-        fetch('http://localhost:5000/api/v1/transactions', {
+        fetch(`${API_URL}/transactions`, {
           headers: { Authorization: `Bearer ${token}` }
         })
       ]);
@@ -45,7 +46,7 @@ const Wallet = () => {
     e.preventDefault();
     setTransferLoading(true);
     try {
-      const response = await fetch('http://localhost:5000/api/v1/transactions/transfer', {
+      const response = await fetch(`${API_URL}/transactions/transfer`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

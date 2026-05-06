@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import { useSelector } from 'react-redux';
+import { API_URL, SOCKET_URL } from '../config';
 
 const SocketContext = createContext();
 
@@ -14,7 +15,7 @@ export const SocketProvider = ({ children }) => {
 
   useEffect(() => {
     if (user && token) {
-      const newSocket = io('http://localhost:5000');
+      const newSocket = io(SOCKET_URL);
       
       newSocket.on('connect', () => {
         console.log('Connected to socket server');
@@ -38,7 +39,7 @@ export const SocketProvider = ({ children }) => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/v1/notifications', {
+      const response = await fetch(`${API_URL}/notifications`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.ok) {
@@ -53,7 +54,7 @@ export const SocketProvider = ({ children }) => {
 
   const markAllRead = async () => {
     try {
-      await fetch('http://localhost:5000/api/v1/notifications/read-all', {
+      await fetch(`${API_URL}/notifications/read-all`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${token}` }
       });

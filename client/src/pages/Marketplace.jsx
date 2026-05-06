@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, BookOpen, Star, Zap, Code, Palette, Presentation, Languages, Music, Video, User, Inbox, ArrowRight, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../config';
 
 const Marketplace = () => {
   const [services, setServices] = useState([]);
@@ -16,7 +17,7 @@ const Marketplace = () => {
 
   const fetchServices = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/v1/services');
+      const response = await fetch(`${API_URL}/services`);
       if (response.ok) {
         const data = await response.json();
         setServices(data);

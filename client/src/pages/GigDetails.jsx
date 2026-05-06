@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { API_URL } from '../config';
 import { 
   Briefcase, Calendar, DollarSign, Users, Shield, 
   CheckCircle, ArrowLeft, Send, Clock, Award, 
@@ -26,7 +27,7 @@ const GigDetails = () => {
 
   const fetchGig = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/gigs/${id}`);
+      const response = await fetch(`${API_URL}/gigs/${id}`);
       if (response.ok) {
         const data = await response.json();
         setGig(data);
@@ -51,7 +52,7 @@ const GigDetails = () => {
     
     setApplying(true);
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/gigs/${id}/apply`, {
+      const response = await fetch(`${API_URL}/gigs/${id}/apply`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -78,7 +79,7 @@ const GigDetails = () => {
     if (!token) return navigate('/login');
     const endpoint = isSaved ? 'unsave' : 'save';
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/gigs/${id}/${endpoint}`, {
+      const response = await fetch(`${API_URL}/gigs/${id}/${endpoint}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` }
       });

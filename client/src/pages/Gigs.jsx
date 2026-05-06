@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { API_URL } from '../config';
 import { 
   Search, Filter, Briefcase, Star, Zap, 
   DollarSign, Clock, MapPin, ChevronRight,
@@ -27,7 +28,7 @@ const Gigs = () => {
         category: selectedCategory,
         type: selectedType
       });
-      const response = await fetch(`http://localhost:5000/api/v1/gigs?${query}`);
+      const response = await fetch(`${API_URL}/gigs?${query}`);
       if (response.ok) {
         const data = await response.json();
         setGigs(data);

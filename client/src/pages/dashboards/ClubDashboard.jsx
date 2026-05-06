@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Building, Users, Calendar, Target, DollarSign, ArrowRight, Activity, Plus, X, Sparkles, MapPin, Tag, Shield } from 'lucide-react';
+import { API_URL } from '../../config';
 import Modal from '../../components/Modal';
 
 const ClubDashboard = () => {
@@ -29,8 +30,8 @@ const ClubDashboard = () => {
     setLoading(true);
     try {
       const [gigRes, eventRes] = await Promise.all([
-        fetch('http://localhost:5000/api/v1/gigs/my-gigs', { headers: { Authorization: `Bearer ${token}` } }),
-        fetch('http://localhost:5000/api/v1/events/my-events', { headers: { Authorization: `Bearer ${token}` } })
+        fetch(`${API_URL}/gigs/my-gigs`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_URL}/events/my-events`, { headers: { Authorization: `Bearer ${token}` } })
       ]);
 
       if (gigRes.ok) {
@@ -51,7 +52,7 @@ const ClubDashboard = () => {
   const handleCreateGig = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/v1/gigs', {
+      const response = await fetch(`${API_URL}/gigs`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({
@@ -72,7 +73,7 @@ const ClubDashboard = () => {
   const handleCreateEvent = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5000/api/v1/events', {
+      const response = await fetch(`${API_URL}/events`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify(eventData)
@@ -90,7 +91,7 @@ const ClubDashboard = () => {
   const handleCompleteGig = async (gigId) => {
     if (!window.confirm("Mark this gig as completed? This will distribute the rewards (XP/₹) to the student.")) return;
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/gigs/${gigId}/complete`, {
+      const response = await fetch(`${API_URL}/gigs/${gigId}/complete`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -108,7 +109,7 @@ const ClubDashboard = () => {
 
   const handleHireApplicant = async (gigId, userId) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/gigs/${gigId}/hire`, {
+      const response = await fetch(`${API_URL}/gigs/${gigId}/hire`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

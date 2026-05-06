@@ -8,6 +8,10 @@ export const createGig = async (req, res) => {
   try {
     const { title, description, type, budget, skillsRequired } = req.body;
 
+    if (type === 'PAID' && (!budget || Number(budget) <= 0)) {
+      return res.status(400).json({ message: 'Paid gigs must have a positive budget' });
+    }
+
     if (req.user.role !== 'CLUB') {
       return res.status(403).json({ message: 'Only clubs can post gigs' });
     }

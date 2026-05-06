@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../store/slices/authSlice';
 import { User, Mail, GraduationCap, Shield, Award, Edit2, Save, X, Plus, Trash2, Github, Linkedin, Globe } from 'lucide-react';
+import { API_URL } from '../config';
 
 const Profile = () => {
   const { user, token } = useSelector((state) => state.auth);
@@ -15,7 +16,7 @@ const Profile = () => {
 
   const handleSave = async () => {
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/users/profile`, {
+      const response = await fetch(`${API_URL}/users/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

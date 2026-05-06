@@ -94,3 +94,27 @@ export const moderateGig = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const grantCredits = async (req, res) => {
+  try {
+    const { amount, reason } = req.body;
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+
+    user.walletBalance += Number(amount);
+    await user.save();
+
+    await Transaction.create({
+      senderId: req.user._id, // Admin
+      receiverId: user._id,
+      type: 'CREDITS',
+      amount,
+      reason: reason || 'Admin Grant',
+      status: 'COMPLETED'
+    });
+
+    res.json({ message: `Granted ${amount} credits to ${user.name}`, balance: user.walletBalance });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../store/slices/authSlice';
+import { API_URL } from '../../config';
 import { BookOpen, Users, Briefcase, Zap, Star, Shield, Search, ArrowRight, Video, FileText, Code, Palette, Presentation, Plus, Activity, Inbox, Clock } from 'lucide-react';
 
 const StudentDashboard = () => {
@@ -18,7 +19,7 @@ const StudentDashboard = () => {
 
   const fetchMatches = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/v1/matches', {
+      const response = await fetch(`${API_URL}/matches`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.ok) {
@@ -40,7 +41,7 @@ const StudentDashboard = () => {
 
     if (userBEmail && skillOfferedByA && skillOfferedByB) {
       try {
-        const response = await fetch('http://localhost:5000/api/v1/matches', {
+        const response = await fetch(`${API_URL}/matches`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -64,7 +65,7 @@ const StudentDashboard = () => {
 
   const handleRespond = async (matchId, status) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/matches/${matchId}/respond`, {
+      const response = await fetch(`${API_URL}/matches/${matchId}/respond`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +94,7 @@ const StudentDashboard = () => {
 
     if (title && description && category) {
       try {
-        const response = await fetch('http://localhost:5000/api/v1/services', {
+        const response = await fetch(`${API_URL}/services`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -123,7 +124,7 @@ const StudentDashboard = () => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:5000/api/v1/services', {
+      const response = await fetch(`${API_URL}/services`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.ok) {
@@ -144,7 +145,7 @@ const StudentDashboard = () => {
 
     if (window.confirm(`Buy this service for ${amount} Credits?`)) {
       try {
-        const response = await fetch(`http://localhost:5000/api/v1/services/${serviceId}/purchase`, {
+        const response = await fetch(`${API_URL}/services/${serviceId}/purchase`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

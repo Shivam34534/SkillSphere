@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { API_URL } from '../config';
 import { 
   Users, Shield, AlertTriangle, BarChart3, TrendingUp, 
   Search, CheckCircle, XCircle, Ban, Eye, Filter,
@@ -23,9 +25,9 @@ const AdminPanel = () => {
     try {
       const headers = { Authorization: `Bearer ${token}` };
       const [statsRes, usersRes, reportsRes] = await Promise.all([
-        fetch('http://localhost:5000/api/v1/admin/stats', { headers }),
-        fetch('http://localhost:5000/api/v1/admin/users', { headers }),
-        fetch('http://localhost:5000/api/v1/admin/reports', { headers })
+        fetch(`${API_URL}/admin/stats`, { headers }),
+        fetch(`${API_URL}/admin/users`, { headers }),
+        fetch(`${API_URL}/admin/reports`, { headers })
       ]);
 
       if (statsRes.ok) setStats(await statsRes.json());
@@ -40,7 +42,7 @@ const AdminPanel = () => {
 
   const handleStatusUpdate = async (userId, status) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/admin/users/${userId}/status`, {
+      const response = await fetch(`${API_URL}/admin/users/${userId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ status })
@@ -53,7 +55,7 @@ const AdminPanel = () => {
 
   const handleResolveReport = async (reportId, status) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/v1/admin/reports/${reportId}/resolve`, {
+      const response = await fetch(`${API_URL}/admin/reports/${reportId}/resolve`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
         body: JSON.stringify({ status })
