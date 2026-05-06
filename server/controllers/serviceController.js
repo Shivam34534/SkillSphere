@@ -19,10 +19,11 @@ export const createService = async (req, res) => {
 
 export const getServices = async (req, res) => {
   try {
-    const services = await Service.find({ isActive: true }).populate('freelancerId', 'name trustScore xpLevel profilePhoto');
+    const services = await Service.find({ isActive: true }).populate('freelancerId', 'name trustScore xpLevel profilePhoto') || [];
     res.json(services);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Get Services Error:', error);
+    res.status(500).json({ message: error.message || 'Internal Server Error' });
   }
 };
 

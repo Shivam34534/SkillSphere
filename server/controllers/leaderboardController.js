@@ -8,24 +8,25 @@ export const getLeaderboard = async (req, res) => {
     const topEarners = await User.find({ role: { $ne: 'ADMIN' } })
       .sort({ walletBalance: -1 })
       .limit(10)
-      .select('name profilePhoto walletBalance role xpLevel');
+      .select('name profilePhoto walletBalance role xpLevel') || [];
 
     const topTeachers = await User.find({ role: { $in: ['STUDENT', 'FREELANCER'] } })
       .sort({ xpPoints: -1 })
       .limit(10)
-      .select('name profilePhoto xpPoints role xpLevel badges');
+      .select('name profilePhoto xpPoints role xpLevel badges') || [];
 
     const topClubs = await User.find({ role: 'CLUB' })
       .sort({ trustScore: -1 })
       .limit(10)
-      .select('name profilePhoto trustScore completedGigs');
+      .select('name profilePhoto trustScore completedGigs') || [];
 
     res.json({
-      topEarners,
-      topTeachers,
-      topClubs
+      topEarners: topEarners || [],
+      topTeachers: topTeachers || [],
+      topClubs: topClubs || []
     });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error('Leaderboard Error:', error);
+    res.status(500).json({ message: error.message || 'Internal Server Error' });
   }
 };
