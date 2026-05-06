@@ -210,63 +210,75 @@ function Home() {
         </h2>
         
         <div className="roles-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full px-4">
-          <div className="role-card p-6 md:p-8 flex flex-col gap-4">
-            <div><GraduationCap size={24} color="#f8f8fa" /></div>
-            <h3 className="text-xl md:text-2xl m-0 font-bold">Student</h3>
-            <ul className="role-list m-0 space-y-2">
-              <li className="text-xs md:text-sm">Browse skills</li>
-              <li className="text-xs md:text-sm">Hire peers</li>
-              <li className="text-xs md:text-sm">Track learning</li>
+          <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
+            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+              <GraduationCap size={24} color="white" />
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Student</h3>
+            <ul className="role-list space-y-3">
+              <li className="text-sm md:text-base">Browse skills</li>
+              <li className="text-sm md:text-base">Hire peers</li>
+              <li className="text-sm md:text-base">Track learning</li>
             </ul>
           </div>
           
-          <div className="role-card p-6 md:p-8 flex flex-col gap-4">
-            <div><Code size={24} color="#f8f8fa" /></div>
-            <h3 className="text-xl md:text-2xl m-0 font-bold">Freelancer</h3>
-            <ul className="role-list m-0 space-y-2">
-              <li className="text-xs md:text-sm">List services</li>
-              <li className="text-xs md:text-sm">Manage orders</li>
-              <li className="text-xs md:text-sm">Earn & withdraw</li>
+          <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
+            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors">
+              <Code size={24} color="white" />
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Freelancer</h3>
+            <ul className="role-list space-y-3">
+              <li className="text-sm md:text-base">List services</li>
+              <li className="text-sm md:text-base">Manage orders</li>
+              <li className="text-sm md:text-base">Earn & withdraw</li>
             </ul>
           </div>
 
-          <div className="role-card p-6 md:p-8 flex flex-col gap-4">
-            <div><Users size={24} color="#f8f8fa" /></div>
-            <h3 className="text-xl md:text-2xl m-0 font-bold">Club</h3>
-            <ul className="role-list m-0 space-y-2">
-              <li className="text-xs md:text-sm">Recruit talent</li>
-              <li className="text-xs md:text-sm">Plan events</li>
-              <li className="text-xs md:text-sm">Track budget</li>
+          <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
+            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
+              <Users size={24} color="white" />
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Club</h3>
+            <ul className="role-list space-y-3">
+              <li className="text-sm md:text-base">Recruit talent</li>
+              <li className="text-sm md:text-base">Plan events</li>
+              <li className="text-sm md:text-base">Track budget</li>
             </ul>
           </div>
 
-          <div className="role-card p-6 md:p-8 flex flex-col gap-4">
-            <div><ShieldCheck size={24} color="#f8f8fa" /></div>
-            <h3 className="text-xl md:text-2xl m-0 font-bold">Admin</h3>
-            <ul className="role-list m-0 space-y-2">
-              <li className="text-xs md:text-sm">Verify users</li>
-              <li className="text-xs md:text-sm">Moderate</li>
-              <li className="text-xs md:text-sm">Revenue ops</li>
+          <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
+            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
+              <ShieldCheck size={24} color="white" />
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Admin</h3>
+            <ul className="role-list space-y-3">
+              <li className="text-sm md:text-base">Verify users</li>
+              <li className="text-sm md:text-base">Moderate</li>
+              <li className="text-sm md:text-base">Revenue ops</li>
             </ul>
           </div>
 
-          <div className="role-card p-6 md:p-8 flex flex-col gap-4">
-            <div><Award size={24} color="#f8f8fa" /></div>
-            <h3 className="text-xl md:text-2xl m-0 font-bold">Alumni</h3>
-            <ul className="role-list m-0 space-y-2">
-              <li className="text-xs md:text-sm">Mentor</li>
-              <li className="text-xs md:text-sm">Workshops</li>
-              <li className="text-xs md:text-sm">Referrals</li>
+          <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
+            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-secondary/20 transition-colors">
+              <Award size={24} color="white" />
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Alumni</h3>
+            <ul className="role-list space-y-3">
+              <li className="text-sm md:text-base">Mentor</li>
+              <li className="text-sm md:text-base">Workshops</li>
+              <li className="text-sm md:text-base">Referrals</li>
             </ul>
           </div>
 
-          <div className="role-card p-6 md:p-8 flex flex-col gap-4">
-            <div><BookOpen size={24} color="#f8f8fa" /></div>
-            <h3 className="text-xl md:text-2xl m-0 font-bold">Faculty</h3>
-            <ul className="role-list m-0 space-y-2">
-              <li className="text-xs md:text-sm">Research gigs</li>
-              <li className="text-xs md:text-sm">Supervise</li>
-              <li className="text-xs md:text-sm">Mentor</li>
+          <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
+            <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 transition-colors">
+              <BookOpen size={24} color="white" />
+            </div>
+            <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Faculty</h3>
+            <ul className="role-list space-y-3">
+              <li className="text-sm md:text-base">Research gigs</li>
+              <li className="text-sm md:text-base">Supervise</li>
+              <li className="text-sm md:text-base">Mentor</li>
             </ul>
           </div>
         </div>
