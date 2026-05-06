@@ -15,9 +15,16 @@ const userSchema = new mongoose.Schema(
     skillsToTeach: [{ type: String }],
     skillsToLearn: [{ type: String }],
     walletBalance: { type: Number, default: 0 },
+    xpPoints: { type: Number, default: 0 },
     xpLevel: { type: Number, default: 1 },
     trustScore: { type: Number, default: 50 },
     isVerified: { type: Boolean, default: false },
+    completedGigs: { type: Number, default: 0 },
+    badges: [{ 
+      name: String, 
+      icon: String, 
+      awardedAt: { type: Date, default: Date.now } 
+    }],
     otp: { type: String },
     otpExpires: { type: Date },
   },

@@ -173,6 +173,28 @@ const MeetingRoom = () => {
     setNewMessage('');
   };
 
+  const handleCompleteSession = async () => {
+    if (window.confirm("Ready to complete this session? You will earn XP and increase your Trust Score!")) {
+      try {
+        const response = await fetch(`http://localhost:5000/api/v1/matches/${id}/complete`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+        if (response.ok) {
+          alert("Session completed! 🚀 Rewards added to your profile.");
+          navigate('/dashboard');
+        } else {
+          const err = await response.json();
+          alert(err.message);
+        }
+      } catch (error) {
+        alert("Failed to complete session");
+      }
+    }
+  };
+
   return (
     <div style={{ height: '100vh', width: '100vw', backgroundColor: '#0f172a', color: 'white', display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
       {/* Header */}
@@ -271,8 +293,11 @@ const MeetingRoom = () => {
         <button onClick={() => setChatOpen(!chatOpen)} style={{ width: '50px', height: '50px', borderRadius: '50%', border: 'none', backgroundColor: chatOpen ? '#3b82f6' : '#334155', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
           <MessageSquare size={20} />
         </button>
-        <button onClick={() => navigate('/dashboard')} style={{ width: '60px', height: '50px', borderRadius: '25px', border: 'none', backgroundColor: '#ef4444', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', marginLeft: '2rem' }}>
+        <button onClick={() => navigate('/dashboard')} style={{ width: '60px', height: '50px', borderRadius: '25px', border: 'none', backgroundColor: '#334155', color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer', marginLeft: '2rem' }}>
           <PhoneMissed size={22} />
+        </button>
+        <button onClick={handleCompleteSession} className="btn-primary" style={{ height: '50px', padding: '0 1.5rem', borderRadius: '25px', fontSize: '0.9rem', fontWeight: 'bold' }}>
+          Complete Session
         </button>
       </div>
     </div>

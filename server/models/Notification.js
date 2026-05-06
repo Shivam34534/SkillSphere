@@ -17,7 +17,7 @@ const notificationSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ['GIG_UPDATE', 'MESSAGE', 'WALLET', 'SYSTEM'],
+      enum: ['MATCH', 'GIG', 'REMINDER', 'WALLET', 'INVITATION', 'REVIEW', 'SYSTEM'],
       required: true,
     },
     isRead: {

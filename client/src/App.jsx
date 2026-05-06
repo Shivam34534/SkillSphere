@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -7,10 +7,14 @@ import Dashboard from './pages/Dashboard';
 import MeetingRoom from './pages/MeetingRoom';
 import Marketplace from './pages/Marketplace';
 import Profile from './pages/Profile';
+import Wallet from './pages/Wallet';
+import Leaderboard from './pages/Leaderboard';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
+import { Wallet as WalletIcon } from 'lucide-react';
+import { SocketProvider } from './context/SocketContext';
+import NotificationBell from './components/NotificationBell';
 
 function Navigation() {
   const { user } = useSelector((state) => state.auth);
@@ -31,16 +35,19 @@ function Navigation() {
         </Link>
         <div className="nav-links">
           <Link to="/marketplace" className="nav-link">Marketplace</Link>
+          <Link to="/leaderboard" className="nav-link">Leaderboard</Link>
           <a href="/#features" className="nav-link">Features</a>
           <a href="/#how-it-works" className="nav-link">How it works</a>
-          <a href="/#roles" className="nav-link">Roles</a>
-          <a href="/#pricing" className="nav-link">Pricing</a>
         </div>
         <div className="nav-actions">
           {user ? (
             <>
+              <NotificationBell />
+              <Link to="/wallet" className="nav-link flex items-center gap-2">
+                <WalletIcon size={18} />
+                <span>Wallet</span>
+              </Link>
               <Link to="/profile" className="nav-link">Profile</Link>
-              <span className="user-name">{user.name}</span>
               <button className="btn-primary" onClick={handleLogout} style={{padding: '0.5rem 1.25rem', fontSize: '0.9rem'}}>Log Out</button>
             </>
           ) : (
@@ -59,23 +66,27 @@ function Navigation() {
 
 function App() {
   return (
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <div className="app-container">
-        <Navigation />
-        
-        <div style={{ paddingTop: '80px', width: '100%' }}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/marketplace" element={<Marketplace />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/meeting/:id" element={<MeetingRoom />} />
-            <Route path="/profile" element={<Profile />} />
-          </Routes>
+    <SocketProvider>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <div className="app-container">
+          <Navigation />
+          
+          <div style={{ paddingTop: '80px', width: '100%' }}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/marketplace" element={<Marketplace />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/meeting/:id" element={<MeetingRoom />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/wallet" element={<Wallet />} />
+              <Route path="/leaderboard" element={<Leaderboard />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </Router>
+      </Router>
+    </SocketProvider>
   );
 }
 

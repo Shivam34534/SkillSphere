@@ -4,6 +4,7 @@ import cors from 'cors';
 import http from 'http';
 import { Server } from 'socket.io';
 import connectDB from './config/db.js';
+import Notification from './models/Notification.js';
 
 // Route imports
 import authRoutes from './routes/authRoutes.js';
@@ -15,6 +16,9 @@ import adminRoutes from './routes/adminRoutes.js';
 import serviceRoutes from './routes/serviceRoutes.js';
 import matchRoutes from './routes/matchRoutes.js';
 import eventRoutes from './routes/eventRoutes.js';
+import transactionRoutes from './routes/transactionRoutes.js';
+import leaderboardRoutes from './routes/leaderboardRoutes.js';
+import notificationRoutes from './routes/notificationRoutes.js';
 
 // Load env
 // Env loaded via import 'dotenv/config' at top
@@ -38,6 +42,9 @@ app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/services', serviceRoutes);
 app.use('/api/v1/matches', matchRoutes);
 app.use('/api/v1/events', eventRoutes);
+app.use('/api/v1/transactions', transactionRoutes);
+app.use('/api/v1/leaderboard', leaderboardRoutes);
+app.use('/api/v1/notifications', notificationRoutes);
 
 app.get('/', (req, res) => {
   res.send('<h1>Server is running! 🚀</h1><p>Welcome to the SkillSphere API Backend.</p>');
@@ -65,8 +72,18 @@ const io = new Server(server, {
   }
 });
 
+// Map of userId to socketId for notifications
+const userSockets = new Map();
+
 io.on('connection', (socket) => {
-  console.log('User connected to WebRTC socket:', socket.id);
+  console.log('User connected to socket:', socket.id);
+
+  // Authenticated user joins their own private room
+  socket.on('register-user', (userId) => {
+    socket.join(userId);
+    userSockets.set(userId, socket.id);
+    console.log(`User ${userId} registered for notifications`);
+  });
 
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId);
@@ -74,6 +91,13 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
       socket.to(roomId).emit('user-disconnected', userId);
+      // Clean up userSockets
+      for (const [uid, sid] of userSockets.entries()) {
+        if (sid === socket.id) {
+          userSockets.delete(uid);
+          break;
+        }
+      }
     });
   });
 
@@ -95,6 +119,22 @@ io.on('connection', (socket) => {
     socket.to(roomId).emit('receive-chat', message);
   });
 });
+
+// Helper function to send real-time notifications
+export const sendNotification = async (userId, notificationData) => {
+  try {
+    const notification = await Notification.create({
+      userId,
+      ...notificationData
+    });
+    
+    // Push to socket if user is online
+    io.to(userId.toString()).emit('new-notification', notification);
+    return notification;
+  } catch (error) {
+    console.error('Socket notification error:', error);
+  }
+};
 
 server.on('error', (error) => {
   if (error.code === 'EADDRINUSE') {

@@ -37,18 +37,18 @@ const StudentDashboard = () => {
     if (!userBEmail) return;
     const skillOfferedByA = window.prompt("What skill are YOU offering?");
     const skillOfferedByB = window.prompt("What skill do they have that YOU need?");
-    
+
     if (userBEmail && skillOfferedByA && skillOfferedByB) {
       try {
         const response = await fetch('http://localhost:5000/api/v1/matches', {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}` 
+            Authorization: `Bearer ${token}`
           },
           body: JSON.stringify({ userBEmail, skillOfferedByA, skillOfferedByB, exchangeType: 'BARTER' })
         });
-        
+
         if (response.ok) {
           alert('Match requested successfully!');
           fetchMatches();
@@ -66,9 +66,9 @@ const StudentDashboard = () => {
     try {
       const response = await fetch(`http://localhost:5000/api/v1/matches/${matchId}/respond`, {
         method: 'POST',
-        headers: { 
+        headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}` 
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify({ status })
       });
@@ -90,21 +90,21 @@ const StudentDashboard = () => {
     const description = window.prompt("Service Description:");
     const category = window.prompt("Category (e.g., 'Web Dev'):");
     const amount = window.prompt("Price in Credits/Cash (e.g., 50):");
-    
+
     if (title && description && category) {
       try {
         const response = await fetch('http://localhost:5000/api/v1/services', {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}` 
+            Authorization: `Bearer ${token}`
           },
-          body: JSON.stringify({ 
-            title, description, category, 
+          body: JSON.stringify({
+            title, description, category,
             pricing: { type: 'CREDITS', amount: Number(amount) || 0 }
           })
         });
-        
+
         if (response.ok) {
           alert('Service (Micro-service) posted successfully!');
         } else {
@@ -140,7 +140,7 @@ const StudentDashboard = () => {
       alert(`You don't have enough credits. You need ${amount} credits.`);
       return;
     }
-    
+
     if (window.confirm(`Buy this service for ${amount} Credits?`)) {
       try {
         const response = await fetch(`http://localhost:5000/api/v1/services/${serviceId}/purchase`, {
@@ -150,7 +150,7 @@ const StudentDashboard = () => {
             Authorization: `Bearer ${token}`
           }
         });
-        
+
         if (response.ok) {
           dispatch(updateUser({ walletBalance: user.walletBalance - amount }));
         } else {
@@ -170,39 +170,34 @@ const StudentDashboard = () => {
           <h1>Welcome, {user.name}</h1>
           <p>Student • {user.department} • Level {user.xpLevel} Beginner</p>
         </div>
-        <div 
-          className="wallet-pill" 
-          onClick={() => {
-            const amount = window.prompt("🚀 MVP TEST MODE: How many free credits do you want to add to your wallet?", "100");
-            if (amount && !isNaN(amount)) {
-              dispatch(updateUser({ walletBalance: (user.walletBalance || 0) + parseInt(amount) }));
-            }
-          }}
-          title="Click to add test credits!"
+        <Link
+          to="/wallet"
+          className="wallet-pill"
+          title="View your campus wallet"
         >
           <Zap size={16} color="#fbbf24" />
           <span>{user.walletBalance || 0} Credits</span>
-          <span className="xp-badge">+{((user.xpLevel || 1) * 10)} XP</span>
-        </div>
+          <span className="xp-badge">+{Math.floor((user.xpLevel || 1) * 100)} XP</span>
+        </Link>
       </div>
 
       <div className="dashboard-grid">
         {/* Main Feed */}
         <div className="main-column">
-          
+
           {/* Quick Actions */}
           <div className="action-cards">
-            <div className="glass-card" style={{padding: '1.5rem', background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%)', borderColor: 'rgba(139, 92, 246, 0.2)'}}>
-              <BookOpen size={24} color="#a855f7" style={{marginBottom: '1rem'}} />
+            <div className="glass-card" style={{ padding: '1.5rem', background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.05) 100%)', borderColor: 'rgba(139, 92, 246, 0.2)' }}>
+              <BookOpen size={24} color="#a855f7" style={{ marginBottom: '1rem' }} />
               <h3>Learn a Skill</h3>
               <p className="text-sm text-text-muted mb-4">Find tutors and buy sessions</p>
               <button onClick={handleBrowseTutors} className="btn-primary w-full py-2 text-sm">{showServices ? "Hide Tutors" : "Browse Tutors"}</button>
             </div>
-            <div className="glass-card" style={{padding: '1.5rem', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%)', borderColor: 'rgba(16, 185, 129, 0.2)'}}>
-              <Briefcase size={24} color="#10b981" style={{marginBottom: '1rem'}} />
+            <div className="glass-card" style={{ padding: '1.5rem', background: 'linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%)', borderColor: 'rgba(16, 185, 129, 0.2)' }}>
+              <Briefcase size={24} color="#10b981" style={{ marginBottom: '1rem' }} />
               <h3>Teach & Earn</h3>
               <p className="text-sm text-text-muted mb-4">Offer your skills to peers</p>
-              <button onClick={handlePostService} className="btn-primary w-full py-2 text-sm" style={{background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'}}>Create Micro-service</button>
+              <button onClick={handlePostService} className="btn-primary w-full py-2 text-sm" style={{ background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)' }}>Create Micro-service</button>
             </div>
           </div>
 
@@ -246,7 +241,7 @@ const StudentDashboard = () => {
                 matches.map((match, idx) => {
                   const isInitiator = match.userAId._id === user._id;
                   const otherUser = isInitiator ? match.userBId : match.userAId;
-                  
+
                   return (
                     <div key={match._id} className={`flex justify-between items-center ${idx !== matches.length - 1 ? 'border-b border-glass-border pb-4 mb-4' : ''}`}>
                       <div className="flex items-center gap-4">
@@ -261,7 +256,7 @@ const StudentDashboard = () => {
                           </div>
                         </div>
                       </div>
-                      
+
                       {!isInitiator && match.status === 'PENDING' ? (
                         <div className="flex gap-2">
                           <button onClick={() => handleRespond(match._id, 'ACCEPTED')} className="btn-primary py-1.5 px-3 text-xs bg-success">Accept</button>
@@ -295,7 +290,7 @@ const StudentDashboard = () => {
         <div className="sidebar">
           <div className="glass-card p-6">
             <h3 className="text-lg mb-4">Your Skills</h3>
-            
+
             <div className="mb-4">
               <span className="text-[10px] text-text-muted uppercase tracking-widest font-bold">Offering</span>
               <div className="flex flex-wrap gap-2 mt-2">
@@ -317,29 +312,64 @@ const StudentDashboard = () => {
 
           <div className="glass-card p-6">
             <h3 className="text-lg mb-4 flex justify-between items-center">
-              Trust & Growth 
-              <span className="text-[10px] bg-accent/20 text-accent py-1 px-2 rounded-lg">
-                Level {user.xpLevel || 1}
+              Trust & Growth
+              <span className="text-[10px] bg-accent/20 text-accent py-1 px-2 rounded-lg uppercase tracking-tighter font-bold">
+                Level {user.xpLevel || 1} {user.xpPoints >= 1000 ? 'Expert' : user.xpPoints >= 500 ? 'Mentor' : 'Beginner'}
               </span>
             </h3>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-sm text-text-muted">Trust Score</span>
-              <span className="font-bold text-success">{user.trustScore || 50}/100</span>
+
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-text-muted">XP Progress</span>
+                <span className="text-xs font-bold text-primary">{user.xpPoints % 500}/500 XP</span>
+              </div>
+              <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-primary to-accent transition-all duration-1000"
+                  style={{ width: `${((user.xpPoints % 500) / 500) * 100}%` }}
+                ></div>
+              </div>
+              <p className="text-[9px] text-text-muted mt-2 text-right italic">
+                {500 - (user.xpPoints % 500)} XP more to Level {user.xpLevel + 1}
+              </p>
             </div>
-            <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-              <div className="h-full bg-success transition-all duration-500" style={{width: `${user.trustScore || 50}%`}}></div>
+
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-xs text-text-muted">Trust Score</span>
+                <span className="font-bold text-success text-xs">{user.trustScore || 50}/100</span>
+              </div>
+              <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                <div className="h-full bg-success transition-all duration-500" style={{ width: `${user.trustScore || 50}%` }}></div>
+              </div>
             </div>
-            
+
+            {user.badges?.length > 0 && (
+              <div className="mt-6 pt-6 border-t border-glass-border">
+                <h4 className="text-xs font-bold text-text-muted uppercase tracking-widest mb-4">Badges Earned</h4>
+                <div className="grid grid-cols-4 gap-2">
+                  {user.badges.map((badge, i) => (
+                    <div key={i} className="flex flex-col items-center gap-1 group cursor-help" title={badge.name}>
+                      <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-lg border border-white/10 group-hover:bg-primary/20 group-hover:border-primary/40 transition-all">
+                        {badge.icon || '🏅'}
+                      </div>
+                      <span className="text-[8px] text-center text-text-muted opacity-0 group-hover:opacity-100 transition-opacity truncate w-full">{badge.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             <div className="mt-6 flex items-center justify-between mb-2">
-              <span className="text-sm text-text-muted">Gigs Completed</span>
-              <span className="font-bold text-accent">{user.completedGigs || 0}</span>
+              <span className="text-xs text-text-muted">Gigs Completed</span>
+              <span className="font-bold text-accent text-xs">{user.completedGigs || 0}</span>
             </div>
 
             <p className="text-[10px] text-text-muted mt-4 flex items-center gap-2 leading-relaxed">
-              <Shield size={12} className="text-accent"/> 
-              {user.xpLevel >= 5 
-                ? "Max level! You're a Campus Expert!" 
-                : `Complete ${5 - ((user.completedGigs || 0) % 5)} more gigs to reach ${['Beginner', 'Learner', 'Contributor', 'Mentor', 'Campus Expert'][user.xpLevel || 1] || 'next'} level!`}
+              <Shield size={12} className="text-accent" />
+              {user.xpLevel >= 10
+                ? "Max level reached! Campus Legend."
+                : `Help peers or complete gigs to climb the leaderboard!`}
             </p>
           </div>
         </div>

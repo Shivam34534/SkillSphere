@@ -1,10 +1,11 @@
 import Match from '../models/Match.js';
 import User from '../models/User.js';
+import { sendNotification } from '../server.js';
 
 export const createMatchRequest = async (req, res) => {
   try {
     const { userBEmail, skillOfferedByA, skillOfferedByB, exchangeType } = req.body;
-    
+
     // Find the other user by their email
     const userB = await User.findOne({ email: userBEmail });
     if (!userB) {
@@ -25,6 +26,15 @@ export const createMatchRequest = async (req, res) => {
       skillOfferedByB,
       exchangeType
     });
+
+    // Notify user B
+    await sendNotification(userBId, {
+      title: 'New Skill Match Request! 🤝',
+      message: `${req.user.name} wants to exchange ${skillOfferedByA} for your ${skillOfferedByB}.`,
+      type: 'MATCH',
+      link: '/dashboard'
+    });
+
     res.status(201).json(match);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -40,12 +50,12 @@ export const getMyMatches = async (req, res) => {
     const matches = await Match.find({
       $or: [{ userAId: req.user._id }, { userBId: req.user._id }]
     })
-    .populate('userAId', 'name profilePhoto trustScore email')
-    .populate('userBId', 'name profilePhoto trustScore email');
-    
+      .populate('userAId', 'name profilePhoto trustScore email')
+      .populate('userBId', 'name profilePhoto trustScore email');
+
     // Filter out any matches where population failed (user deleted)
     const validMatches = matches.filter(m => m.userAId && m.userBId);
-    
+
     res.json(validMatches);
   } catch (error) {
     console.error('Error in getMyMatches:', error);
@@ -57,9 +67,9 @@ export const respondToMatch = async (req, res) => {
   try {
     const { status } = req.body; // 'ACCEPTED' or 'DECLINED'
     const match = await Match.findById(req.params.id);
-    
+
     if (!match) return res.status(404).json({ message: 'Match not found' });
-    
+
     // Only the receiver (userB) can accept or decline
     if (match.userBId.toString() !== req.user._id.toString()) {
       return res.status(403).json({ message: 'Not authorized to respond to this match' });
@@ -70,9 +80,78 @@ export const respondToMatch = async (req, res) => {
       // Simulate generating a meeting link
       match.meetingLink = 'https://meet.skillsphere.local/' + match._id;
     }
-    
+
     await match.save();
+
+    // Notify user A about the response
+    const userAId = match.userAId.toString();
+    await sendNotification(userAId, {
+      title: status === 'ACCEPTED' ? 'Match Accepted! 🎉' : 'Match Declined 😔',
+      message: `${req.user.name} has ${status.toLowerCase()} your skill exchange request.`,
+      type: 'MATCH',
+      link: '/dashboard'
+    });
+
     res.json(match);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const completeMatch = async (req, res) => {
+  try {
+    const match = await Match.findById(req.params.id);
+    if (!match) return res.status(404).json({ message: 'Match not found' });
+
+    if (match.status === 'COMPLETED') {
+      return res.status(400).json({ message: 'Match already completed' });
+    }
+
+    // Only participants can complete
+    if (match.userAId.toString() !== req.user._id.toString() && match.userBId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Not authorized' });
+    }
+
+    match.status = 'COMPLETED';
+    await match.save();
+
+    // Reward both users with XP
+    const userA = await User.findById(match.userAId);
+    const userB = await User.findById(match.userBId);
+
+    // Increment XP Points
+    userA.xpPoints += 50;
+    userB.xpPoints += 50;
+
+    // Logic for User Levels (Every 500 XP = 1 Level)
+    userA.xpLevel = Math.floor(userA.xpPoints / 500) + 1;
+    userB.xpLevel = Math.floor(userB.xpPoints / 500) + 1;
+
+    userA.trustScore = Math.min(100, userA.trustScore + 5);
+    userB.trustScore = Math.min(100, userB.trustScore + 5);
+
+    // Badge System Check
+    const checkBadges = (user) => {
+      const existingBadges = user.badges.map(b => b.name);
+
+      if (user.xpPoints >= 1000 && !existingBadges.includes('Campus Expert')) {
+        user.badges.push({ name: 'Campus Expert', icon: '👑' });
+      }
+      if (user.xpPoints >= 500 && !existingBadges.includes('Top Mentor')) {
+        user.badges.push({ name: 'Top Mentor', icon: '⭐' });
+      }
+      if (user.isVerified && !existingBadges.includes('Verified Student')) {
+        user.badges.push({ name: 'Verified Student', icon: '🛡️' });
+      }
+    };
+
+    checkBadges(userA);
+    checkBadges(userB);
+
+    await userA.save();
+    await userB.save();
+
+    res.json({ message: 'Session completed! +50 XP and Trust Score updated.', match });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
