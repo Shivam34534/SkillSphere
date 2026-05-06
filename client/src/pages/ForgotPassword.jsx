@@ -74,13 +74,14 @@ function ForgotPassword() {
             )}
             
             <div className="input-group">
-              <label className="block text-sm font-medium text-text-muted mb-2">College Email</label>
+              <label htmlFor="forgot-email" className="block text-sm font-medium text-text-muted mb-2">College Email</label>
               <div className="input-wrapper relative flex items-center">
                 <Mail className="input-icon absolute left-3 text-text-muted" size={18} />
                 <input 
                   type="email" 
                   id="forgot-email"
                   name="email"
+                  autocomplete="email"
                   placeholder="alex@college.edu" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}

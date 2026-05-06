@@ -48,11 +48,14 @@ function Login() {
           )}
           
           <div className="input-group">
-            <label className="block text-sm font-medium text-text-muted mb-2">Email Address</label>
+            <label htmlFor="login-email" className="block text-sm font-medium text-text-muted mb-2">Email Address</label>
             <div className="input-wrapper relative flex items-center">
               <Mail className="input-icon absolute left-3 text-text-muted" size={18} />
               <input 
                 type="email" 
+                id="login-email"
+                name="email"
+                autocomplete="email"
                 placeholder="alex@example.com" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -63,11 +66,14 @@ function Login() {
           </div>
           
           <div className="input-group">
-            <label className="block text-sm font-medium text-text-muted mb-2">Password</label>
+            <label htmlFor="login-password" name="password" className="block text-sm font-medium text-text-muted mb-2">Password</label>
             <div className="input-wrapper relative flex items-center">
               <Lock className="input-icon absolute left-3 text-text-muted" size={18} />
               <input 
                 type={showPassword ? "text" : "password"} 
+                id="login-password"
+                name="password"
+                autocomplete="current-password"
                 placeholder="••••••••" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

@@ -77,13 +77,14 @@ function ResetPassword() {
             )}
             
             <div className="input-group">
-              <label className="block text-sm font-medium text-text-muted mb-2">New Password</label>
+              <label htmlFor="reset-password" name="password" className="block text-sm font-medium text-text-muted mb-2">New Password</label>
               <div className="input-wrapper relative flex items-center">
                 <Lock className="input-icon absolute left-3 text-text-muted" size={18} />
                 <input 
                   type={showPassword ? "text" : "password"} 
                   id="reset-password"
                   name="password"
+                  autocomplete="new-password"
                   placeholder="••••••••" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -101,13 +102,14 @@ function ResetPassword() {
             </div>
 
             <div className="input-group">
-              <label className="block text-sm font-medium text-text-muted mb-2">Confirm Password</label>
+              <label htmlFor="confirm-password" name="confirmPassword" className="block text-sm font-medium text-text-muted mb-2">Confirm Password</label>
               <div className="input-wrapper relative flex items-center">
                 <Lock className="input-icon absolute left-3 text-text-muted" size={18} />
                 <input 
                   type={showPassword ? "text" : "password"} 
                   id="confirm-password"
                   name="confirmPassword"
+                  autocomplete="new-password"
                   placeholder="••••••••" 
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}

@@ -139,12 +139,14 @@ function Signup() {
         {step === 2 && (
           <div className="flex flex-col gap-6">
             <div className="input-group relative">
-              <label className="block text-sm font-medium text-text-muted mb-2">Full Name</label>
+              <label htmlFor="signup-name" className="block text-sm font-medium text-text-muted mb-2">Full Name</label>
               <div className="relative flex items-center">
                 <User className="absolute left-3 text-text-muted" size={18} />
                 <input 
                   type="text" 
+                  id="signup-name"
                   name="name" 
+                  autocomplete="name"
                   placeholder="Alex Mercer" 
                   value={formData.name} 
                   onChange={handleChange} 
@@ -158,12 +160,14 @@ function Signup() {
             </div>
 
             <div className="input-group relative">
-              <label className="block text-sm font-medium text-text-muted mb-2">College or Personal Email</label>
+              <label htmlFor="signup-email" className="block text-sm font-medium text-text-muted mb-2">College or Personal Email</label>
               <div className="relative flex items-center">
                 <Mail className="absolute left-3 text-text-muted" size={18} />
                 <input 
                   type="email" 
+                  id="signup-email"
                   name="email" 
+                  autocomplete="email"
                   placeholder="alex@example.com" 
                   value={formData.email} 
                   onChange={handleChange} 
@@ -177,12 +181,14 @@ function Signup() {
             </div>
 
             <div className="input-group relative">
-              <label className="block text-sm font-medium text-text-muted mb-2">Mobile Number</label>
+              <label htmlFor="signup-mobile" className="block text-sm font-medium text-text-muted mb-2">Mobile Number</label>
               <div className="relative flex items-center">
                 <Phone className="absolute left-3 text-text-muted" size={18} />
                 <input 
                   type="tel" 
+                  id="signup-mobile"
                   name="mobile" 
+                  autocomplete="tel"
                   placeholder="+91 9876543210" 
                   value={formData.mobile} 
                   onChange={handleChange} 
@@ -196,12 +202,14 @@ function Signup() {
             </div>
             
             <div className="input-group relative">
-              <label className="block text-sm font-medium text-text-muted mb-2">Password</label>
+              <label htmlFor="signup-password" name="password" className="block text-sm font-medium text-text-muted mb-2">Password</label>
               <div className="relative flex items-center">
                 <Lock className="absolute left-3 text-text-muted" size={18} />
                 <input 
                   type={showPassword ? "text" : "password"} 
+                  id="signup-password"
                   name="password" 
+                  autocomplete="new-password"
                   placeholder="••••••••" 
                   value={formData.password} 
                   onChange={handleChange} 
@@ -244,12 +252,14 @@ function Signup() {
             </div>
 
             <div className="input-group relative">
-              <label className="block text-sm font-medium text-text-muted mb-2">College / University Name</label>
+              <label htmlFor="college-name" className="block text-sm font-medium text-text-muted mb-2">College / University Name</label>
               <div className="relative flex items-center">
                 <Building className="absolute left-3 text-text-muted" size={18} />
                 <input 
                   type="text" 
+                  id="college-name"
                   name="collegeName" 
+                  autocomplete="organization"
                   placeholder="e.g. IIT Bombay" 
                   value={formData.collegeName} 
                   onChange={handleChange} 
@@ -263,11 +273,12 @@ function Signup() {
             </div>
 
             <div className="input-group relative">
-              <label className="block text-sm font-medium text-text-muted mb-2">Department / Major</label>
+              <label htmlFor="signup-department" className="block text-sm font-medium text-text-muted mb-2">Department / Major</label>
               <div className="relative flex items-center">
                 <Book className="absolute left-3 text-text-muted" size={18} />
                 <input 
                   type="text" 
+                  id="signup-department"
                   name="department" 
                   placeholder="e.g. Computer Science" 
                   value={formData.department} 
@@ -283,10 +294,10 @@ function Signup() {
 
             {formData.role !== 'CLUB' && (
               <div className="input-group">
-                <label className="block text-sm font-medium text-text-muted mb-2">Year of Study</label>
+                <label htmlFor="signup-year" className="block text-sm font-medium text-text-muted mb-2">Year of Study</label>
                 <div className="relative flex items-center">
                   <GraduationCap className="absolute left-3 text-text-muted" size={18} />
-                  <select name="year" value={formData.year} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none appearance-none" required>
+                  <select id="signup-year" name="year" value={formData.year} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 pl-10 pr-4 text-white focus:border-primary outline-none appearance-none" required>
                     <option value="" className="bg-background-surface">Select Year</option>
                     <option value="1" className="bg-background-surface">First Year</option>
                     <option value="2" className="bg-background-surface">Second Year</option>
@@ -353,11 +364,13 @@ function Signup() {
             </div>
 
             <div className="input-group">
-              <label className="block text-sm font-medium text-text-muted mb-2 text-center">OTP Code</label>
+              <label htmlFor="signup-otp" className="block text-sm font-medium text-text-muted mb-2 text-center">OTP Code</label>
               <div className="relative">
                 <input 
                   type="text" 
+                  id="signup-otp"
                   name="otp" 
+                  autocomplete="one-time-code"
                   placeholder="000000" 
                   value={formData.otp} 
                   onChange={handleChange} 
