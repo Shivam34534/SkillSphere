@@ -7,6 +7,7 @@ dotenv.config();
  * Reusable Email Service
  */
 const transporter = nodemailer.createTransport({
+  pool: true,
   host: 'smtp.gmail.com',
   port: 465,
   secure: true,
@@ -15,8 +16,12 @@ const transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASS,
   },
   tls: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+    ciphers: 'SSLv3'
+  },
+  connectionTimeout: 20000, // 20 seconds
+  greetingTimeout: 20000,
+  socketTimeout: 30000
 });
 
 /**
