@@ -1,5 +1,5 @@
-import express from 'express';
 import 'dotenv/config';
+import express from 'express';
 import cors from 'cors';
 import http from 'http';
 import { Server } from 'socket.io';
@@ -20,9 +20,6 @@ import transactionRoutes from './routes/transactionRoutes.js';
 import leaderboardRoutes from './routes/leaderboardRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
-
-// Load env
-// Env loaded via import 'dotenv/config' at top
 
 // Connect DB
 connectDB();
@@ -83,7 +80,6 @@ const userSockets = new Map();
 io.on('connection', (socket) => {
   console.log('User connected to socket:', socket.id);
 
-  // Authenticated user joins their own private room
   socket.on('register-user', (userId) => {
     socket.join(userId);
     userSockets.set(userId, socket.id);
@@ -96,7 +92,6 @@ io.on('connection', (socket) => {
 
     socket.on('disconnect', () => {
       socket.to(roomId).emit('user-disconnected', userId);
-      // Clean up userSockets
       for (const [uid, sid] of userSockets.entries()) {
         if (sid === socket.id) {
           userSockets.delete(uid);
@@ -106,7 +101,6 @@ io.on('connection', (socket) => {
     });
   });
 
-  // Relay signaling data
   socket.on('offer', (payload) => {
     io.to(payload.target).emit('offer', payload);
   });
@@ -119,21 +113,17 @@ io.on('connection', (socket) => {
     io.to(payload.target).emit('ice-candidate', payload);
   });
 
-  // Relay chat messages
   socket.on('send-chat', (roomId, message) => {
     socket.to(roomId).emit('receive-chat', message);
   });
 });
 
-// Helper function to send real-time notifications
 export const sendNotification = async (userId, notificationData) => {
   try {
     const notification = await Notification.create({
       userId,
       ...notificationData
     });
-    
-    // Push to socket if user is online
     io.to(userId.toString()).emit('new-notification', notification);
     return notification;
   } catch (error) {
@@ -143,14 +133,12 @@ export const sendNotification = async (userId, notificationData) => {
 
 server.on('error', (error) => {
   if (error.code === 'EADDRINUSE') {
-    console.error(`Port ${PORT} is already in use. Please try a different port or stop the other process.`);
+    console.error(`Port ${PORT} is already in use.`);
   } else {
     console.error('Server error:', error);
   }
 });
 
 server.listen(PORT, '0.0.0.0', () => {
-  const addr = server.address();
-  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-  console.log(`Server & Socket.io running on ${bind} in ${process.env.NODE_ENV || 'development'} mode`);
+  console.log(`Server & Socket.io running on port ${PORT}`);
 });
