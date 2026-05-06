@@ -209,65 +209,83 @@ function Home() {
           Built for every campus <br/><span className="gradient-text">persona.</span>
         </h2>
         
-        <div className="roles-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 w-full px-4">
-          <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
-            <div className="icon-box new-feature-icon w-12 h-12 rounded-2xl mb-6"><GraduationCap size={24} color="white" /></div>
-            <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Student</h3>
-            <ul className="role-list space-y-3">
-              <li className="text-sm md:text-base">Browse skills</li>
-              <li className="text-sm md:text-base">Hire peers</li>
-              <li className="text-sm md:text-base">Track learning</li>
-            </ul>
+        <div className="roles-grid grid grid-cols-1 md:grid-cols-2 gap-6 w-full px-4">
+          <div className="role-card p-6 md:p-8 flex flex-row items-center gap-6 group">
+            <div className="icon-box new-feature-icon w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center">
+              <GraduationCap size={26} color="white" />
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">Student</h3>
+              <ul className="role-list space-y-1">
+                <li className="text-sm md:text-base">Browse skills & hire peers</li>
+                <li className="text-sm md:text-base">Track learning & earn XP</li>
+              </ul>
+            </div>
           </div>
           
-          <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
-            <div className="icon-box new-feature-icon w-12 h-12 rounded-2xl mb-6"><Code size={24} color="white" /></div>
-            <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Freelancer</h3>
-            <ul className="role-list space-y-3">
-              <li className="text-sm md:text-base">List services</li>
-              <li className="text-sm md:text-base">Manage orders</li>
-              <li className="text-sm md:text-base">Earn & withdraw</li>
-            </ul>
+          <div className="role-card p-6 md:p-8 flex flex-row items-center gap-6 group">
+            <div className="icon-box new-feature-icon w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center">
+              <Code size={26} color="white" />
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">Freelancer</h3>
+              <ul className="role-list space-y-1">
+                <li className="text-sm md:text-base">List services & manage orders</li>
+                <li className="text-sm md:text-base">Earn & withdraw earnings</li>
+              </ul>
+            </div>
           </div>
 
-          <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
-            <div className="icon-box new-feature-icon w-12 h-12 rounded-2xl mb-6"><Users size={24} color="white" /></div>
-            <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Club</h3>
-            <ul className="role-list space-y-3">
-              <li className="text-sm md:text-base">Recruit talent</li>
-              <li className="text-sm md:text-base">Plan events</li>
-              <li className="text-sm md:text-base">Track budget</li>
-            </ul>
+          <div className="role-card p-6 md:p-8 flex flex-row items-center gap-6 group">
+            <div className="icon-box new-feature-icon w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center">
+              <Users size={26} color="white" />
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">Club</h3>
+              <ul className="role-list space-y-1">
+                <li className="text-sm md:text-base">Recruit talent & plan events</li>
+                <li className="text-sm md:text-base">Track budget & assemble teams</li>
+              </ul>
+            </div>
           </div>
 
-          <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
-            <div className="icon-box new-feature-icon w-12 h-12 rounded-2xl mb-6"><ShieldCheck size={24} color="white" /></div>
-            <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Admin</h3>
-            <ul className="role-list space-y-3">
-              <li className="text-sm md:text-base">Verify users</li>
-              <li className="text-sm md:text-base">Moderate</li>
-              <li className="text-sm md:text-base">Revenue ops</li>
-            </ul>
+          <div className="role-card p-6 md:p-8 flex flex-row items-center gap-6 group">
+            <div className="icon-box new-feature-icon w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center">
+              <ShieldCheck size={26} color="white" />
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">Admin</h3>
+              <ul className="role-list space-y-1">
+                <li className="text-sm md:text-base">Verify users & moderate platform</li>
+                <li className="text-sm md:text-base">Manage revenue operations</li>
+              </ul>
+            </div>
           </div>
 
-          <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
-            <div className="icon-box new-feature-icon w-12 h-12 rounded-2xl mb-6"><Award size={24} color="white" /></div>
-            <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Alumni</h3>
-            <ul className="role-list space-y-3">
-              <li className="text-sm md:text-base">Mentor</li>
-              <li className="text-sm md:text-base">Workshops</li>
-              <li className="text-sm md:text-base">Referrals</li>
-            </ul>
+          <div className="role-card p-6 md:p-8 flex flex-row items-center gap-6 group">
+            <div className="icon-box new-feature-icon w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center">
+              <Award size={26} color="white" />
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">Alumni</h3>
+              <ul className="role-list space-y-1">
+                <li className="text-sm md:text-base">Mentor students & referrals</li>
+                <li className="text-sm md:text-base">Conduct workshops & networking</li>
+              </ul>
+            </div>
           </div>
 
-          <div className="role-card p-6 md:p-10 flex flex-col items-start text-left group">
-            <div className="icon-box new-feature-icon w-12 h-12 rounded-2xl mb-6"><BookOpen size={24} color="white" /></div>
-            <h3 className="text-xl md:text-2xl font-bold mb-4 text-white">Faculty</h3>
-            <ul className="role-list space-y-3">
-              <li className="text-sm md:text-base">Research gigs</li>
-              <li className="text-sm md:text-base">Supervise</li>
-              <li className="text-sm md:text-base">Mentor</li>
-            </ul>
+          <div className="role-card p-6 md:p-8 flex flex-row items-center gap-6 group">
+            <div className="icon-box new-feature-icon w-14 h-14 rounded-2xl flex-shrink-0 flex items-center justify-center">
+              <BookOpen size={26} color="white" />
+            </div>
+            <div className="flex flex-col">
+              <h3 className="text-xl md:text-2xl font-bold mb-2 text-white">Faculty</h3>
+              <ul className="role-list space-y-1">
+                <li className="text-sm md:text-base">Research gigs & supervision</li>
+                <li className="text-sm md:text-base">Mentor student startups</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>
