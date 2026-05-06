@@ -219,15 +219,6 @@ export const forgotPassword = async (req, res) => {
       res.json({ message: 'A 6-digit verification code has been sent to your email.' });
     } catch (emailError) {
       console.error(`[AUTH] SMTP ERROR sending recovery OTP to ${email}:`, emailError);
-      
-      // DIAGNOSTIC BYPASS for Shivam's test account
-      if (email === 'shivam34500@gmail.com' || email === 'shivambca54321@gmail.com') {
-         return res.json({ 
-           message: 'DIAGNOSTIC MODE: OTP is 123456 (Email server is still starting up)',
-           otp: '123456' 
-         });
-      }
-
       res.status(500).json({ 
         message: 'The email server is currently busy. Please try again in a few minutes.',
         error: emailError.message 
@@ -243,11 +234,9 @@ export const verifyResetOTP = async (req, res) => {
   try {
     const { email, otp } = req.body;
     
-    const isBypass = (email === 'shivam34500@gmail.com' || email === 'shivambca54321@gmail.com') && otp === '123456';
-
     const user = await User.findOne({ 
       email,
-      resetPasswordOTP: isBypass ? { $exists: true } : otp,
+      resetPasswordOTP: otp,
       resetPasswordExpires: { $gt: Date.now() }
     });
 
@@ -265,11 +254,9 @@ export const resetPassword = async (req, res) => {
   try {
     const { email, otp, password } = req.body;
     
-    const isBypass = (email === 'shivam34500@gmail.com' || email === 'shivambca54321@gmail.com') && otp === '123456';
-
     const user = await User.findOne({
       email,
-      resetPasswordOTP: isBypass ? { $exists: true } : otp,
+      resetPasswordOTP: otp,
       resetPasswordExpires: { $gt: Date.now() }
     });
 

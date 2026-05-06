@@ -19,6 +19,8 @@ const transporter = nodemailer.createTransport({
     rejectUnauthorized: false
   },
   family: 4, // Force IPv4 to avoid ENETUNREACH
+  logger: true, // Log SMTP traffic
+  debug: true, // Include debug info
   connectionTimeout: 20000,
   greetingTimeout: 20000,
   socketTimeout: 30000
