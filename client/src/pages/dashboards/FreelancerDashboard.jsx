@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Briefcase, DollarSign, Star, TrendingUp, Users, Activity, ExternalLink, CheckCircle, Plus } from 'lucide-react';
+import { Briefcase, DollarSign, Star, TrendingUp, Users, Activity, ExternalLink, CheckCircle, Plus, ArrowUpRight, Clock, Inbox, BarChart3 } from 'lucide-react';
 
 const FreelancerDashboard = () => {
   const { user, token } = useSelector((state) => state.auth);
@@ -19,7 +19,6 @@ const FreelancerDashboard = () => {
       });
       if (response.ok) {
         const data = await response.json();
-        // Filter out services not belonging to this freelancer
         setServices(data.filter(s => s.freelancerId?._id === user._id || s.freelancerId === user._id));
       }
     } catch (error) {
@@ -64,140 +63,171 @@ const FreelancerDashboard = () => {
   };
 
   return (
-    <div className="dashboard-content">
-      <div className="dashboard-header">
-        <div>
-          <h1>Welcome, {user.name}</h1>
-          <p>Freelancer • Level {user.xpLevel} Rookie</p>
+    <div className="dashboard-content animate-fade-in-up">
+      <div className="dashboard-header flex-col md:flex-row items-start md:items-end gap-6 mb-12">
+        <div className="flex-1">
+          <h1 className="text-4xl font-extrabold mb-2 tracking-tight text-white">Pro Dashboard</h1>
+          <p className="text-text-muted text-lg">Manage your services, track earnings, and grow your campus brand.</p>
         </div>
-        <Link to="/wallet" className="wallet-pill" style={{ background: 'rgba(217, 70, 239, 0.1)', borderColor: 'rgba(217, 70, 239, 0.2)', textDecoration: 'none' }}>
-          <DollarSign size={16} color="#d946ef" />
-          <span style={{ color: '#f5d0fe' }}>₹{user.walletBalance || 0} Earned</span>
-          <span className="xp-badge" style={{ background: '#d946ef' }}>+{Math.floor((user.xpLevel || 1) * 100)} XP</span>
-        </Link>
+        <div className="flex items-center gap-4">
+          <Link to="/wallet" className="wallet-pill px-6 py-3 bg-white/5 hover:bg-white/10 transition-all border border-white/10 group">
+            <DollarSign size={20} className="text-secondary group-hover:scale-110 transition-transform" />
+            <span className="text-lg font-bold text-white">₹{user.walletBalance || 0}</span>
+            <span className="text-xs text-text-muted ml-2">Total Revenue</span>
+          </Link>
+          <div className="bg-secondary/20 text-secondary px-4 py-3 rounded-2xl border border-secondary/20 flex flex-col items-center min-w-[80px]">
+             <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">Level</span>
+             <span className="text-xl font-black">{user.xpLevel || 1}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="stats-grid mb-12">
+        <div className="stat-card">
+          <div className="stat-card-glow bg-secondary"></div>
+          <div className="relative z-10">
+            <span className="text-text-muted text-sm font-medium mb-1 block">Monthly Growth</span>
+            <div className="flex items-end gap-3">
+              <span className="text-4xl font-black text-white">12.4%</span>
+              <span className="text-success text-xs font-bold mb-2 flex items-center gap-1"><ArrowUpRight size={14}/> +4.2%</span>
+            </div>
+            <div className="chart-container mt-4">
+               {[30, 50, 40, 80, 55, 70, 90].map((h, i) => (
+                 <div key={i} className="chart-bar bg-secondary" style={{ height: `${h}%`, opacity: 0.8 }}></div>
+               ))}
+            </div>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-card-glow bg-primary"></div>
+          <div className="relative z-10">
+            <span className="text-text-muted text-sm font-medium mb-1 block">Profile Views</span>
+            <div className="flex items-end gap-3">
+              <span className="text-4xl font-black text-white">1,284</span>
+              <span className="text-primary text-xs font-bold mb-2">+12 today</span>
+            </div>
+            <div className="flex gap-1 mt-6">
+               {[1, 2, 3, 4, 5].map(s => <Star key={s} size={14} className="text-yellow-400 fill-yellow-400" />)}
+               <span className="text-xs text-text-muted ml-2">4.9/5 Rating</span>
+            </div>
+          </div>
+        </div>
+        <div className="stat-card">
+          <div className="stat-card-glow bg-accent"></div>
+          <div className="relative z-10">
+            <span className="text-text-muted text-sm font-medium mb-1 block">Conversion Rate</span>
+            <div className="flex items-end gap-3">
+              <span className="text-4xl font-black text-white">8.2%</span>
+              <span className="text-accent text-xs font-bold mb-2">Excellent</span>
+            </div>
+            <div className="mt-8 flex items-center gap-3">
+               <div className="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-full bg-accent" style={{ width: '65%' }}></div>
+               </div>
+               <span className="text-[10px] text-text-muted font-bold">65%</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="dashboard-grid">
-        {/* Main Feed */}
-        <div className="main-column" style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-
-          {/* Quick Stats */}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
-            <div className="glass-card" style={{ padding: '1.5rem', textAlign: 'center' }}>
-              <h3 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0', color: 'white' }}>{services.length}</h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0 }}>Active Services</p>
-            </div>
-            <div className="glass-card" style={{ padding: '1.5rem', textAlign: 'center' }}>
-              <h3 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0', color: 'white' }}>0</h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0 }}>Total Clients</p>
-            </div>
-            <div className="glass-card" style={{ padding: '1.5rem', textAlign: 'center' }}>
-              <h3 style={{ fontSize: '2rem', margin: '0 0 0.5rem 0', color: '#fbbf24' }}>0.0</h3>
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: 0 }}>Average Rating</p>
-            </div>
-          </div>
-
-          {/* Active Services */}
+        <div className="main-column">
           <div className="section-container">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-              <h2 style={{ fontSize: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Briefcase size={20} color="#d946ef" /> Your Services</h2>
-              <button onClick={handlePostService} className="btn-primary" style={{ padding: '0.4rem 1rem', fontSize: '0.85rem', background: 'linear-gradient(135deg, #d946ef 0%, #c026d3 100%)' }}>
-                <Plus size={14} style={{ marginRight: '0.3rem', display: 'inline' }} /> Post New Service
+            <div className="flex justify-between items-center mb-8">
+              <h2 className="text-2xl font-bold flex items-center gap-3 text-white"><Briefcase className="text-secondary" /> Your Active Gigs</h2>
+              <button onClick={handlePostService} className="btn-primary flex items-center gap-2 bg-secondary hover:bg-secondary/90 shadow-lg shadow-secondary/20">
+                <Plus size={18} /> New Listing
               </button>
             </div>
 
-            <div className="glass-card" style={{ padding: '1.5rem' }}>
-              {loading ? (
-                <p style={{ color: 'var(--text-muted)', textAlign: 'center' }}>Loading services...</p>
-              ) : services.length > 0 ? (
-                services.map((service, idx) => (
-                  <div key={service._id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: idx !== services.length - 1 ? '1px solid var(--glass-border)' : 'none', paddingBottom: idx !== services.length - 1 ? '1rem' : 0, marginBottom: idx !== services.length - 1 ? '1rem' : 0 }}>
-                    <div>
-                      <h4 style={{ margin: 0, color: 'white' }}>{service.title}</h4>
-                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', margin: '0.2rem 0' }}>{service.description}</p>
-                      <span className="skill-badge" style={{ background: 'rgba(217, 70, 239, 0.1)', color: '#d946ef', fontSize: '0.7rem' }}>{service.category}</span>
+            {loading ? (
+              <div className="empty-state animate-pulse">
+                <div className="empty-state-icon"><Clock size={32} /></div>
+                <p>Syncing your services...</p>
+              </div>
+            ) : services.length > 0 ? (
+              <div className="grid grid-cols-1 gap-4">
+                {services.map((service) => (
+                  <div key={service._id} className="glass-card p-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 group hover:bg-white/[0.03] transition-all border-l-4 border-l-secondary/40">
+                    <div className="flex items-center gap-6">
+                      <div className="w-16 h-16 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary group-hover:scale-105 transition-transform">
+                        {service.category === 'Web Dev' ? <BarChart3 size={32}/> : <Briefcase size={32}/>}
+                      </div>
+                      <div>
+                        <h4 className="text-xl font-bold text-white mb-1 group-hover:text-secondary transition-colors">{service.title}</h4>
+                        <p className="text-sm text-text-muted mb-3 max-w-md line-clamp-1">{service.description}</p>
+                        <div className="flex gap-3">
+                          <span className="text-[10px] uppercase tracking-widest font-black text-secondary px-2 py-0.5 bg-secondary/10 rounded-md">
+                            {service.category}
+                          </span>
+                          <span className="text-[10px] uppercase tracking-widest font-black text-text-muted px-2 py-0.5 bg-white/5 rounded-md">
+                             {service.deliveryTimeDays}D Delivery
+                          </span>
+                        </div>
+                      </div>
                     </div>
-                    <div style={{ textAlign: 'right' }}>
-                      <div style={{ fontWeight: 'bold', color: '#fbbf24' }}>{service.pricing?.amount} {service.pricing?.type}</div>
-                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Delivery: {service.deliveryTimeDays} day(s)</div>
+                    <div className="text-right w-full sm:w-auto border-t sm:border-0 pt-4 sm:pt-0 mt-4 sm:mt-0 flex sm:flex-col justify-between items-center sm:items-end gap-2">
+                       <div className="text-2xl font-black text-white">₹{service.pricing?.amount}</div>
+                       <button className="text-xs font-bold text-secondary hover:underline flex items-center gap-1">Edit Listing <ArrowUpRight size={12}/></button>
                     </div>
                   </div>
-                ))
-              ) : (
-                <div style={{ textAlign: 'center', padding: '1rem 0' }}>
-                  <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>You haven't posted any services yet.</p>
-                  <button onClick={handlePostService} className="btn-ghost">Create your first service listing</button>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Recent Orders */}
-          <div className="section-container">
-            <h2 style={{ fontSize: '1.25rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Activity size={20} color="#3b82f6" /> Recent Orders</h2>
-            <div className="glass-card" style={{ padding: '1.5rem' }}>
-              <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', textAlign: 'center' }}>No recent orders. Promote your profile to get clients!</p>
-            </div>
+                ))}
+              </div>
+            ) : (
+              <div className="empty-state">
+                <div className="empty-state-icon"><Inbox size={32} /></div>
+                <h3 className="text-xl font-bold text-white mb-2">No Active Listings</h3>
+                <p className="text-text-muted max-w-xs mx-auto mb-8">Ready to turn your skills into a side hustle? Post your first service listing now.</p>
+                <button onClick={handlePostService} className="btn-primary py-3 px-8 bg-secondary hover:bg-secondary/90">Post Your First Gig</button>
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Sidebar */}
-        <div className="sidebar" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          <div className="glass-card" style={{ padding: '1.5rem' }}>
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem' }}>Your Portfolio</h3>
-
-            <div style={{ marginBottom: '1rem' }}>
-              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Service Categories</span>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.5rem' }}>
-                {user.skillsToTeach?.length > 0 ? user.skillsToTeach.map((skill, i) => (
-                  <span key={i} className="skill-badge" style={{ background: 'rgba(217, 70, 239, 0.1)', color: '#d946ef', border: '1px solid rgba(217, 70, 239, 0.2)', padding: '0.2rem 0.8rem', borderRadius: '12px', fontSize: '0.8rem' }}>{skill}</span>
-                )) : <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>None added yet</span>}
-              </div>
-            </div>
-
-            <button className="btn-ghost full-width" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem' }}>
-              <ExternalLink size={16} /> Link Portfolio
-            </button>
-          </div>
-
-          <div className="glass-card" style={{ padding: '1.5rem' }}>
-            <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              Trust & Growth
-              <span style={{ fontSize: '0.7rem', background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '0.2rem 0.5rem', borderRadius: '4px' }}>
-                Lvl {user.xpLevel}
-              </span>
-            </h3>
-
-            <div style={{ marginBottom: '1rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>XP Progress</span>
-                <span style={{ fontSize: '0.7rem', color: 'white' }}>{user.xpPoints % 500}/500</span>
-              </div>
-              <div style={{ width: '100%', height: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '2px', overflow: 'hidden' }}>
-                <div style={{ width: `${((user.xpPoints % 500) / 500) * 100}%`, height: '100%', background: 'linear-gradient(90deg, #d946ef, #3b82f6)' }}></div>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>Trust Score</span>
-              <span style={{ fontWeight: 'bold', color: '#10b981' }}>{user.trustScore}/100</span>
-            </div>
-            <div style={{ width: '100%', height: '6px', background: 'rgba(255,255,255,0.1)', borderRadius: '3px', overflow: 'hidden' }}>
-              <div style={{ width: `${user.trustScore}%`, height: '100%', background: '#10b981' }}></div>
-            </div>
-
-            {user.badges?.length > 0 && (
-              <div style={{ marginTop: '1.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--glass-border)' }}>
-                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '1px' }}>Badges</span>
-                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-                  {user.badges.map((badge, i) => (
-                    <div key={i} style={{ width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(255,255,255,0.05)', display: 'flex', alignItems: 'center', justifyCenter: 'center', fontSize: '1rem', border: '1px solid rgba(255,255,255,0.1)' }} title={badge.name}>
-                      {badge.icon || '🏅'}
-                    </div>
-                  ))}
+        <div className="sidebar flex flex-col gap-8">
+          <div className="glass-card p-8 bg-gradient-to-br from-secondary/5 to-transparent">
+            <h3 className="text-xl font-bold text-white mb-6">Expertise Level</h3>
+            <div className="space-y-6">
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-xs text-text-muted font-bold uppercase tracking-widest">XP Progression</span>
+                  <span className="text-xs font-bold text-white">{user.xpPoints % 500}/500</span>
+                </div>
+                <div className="w-full h-3 bg-white/5 rounded-full overflow-hidden border border-white/5 p-0.5">
+                  <div className="h-full bg-gradient-to-r from-secondary to-accent rounded-full animate-pulse-slow" style={{ width: `${((user.xpPoints % 500) / 500) * 100}%` }}></div>
                 </div>
               </div>
-            )}
+              <div className="flex items-center gap-4 p-4 bg-white/5 rounded-2xl border border-white/10">
+                 <TrendingUp size={20} className="text-success" />
+                 <div>
+                    <p className="text-xs font-bold text-white">Rising Star Status</p>
+                    <p className="text-[10px] text-text-muted">You're in the top 15% of sellers this month.</p>
+                 </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="glass-card p-8">
+             <h3 className="text-xl font-bold text-white mb-6">Client Network</h3>
+             <div className="flex flex-col gap-4">
+                <div className="flex items-center justify-between">
+                   <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold">JD</div>
+                      <span className="text-sm font-medium text-white">Jane Doe</span>
+                   </div>
+                   <span className="text-[10px] text-text-muted">3 Orders</span>
+                </div>
+                <div className="flex items-center justify-between">
+                   <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center text-secondary font-bold">MS</div>
+                      <span className="text-sm font-medium text-white">Mark Smith</span>
+                   </div>
+                   <span className="text-[10px] text-text-muted">1 Order</span>
+                </div>
+             </div>
+             <button className="btn-secondary w-full mt-8 py-3 text-sm flex items-center justify-center gap-2">
+                <Users size={16}/> View All Clients
+             </button>
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -17,7 +17,7 @@ import AdminPanel from './pages/AdminPanel';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { Wallet as WalletIcon, Sparkles, Briefcase, Zap, Trophy, UserCheck, Home as HomeIcon, Layout, Info, Users, X, Shield } from 'lucide-react';
+import { Wallet as WalletIcon, Sparkles, Briefcase, Zap, Trophy, UserCheck, Home as HomeIcon, Layout, Info, Users, X, Shield, Menu, Bell } from 'lucide-react';
 import { SocketProvider } from './context/SocketContext';
 import NotificationBell from './components/NotificationBell';
 
@@ -25,14 +25,34 @@ function Navigation() {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
+    setIsMobileMenuOpen(false);
     navigate('/');
   };
+
+  const closeMenu = () => setIsMobileMenuOpen(false);
   
   return (
-    <nav className="glass-nav">
+    <>
+    <header className="mobile-header">
+      <Link to="/" className="logo mb-0 text-xl" onClick={closeMenu}>
+        <div className="logo-icon new-logo w-8 h-8">
+           <Sparkles size={16} color="white" />
+        </div>
+        <span>SkillSphere</span>
+      </Link>
+      <div className="flex items-center gap-3">
+        <NotificationBell />
+        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-2 text-white bg-white/5 rounded-xl border border-white/10">
+          {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
+    </header>
+
+    <nav className={`glass-nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
       <div className="nav-content">
         <div className="flex flex-col gap-8">
           <Link to="/" className="logo">
@@ -44,34 +64,34 @@ function Navigation() {
 
           <div className="nav-group">
             <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-4 mb-2 block">Main Menu</span>
-            <div className="nav-links">
-              <Link to="/" className="nav-link"><HomeIcon size={18} /> Home</Link>
-              <Link to="/barter-hub" className="nav-link"><Sparkles size={18} /> Barter Hub</Link>
-              <Link to="/marketplace" className="nav-link"><Users size={18} /> Marketplace</Link>
-              <Link to="/gigs" className="nav-link"><Briefcase size={18} /> Gigs</Link>
-              <Link to="/leaderboard" className="nav-link"><Trophy size={18} /> Leaderboard</Link>
-              {user?.role === 'ADMIN' && <Link to="/admin" className="nav-link"><Shield size={18} /> Admin Panel</Link>}
-            </div>
-          </div>
+      <div className="nav-links">
+        <Link to="/" className="nav-link" onClick={closeMenu}><HomeIcon size={18} /> Home</Link>
+        <Link to="/barter-hub" className="nav-link" onClick={closeMenu}><Sparkles size={18} /> Barter Hub</Link>
+        <Link to="/marketplace" className="nav-link" onClick={closeMenu}><Users size={18} /> Marketplace</Link>
+        <Link to="/gigs" className="nav-link" onClick={closeMenu}><Briefcase size={18} /> Gigs</Link>
+        <Link to="/leaderboard" className="nav-link" onClick={closeMenu}><Trophy size={18} /> Leaderboard</Link>
+        {user?.role === 'ADMIN' && <Link to="/admin" className="nav-link" onClick={closeMenu}><Shield size={18} /> Admin Panel</Link>}
+      </div>
+    </div>
 
-          <div className="nav-group">
-            <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-4 mb-2 block">Platform</span>
-            <div className="nav-links">
-              <a href="/#features" className="nav-link"><Layout size={18} /> Features</a>
-              <a href="/#how-it-works" className="nav-link"><Info size={18} /> How it works</a>
-            </div>
-          </div>
+    <div className="nav-group">
+      <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-4 mb-2 block">Platform</span>
+      <div className="nav-links">
+        <a href="/#features" className="nav-link" onClick={closeMenu}><Layout size={18} /> Features</a>
+        <a href="/#how-it-works" className="nav-link" onClick={closeMenu}><Info size={18} /> How it works</a>
+      </div>
+    </div>
 
-          {user && (
-            <div className="nav-group">
-              <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-4 mb-2 block">Personal</span>
-              <div className="nav-links">
-                <Link to="/dashboard" className="nav-link"><Zap size={18} /> Dashboard</Link>
-                <Link to="/wallet" className="nav-link"><WalletIcon size={18} /> Wallet</Link>
-                <Link to="/profile" className="nav-link"><UserCheck size={18} /> Profile</Link>
-              </div>
-            </div>
-          )}
+    {user && (
+      <div className="nav-group">
+        <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-4 mb-2 block">Personal</span>
+        <div className="nav-links">
+          <Link to="/dashboard" className="nav-link" onClick={closeMenu}><Zap size={18} /> Dashboard</Link>
+          <Link to="/wallet" className="nav-link" onClick={closeMenu}><WalletIcon size={18} /> Wallet</Link>
+          <Link to="/profile" className="nav-link" onClick={closeMenu}><UserCheck size={18} /> Profile</Link>
+        </div>
+      </div>
+    )}
         </div>
 
         <div className="nav-actions mt-auto">
@@ -102,6 +122,10 @@ function Navigation() {
         </div>
       </div>
     </nav>
+    {isMobileMenuOpen && (
+      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[950] lg:hidden" onClick={closeMenu}></div>
+    )}
+    </>
   );
 }
 
