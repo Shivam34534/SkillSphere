@@ -110,7 +110,18 @@ function Signup() {
               }`}></div>
             ))}
           </div>
-          {reduxError && <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg text-sm text-center">{reduxError}</div>}
+          {reduxError && (
+            <div className="mt-4 p-3 bg-red-500/10 border border-red-500/20 text-red-500 rounded-lg text-sm text-center animate-in fade-in slide-in-from-top-2 duration-300">
+              {reduxError}
+              {reduxError.toLowerCase().includes('already exists') && (
+                <div className="mt-2 pt-2 border-t border-red-500/10">
+                  <Link to="/login" className="text-primary hover:text-primary-hover font-bold flex items-center justify-center gap-1 transition-colors">
+                    Sign in here <ArrowRight size={14} />
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
         </div>
         
         {step === 1 && (
