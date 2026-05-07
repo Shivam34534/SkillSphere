@@ -4,12 +4,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../../store/slices/authSlice';
 import { API_URL } from '../../config';
 import { BookOpen, Users, Zap, Star, ArrowRight, Video, Activity, Inbox, Clock, Plus, MessageSquare, Award } from 'lucide-react';
+import MatchRequestModal from '../../components/MatchRequestModal';
 
 const StudentDashboard = () => {
   const { user, token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const [matches, setMatches] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalLoading, setModalLoading] = useState(false);
 
   useEffect(() => {
     fetchMatches();
@@ -31,33 +34,34 @@ const StudentDashboard = () => {
     }
   };
 
-  const handleCreateMatch = async () => {
-    const userBEmail = window.prompt("Enter the email address of the student you want to match with:");
-    if (!userBEmail) return;
-    const skillOfferedByA = window.prompt("What skill are YOU offering?");
-    const skillOfferedByB = window.prompt("What skill do they have that YOU need?");
+  const handleCreateMatch = (data) => {
+    setIsModalOpen(true);
+  };
 
-    if (userBEmail && skillOfferedByA && skillOfferedByB) {
-      try {
-        const response = await fetch(`${API_URL}/matches`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({ userBEmail, skillOfferedByA, skillOfferedByB, exchangeType: 'BARTER' })
-        });
+  const submitMatchRequest = async (data) => {
+    setModalLoading(true);
+    try {
+      const response = await fetch(`${API_URL}/matches`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({ ...data, exchangeType: 'BARTER' })
+      });
 
-        if (response.ok) {
-          alert('Match requested successfully!');
-          fetchMatches();
-        } else {
-          const err = await response.json();
-          alert('Error: ' + err.message);
-        }
-      } catch (error) {
-        alert('Failed to create match');
+      if (response.ok) {
+        alert('Match requested successfully!');
+        setIsModalOpen(false);
+        fetchMatches();
+      } else {
+        const err = await response.json();
+        alert('Error: ' + err.message);
       }
+    } catch (error) {
+      alert('Failed to create match');
+    } finally {
+      setModalLoading(false);
     }
   };
 
@@ -315,6 +319,13 @@ const StudentDashboard = () => {
           </div>
         </div>
       </div>
+
+      <MatchRequestModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onSubmit={submitMatchRequest}
+        loading={modalLoading}
+      />
     </div>
   );
 };
