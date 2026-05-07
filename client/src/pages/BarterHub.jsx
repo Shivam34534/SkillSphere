@@ -105,6 +105,27 @@ const BarterHub = () => {
     }
   };
 
+  const handleCancelRequest = async (id) => {
+    if (window.confirm('Are you sure you want to remove this request from the Hub?')) {
+      try {
+        const response = await fetch(`${API_URL}/matches/${id}/respond`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`
+          },
+          body: JSON.stringify({ status: 'DECLINED' }) // Using DECLINED to cancel
+        });
+        if (response.ok) {
+          alert('Request removed.');
+          fetchData();
+        }
+      } catch (error) {
+        alert('Failed to cancel request');
+      }
+    }
+  };
+
   const handleComplete = async (id) => {
     if (window.confirm('Mark this session as complete? XP rewards will be distributed.')) {
       try {
@@ -131,6 +152,7 @@ const BarterHub = () => {
   }
 
   const pendingRequests = matches.filter(m => m.status === 'PENDING' && m.userBId?._id === user?._id);
+  const myPublicRequests = matches.filter(m => m.status === 'PENDING' && m.isPublic && m.userAId?._id === user?._id);
   const activeSessions = matches.filter(m => m.status === 'ACCEPTED');
 
   return (
@@ -207,6 +229,40 @@ const BarterHub = () => {
               )}
             </div>
           </section>
+
+          {/* My Active Requests */}
+          {myPublicRequests.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                <Clock size={24} className="text-secondary" /> My Hub Posts
+              </h2>
+              <div className="space-y-4">
+                {myPublicRequests.map(req => (
+                  <div key={req._id} className="feature-card p-6 flex justify-between items-center bg-white/[0.02]">
+                    <div className="flex items-center gap-6">
+                       <div className="w-12 h-12 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary border border-secondary/20">
+                          <Plus size={24} />
+                       </div>
+                       <div>
+                          <p className="text-xs font-black uppercase text-text-muted mb-1 tracking-widest">Waiting for partner</p>
+                          <div className="flex items-center gap-2">
+                             <span className="text-sm font-bold text-white uppercase">{req.skillOfferedByA}</span>
+                             <ArrowRight size={12} className="text-text-muted" />
+                             <span className="text-sm font-bold text-white uppercase">{req.skillOfferedByB}</span>
+                          </div>
+                       </div>
+                    </div>
+                    <button 
+                      onClick={() => handleCancelRequest(req._id)}
+                      className="text-[10px] font-black uppercase text-red-500 hover:underline"
+                    >
+                       Remove Post
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Public Exchange Feed */}
           <section>

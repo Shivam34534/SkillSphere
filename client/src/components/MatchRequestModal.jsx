@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Modal from './Modal';
 import { Mail, Zap, Target, Send, Loader2 } from 'lucide-react';
 
 const MatchRequestModal = ({ isOpen, onClose, onSubmit, loading }) => {
+  const { user } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     userBEmail: '',
     skillOfferedByA: '',
@@ -11,6 +13,12 @@ const MatchRequestModal = ({ isOpen, onClose, onSubmit, loading }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    if (formData.userBEmail && formData.userBEmail.toLowerCase() === user.email.toLowerCase()) {
+      alert("You cannot match with yourself. Please leave the email blank to post your request publicly to the Hub.");
+      return;
+    }
+    
     onSubmit(formData);
   };
 
