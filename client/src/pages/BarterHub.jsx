@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { API_URL } from '../config';
 import { 
-  Users, Zap, ArrowRight, Video, Award, Sparkles, MessageCircle, ArrowUpRight, Inbox, Clock, Shield
+  Users, Zap, ArrowRight, Video, Award, Sparkles, MessageCircle, ArrowUpRight, Inbox, Clock, Shield, Plus, Target
 } from 'lucide-react';
+import MatchRequestModal from '../components/MatchRequestModal';
 import { Link } from 'react-router-dom';
 
 const BarterHub = () => {
@@ -11,7 +12,10 @@ const BarterHub = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [matches, setMatches] = useState([]);
   const [history, setHistory] = useState([]);
+  const [publicRequests, setPublicRequests] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalLoading, setModalLoading] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -22,15 +26,17 @@ const BarterHub = () => {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const [sugRes, matchRes, histRes] = await Promise.all([
+      const [sugRes, matchRes, histRes, pubRes] = await Promise.all([
         fetch(`${API_URL}/matches/suggestions`, { headers: { Authorization: `Bearer ${token}` } }),
         fetch(`${API_URL}/matches`, { headers: { Authorization: `Bearer ${token}` } }),
-        fetch(`${API_URL}/matches/history`, { headers: { Authorization: `Bearer ${token}` } })
+        fetch(`${API_URL}/matches/history`, { headers: { Authorization: `Bearer ${token}` } }),
+        fetch(`${API_URL}/matches/public`, { headers: { Authorization: `Bearer ${token}` } })
       ]);
 
       if (sugRes.ok) setSuggestions(await sugRes.json());
       if (matchRes.ok) setMatches(await matchRes.json());
       if (histRes.ok) setHistory(await histRes.json());
+      if (pubRes.ok) setPublicRequests(await pubRes.json());
     } catch (error) {
       console.error('Failed to fetch barter data', error);
     } finally {
@@ -38,7 +44,26 @@ const BarterHub = () => {
     }
   };
 
-  const handleRequest = async (targetUser, offer, need) => {
+  const handleClaim = async (requestId) => {
+    try {
+      const response = await fetch(`${API_URL}/matches/${requestId}/claim`, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (response.ok) {
+        alert('Exchange matched! Check your Active Sessions.');
+        fetchData();
+      } else {
+        const err = await response.json();
+        alert(err.message);
+      }
+    } catch (error) {
+      alert('Failed to claim swap');
+    }
+  };
+
+  const submitPublicRequest = async (data) => {
+    setModalLoading(true);
     try {
       const response = await fetch(`${API_URL}/matches`, {
         method: 'POST',
@@ -46,19 +71,21 @@ const BarterHub = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`
         },
-        body: JSON.stringify({
-          userBEmail: targetUser.email,
-          skillOfferedByA: offer,
-          skillOfferedByB: need,
-          exchangeType: 'BARTER'
-        })
+        body: JSON.stringify({ ...data, exchangeType: 'BARTER' })
       });
+
       if (response.ok) {
-        alert('Barter request sent!');
+        alert('Request posted to the Hub! We will notify you when someone matches.');
+        setIsModalOpen(false);
         fetchData();
+      } else {
+        const err = await response.json();
+        alert(err.message);
       }
     } catch (error) {
-      alert('Request failed');
+      alert('Failed to post request');
+    } finally {
+      setModalLoading(false);
     }
   };
 
@@ -114,9 +141,12 @@ const BarterHub = () => {
         <h1 className="text-4xl md:text-6xl font-black mb-6">
           Barter <span className="gradient-text">Hub.</span>
         </h1>
-        <p className="text-text-muted max-w-2xl text-base md:text-lg">
+        <p className="text-text-muted max-w-2xl text-base md:text-lg mb-8">
           Exchange skills directly with peers. No credits, no cash—just knowledge sharing and community trust.
         </p>
+        <button onClick={() => setIsModalOpen(true)} className="btn-primary w-fit px-8 py-4 text-xs font-black uppercase tracking-widest flex items-center gap-2">
+           <Plus size={18} /> Post Your Skill Swap
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -176,6 +206,56 @@ const BarterHub = () => {
                 </div>
               )}
             </div>
+          </section>
+
+          {/* Public Exchange Feed */}
+          <section>
+             <div className="flex justify-between items-center mb-8">
+                <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                  <Users size={24} className="text-accent" /> Public Swaps
+                </h2>
+                <div className="px-3 py-1 bg-accent/10 border border-accent/20 rounded-lg text-accent text-[10px] font-black uppercase tracking-widest">
+                   {publicRequests.length} Available
+                </div>
+             </div>
+             
+             <div className="space-y-4">
+                {publicRequests.length > 0 ? publicRequests.map(req => (
+                   <div key={req._id} className="feature-card p-6 flex flex-col md:flex-row justify-between items-center gap-6 group hover:border-accent/30 transition-all">
+                      <div className="flex items-center gap-6">
+                         <div className="w-16 h-16 rounded-2xl overflow-hidden border border-white/10 group-hover:border-accent transition-all p-0.5 bg-white/5">
+                            <img src={req.userAId?.profilePhoto || `https://api.dicebear.com/7.x/avataaars/svg?seed=${req.userAId?.name}`} alt="" className="w-full h-full object-cover rounded-xl" />
+                         </div>
+                         <div>
+                            <h4 className="text-xl font-bold text-white mb-2 group-hover:text-accent transition-colors">{req.userAId?.name}</h4>
+                            <div className="flex items-center gap-3">
+                               <div className="flex items-center gap-1.5 px-3 py-1 bg-primary/10 border border-primary/20 rounded-lg">
+                                  <Zap size={12} className="text-primary" />
+                                  <span className="text-[10px] font-black uppercase text-primary">{req.skillOfferedByA}</span>
+                               </div>
+                               <ArrowRight size={14} className="text-text-muted" />
+                               <div className="flex items-center gap-1.5 px-3 py-1 bg-accent/10 border border-accent/20 rounded-lg">
+                                  <Target size={12} className="text-accent" />
+                                  <span className="text-[10px] font-black uppercase text-accent">{req.skillOfferedByB}</span>
+                               </div>
+                            </div>
+                         </div>
+                      </div>
+                      
+                      <button 
+                        onClick={() => handleClaim(req._id)}
+                        className="w-full md:w-auto px-8 py-3.5 bg-accent hover:bg-accent/90 text-white rounded-xl text-[10px] font-black uppercase tracking-widest transition-all shadow-lg shadow-accent/20"
+                      >
+                         Accept Swap
+                      </button>
+                   </div>
+                )) : (
+                   <div className="feature-card p-16 flex flex-col items-center text-center opacity-60 grayscale">
+                      <Users size={48} className="text-text-muted mb-4" />
+                      <p className="text-sm font-bold text-text-muted">Hub is empty. Be the first to post!</p>
+                   </div>
+                )}
+             </div>
           </section>
 
           {/* Active Exchanges */}
@@ -269,6 +349,13 @@ const BarterHub = () => {
            </div>
         </div>
       </div>
+
+      <MatchRequestModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        onSubmit={submitPublicRequest}
+        loading={modalLoading}
+      />
     </div>
   );
 };

@@ -34,20 +34,22 @@ const MatchRequestModal = ({ isOpen, onClose, onSubmit, loading }) => {
         <div className="space-y-5">
           <div className="input-group">
             <label className="block text-[10px] font-black uppercase text-text-muted mb-2 tracking-widest ml-1">
-              Student Email
+              Student Email <span className="text-[9px] lowercase opacity-50 font-medium">(optional)</span>
             </label>
             <div className="relative group">
               <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted group-focus-within:text-primary transition-colors" size={16} />
               <input
                 type="email"
                 name="userBEmail"
-                required
-                placeholder="campus-buddy@university.edu"
+                placeholder="Leave blank to post to Hub"
                 value={formData.userBEmail}
                 onChange={handleChange}
                 className="w-full bg-white/5 border border-white/10 rounded-xl py-4 pl-12 pr-4 text-white focus:border-primary outline-none transition-all placeholder:text-text-muted/30"
               />
             </div>
+            <p className="text-[9px] text-text-muted mt-2 ml-1 leading-tight">
+              Empty email = Post to **Public Exchange Hub**.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

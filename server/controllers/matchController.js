@@ -6,17 +6,22 @@ export const createMatchRequest = async (req, res) => {
   try {
     const { userBEmail, skillOfferedByA, skillOfferedByB, exchangeType } = req.body;
 
-    // Find the other user by their email
-    const userB = await User.findOne({ email: userBEmail });
-    if (!userB) {
-      return res.status(404).json({ message: 'No student found with that email address.' });
-    }
+    let userBId = null;
+    let isPublic = true;
 
-    const userBId = userB._id.toString();
+    // If email provided, make it a private request
+    if (userBEmail) {
+      const userB = await User.findOne({ email: userBEmail });
+      if (!userB) {
+        return res.status(404).json({ message: 'No student found with that email address.' });
+      }
+      userBId = userB._id.toString();
+      isPublic = false;
 
-    // Prevent self-matching
-    if (userBId === req.user._id.toString()) {
-      return res.status(400).json({ message: 'Cannot match with yourself.' });
+      // Prevent self-matching
+      if (userBId === req.user._id.toString()) {
+        return res.status(400).json({ message: 'Cannot match with yourself.' });
+      }
     }
 
     const match = await Match.create({
@@ -24,20 +29,62 @@ export const createMatchRequest = async (req, res) => {
       userBId,
       skillOfferedByA,
       skillOfferedByB,
-      exchangeType
+      exchangeType,
+      isPublic
     });
 
-    // Notify user B
-    await sendNotification(userBId, {
-      title: 'New Skill Match Request! 🤝',
-      message: `${req.user.name} wants to exchange ${skillOfferedByA} for your ${skillOfferedByB}.`,
-      type: 'MATCH',
-      link: '/dashboard'
-    });
+    // Notify user B if it's a private request
+    if (!isPublic && userBId) {
+      await sendNotification(userBId, {
+        title: 'New Skill Match Request! 🤝',
+        message: `${req.user.name} wants to exchange ${skillOfferedByA} for your ${skillOfferedByB}.`,
+        type: 'MATCH',
+        link: '/dashboard'
+      });
+    }
 
     res.status(201).json(match);
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+export const getPublicRequests = async (req, res) => {
+  try {
+    const requests = await Match.find({ isPublic: true, status: 'PENDING' })
+      .populate('userAId', 'name profilePhoto trustScore collegeName department');
+    res.json(requests);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+export const claimMatchRequest = async (req, res) => {
+  try {
+    const match = await Match.findById(req.params.id);
+    if (!match) return res.status(404).json({ message: 'Request not found' });
+    if (!match.isPublic) return res.status(400).json({ message: 'Not a public request' });
+    if (match.userAId.toString() === req.user._id.toString()) {
+       return res.status(400).json({ message: 'You cannot claim your own request' });
+    }
+
+    match.userBId = req.user._id;
+    match.isPublic = false;
+    match.status = 'ACCEPTED';
+    match.meetingLink = 'https://meet.skillsphere.local/' + match._id;
+    await match.save();
+
+    // Notify User A
+    await sendNotification(match.userAId.toString(), {
+      title: 'Match Found! 🤝',
+      message: `${req.user.name} has accepted your swap request for ${match.skillOfferedByB}!`,
+      type: 'MATCH',
+      link: '/dashboard'
+    });
+
+    res.json(match);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
   }
 };
 
