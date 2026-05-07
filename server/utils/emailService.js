@@ -12,19 +12,18 @@ dotenv.config();
  */
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.EMAIL_PORT) || 587,
-  secure: process.env.EMAIL_PORT == '465', 
+  port: 465, // Explicitly try 465 with secure: true
+  secure: true, 
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
   tls: {
-    rejectUnauthorized: false,
-    ciphers: 'SSLv3'
+    rejectUnauthorized: false
   },
-  // Aggressive IPv4 forcing
+  // Aggressive IPv4 forcing is still key
   family: 4,
-  localAddress: '0.0.0.0', // Force binding to IPv4 interface
+  localAddress: '0.0.0.0', 
   lookup: (hostname, options, callback) => {
     dns.lookup(hostname, { family: 4, verbatim: false }, (err, address, family) => {
       if (err) return callback(err);
