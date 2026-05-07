@@ -11,29 +11,32 @@ dotenv.config();
  * Reusable Email Service
  */
 const transporter = nodemailer.createTransport({
-  pool: true,
   host: process.env.EMAIL_HOST || 'smtp.gmail.com',
   port: parseInt(process.env.EMAIL_PORT) || 587,
-  secure: process.env.EMAIL_PORT == '465', // true for 465, false for other ports
+  secure: process.env.EMAIL_PORT == '465', 
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
   },
   tls: {
     rejectUnauthorized: false,
-    // Add ciphers to help with some cloud environment restrictions
     ciphers: 'SSLv3'
   },
-  // Keep the IPv4 forcing which is critical for Render/Gmail connectivity
+  // Aggressive IPv4 forcing
+  family: 4,
+  localAddress: '0.0.0.0', // Force binding to IPv4 interface
   lookup: (hostname, options, callback) => {
-    dns.lookup(hostname, { family: 4 }, callback);
+    dns.lookup(hostname, { family: 4, verbatim: false }, (err, address, family) => {
+      if (err) return callback(err);
+      console.log(`[SMTP DNS] Resolved ${hostname} to ${address} (family: ${family})`);
+      callback(null, address, family);
+    });
   },
-  family: 4, 
   logger: true,
   debug: true,
-  connectionTimeout: 30000, // Increase timeouts for slow cloud networks
-  greetingTimeout: 30000,
-  socketTimeout: 45000
+  connectionTimeout: 40000,
+  greetingTimeout: 40000,
+  socketTimeout: 60000
 });
 
 /**
