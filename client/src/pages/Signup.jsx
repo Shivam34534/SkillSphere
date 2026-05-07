@@ -401,6 +401,14 @@ function Signup() {
             </p>
           </form>
         )}
+
+        {step > 1 && (
+          <div className="text-center mt-8 pt-6 border-t border-white/5">
+            <p className="text-text-muted text-sm">
+              Already have an account? <Link to="/login" className="text-primary font-semibold hover:underline ml-1">Log in</Link>
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
