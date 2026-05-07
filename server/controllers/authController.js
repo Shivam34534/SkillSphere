@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { sendEmail } from '../utils/emailService.js';
 import { otpTemplate, welcomeTemplate, resetPasswordTemplate } from '../utils/emailTemplates.js';
+import { notifyPerfectMatches } from './matchController.js';
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '30d' });
@@ -163,6 +164,9 @@ export const verifyOTP = async (req, res) => {
     } catch (emailError) {
       console.error("Failed to send welcome email:", emailError);
     }
+
+    // Trigger Smart Match Discovery
+    notifyPerfectMatches(user._id);
 
     res.json({
       _id: user._id,

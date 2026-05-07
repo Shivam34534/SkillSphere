@@ -206,6 +206,42 @@ export const getMatchSuggestions = async (req, res) => {
   }
 };
 
+export const notifyPerfectMatches = async (userId) => {
+  try {
+    const currentUser = await User.findById(userId);
+    if (!currentUser) return;
+
+    const { skillsToTeach, skillsToLearn } = currentUser;
+
+    // Find users who have a "Perfect Match" (They have what you want AND want what you have)
+    const perfectMatches = await User.find({
+      _id: { $ne: userId },
+      skillsToTeach: { $in: skillsToLearn },
+      skillsToLearn: { $in: skillsToTeach }
+    });
+
+    for (const match of perfectMatches) {
+      // Notify the other user
+      await sendNotification(match._id.toString(), {
+        title: 'New Perfect Match! 🚀',
+        message: `${currentUser.name} can teach you ${skillsToLearn.join(', ')} and wants to learn ${skillsToTeach.join(', ')}.`,
+        type: 'MATCH',
+        link: '/dashboard'
+      });
+
+      // Notify the current user (optional, but good for feedback)
+      await sendNotification(userId.toString(), {
+        title: 'Perfect Match Found! ✨',
+        message: `We found a match! ${match.name} is looking for exactly what you offer.`,
+        type: 'MATCH',
+        link: '/dashboard'
+      });
+    }
+  } catch (error) {
+    console.error('Match Notification Error:', error);
+  }
+};
+
 export const getBarterHistory = async (req, res) => {
   try {
     const history = await Match.find({

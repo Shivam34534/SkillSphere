@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import { notifyPerfectMatches } from './matchController.js';
 
 export const getUserProfile = async (req, res) => {
   try {
@@ -26,6 +27,12 @@ export const updateUserProfile = async (req, res) => {
       user.skillsToLearn = req.body.skillsToLearn || user.skillsToLearn;
       
       const updatedUser = await user.save();
+      
+      // Trigger Smart Match Discovery if skills were updated
+      if (req.body.skillsToTeach || req.body.skillsToLearn) {
+        notifyPerfectMatches(user._id);
+      }
+      
       res.json(updatedUser);
     } else {
       res.status(404).json({ message: 'User not found' });
