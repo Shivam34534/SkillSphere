@@ -230,6 +230,10 @@ export const forgotPassword = async (req, res) => {
 export const verifyResetOTP = async (req, res) => {
   try {
     const { email, otp } = req.body;
+
+    if (!email || !otp) {
+      return res.status(400).json({ message: 'Email and verification code are required.' });
+    }
     
     const user = await User.findOne({ 
       email,
@@ -250,6 +254,10 @@ export const verifyResetOTP = async (req, res) => {
 export const resetPassword = async (req, res) => {
   try {
     const { email, otp, password } = req.body;
+
+    if (!email || !otp || !password) {
+      return res.status(400).json({ message: 'Email, verification code, and new password are required.' });
+    }
     
     const user = await User.findOne({
       email,
