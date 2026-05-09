@@ -58,6 +58,7 @@ function ForgotPassword() {
       const data = await response.json();
 
       if (response.ok) {
+        setMessage('');
         setStep(3);
       } else {
         setError(data.message || 'Invalid verification code.');
