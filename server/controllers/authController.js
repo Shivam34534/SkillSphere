@@ -64,17 +64,22 @@ export const registerUser = async (req, res) => {
     }
 
     if (user) {
+      // FOR DEV TESTING: Log the OTP directly to the terminal
+      console.log(`\n==========================================`);
+      console.log(`[TESTING] OTP FOR ${email} IS: ${otp}`);
+      console.log(`==========================================\n`);
+
       // 3. Send OTP via Email
       try {
         await sendEmail(user.email, 'Verify Your SkillSphere Account', otpTemplate(otp));
         console.log(`[AUTH] OTP sent successfully to ${email}`);
       } catch (emailError) {
         console.error('REGISTRATION-EMAIL-ERROR:', emailError);
-        return res.status(500).json({ 
-          message: 'Failed to send verification email. Please check your SMTP settings.',
-          error: emailError.message,
-          code: emailError.code,
-          command: emailError.command
+        console.warn(`[TESTING] Email failed to send, but registration can continue.`);
+        // TEMPORARY FIX: Return 201 instead of 500 so you can test the frontend
+        return res.status(201).json({ 
+          message: 'Email failed to send, but account was created. Please use the OTP printed in the backend terminal.',
+          email: user.email
         });
       }
       
