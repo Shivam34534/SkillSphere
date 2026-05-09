@@ -151,3 +151,24 @@ export const resetPasswordTemplate = (resetUrl) => `
     </div>
   </div>
 `;
+/**
+ * Password Reset OTP Template
+ */
+export const resetOTPTemplate = (otp) => `
+  <div style="${baseStyle}">
+    <div style="${headerStyle}">
+      <h1 style="margin: 0;">Reset Your Password 🔐</h1>
+    </div>
+    <div style="${bodyStyle}">
+      <p>Hi there,</p>
+      <p>You requested a password reset for your SkillSphere account. Please use the following One-Time Password (OTP) to continue. This code is valid for 10 minutes.</p>
+      <div style="background: #f3f4f6; padding: 20px; border-radius: 8px; text-align: center; font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #4F46E5;">
+        ${otp}
+      </div>
+      <p style="margin-top: 20px;">If you did not request this, please ignore this email and your password will remain unchanged.</p>
+    </div>
+    <div style="${footerStyle}">
+      <p>&copy; 2026 SkillSphere Campus Marketplace. All rights reserved.</p>
+    </div>
+  </div>
+`;
