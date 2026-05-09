@@ -21,8 +21,6 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: false
   },
-  // CRITICAL: Force the socket itself to be IPv4 to prevent 'Local (:::0)' IPv6 binds
-  localAddress: '0.0.0.0',
   family: 4,
   lookup: (hostname, options, callback) => {
     dns.resolve4(hostname, (err, addresses) => {
