@@ -24,9 +24,11 @@ const transporter = nodemailer.createTransport({
   // CRITICAL: Force IPv4 for both the connection and the DNS lookup
   family: 4,
   lookup: (hostname, options, callback) => {
-    dns.lookup(hostname, { family: 4 }, (err, address, family) => {
-      if (err) return callback(err);
-      callback(null, address, family);
+    dns.resolve4(hostname, (err, addresses) => {
+      if (err || !addresses || addresses.length === 0) {
+        return dns.lookup(hostname, { family: 4 }, callback);
+      }
+      callback(null, addresses[0], 4);
     });
   }
 });
