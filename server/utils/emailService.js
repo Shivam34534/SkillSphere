@@ -1,6 +1,8 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 import dns from 'dns';
+// Force IPv4 as priority for all network connections (Fixes Render/Gmail ENETUNREACH)
+dns.setDefaultResultOrder('ipv4first');
 
 
 dotenv.config();
@@ -19,7 +21,17 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: false
   },
-  connectionTimeout: 10000, // Reduced for faster failure feedback
+  // CRITICAL: This is the ONLY way Gmail works on Render (Fixes ENETUNREACH)
+  family: 4,
+  lookup: (hostname, options, callback) => {
+    dns.lookup(hostname, { family: 4, verbatim: false }, (err, address, family) => {
+      if (err) return callback(err);
+      callback(null, address, family);
+    });
+  },
+  connectionTimeout: 30000,
+  greetingTimeout: 30000,
+  socketTimeout: 45000
 });
 
 // Verify connection configuration on startup
