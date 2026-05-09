@@ -19,7 +19,6 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: false
   },
-  // Force IPv4
   family: 4
 });
 
