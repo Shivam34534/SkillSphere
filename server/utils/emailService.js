@@ -1,64 +1,29 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 import dotenv from 'dotenv';
-import dns from 'dns';
-// Force IPv4 as priority for all network connections (Fixes Render/Gmail ENETUNREACH)
-dns.setDefaultResultOrder('ipv4first');
-
 
 dotenv.config();
 
-/**
- * Reusable Email Service
- */
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false, // Use TLS
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  tls: {
-    rejectUnauthorized: false
-  },
-  family: 4,
-  lookup: (hostname, options, callback) => {
-    dns.resolve4(hostname, (err, addresses) => {
-      if (err || !addresses || addresses.length === 0) {
-        return dns.lookup(hostname, { family: 4 }, callback);
-      }
-      callback(null, addresses[0], 4);
-    });
-  }
-});
-
-// Verify connection configuration on startup
-transporter.verify((error, success) => {
-  if (error) {
-    console.error('[EMAIL-SERVICE] Connection Error:', error.message);
-  } else {
-    console.log('[EMAIL-SERVICE] Server is ready to deliver messages');
-  }
-});
+// Initialize Resend with the API key from environment variables
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
- * Send an email
+ * Send an email using Resend HTTP API (bypasses Render SMTP block)
  * @param {string} to - Recipient email
  * @param {string} subject - Email subject
  * @param {string} html - HTML content of the email
  */
 export const sendEmail = async (to, subject, html) => {
   try {
-    const info = await transporter.sendMail({
-      from: `"SkillSphere" <${process.env.EMAIL_USER}>`,
+    const data = await resend.emails.send({
+      from: 'SkillSphere <onboarding@resend.dev>', // Free tier requires using this sender
       to,
       subject,
       html,
     });
-    console.log('Message sent: %s', info.messageId);
-    return info;
+    console.log('Message sent via Resend API: %s', data.id);
+    return data;
   } catch (error) {
-    console.error('Error sending email:', error);
+    console.error('Error sending email via Resend:', error);
     throw error;
   }
 };
