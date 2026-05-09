@@ -11,7 +11,9 @@ dotenv.config();
  * Reusable Email Service
  */
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 587,
+  secure: false, // Use TLS
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
@@ -19,7 +21,14 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: false
   },
-  family: 4
+  // CRITICAL: Force IPv4 for both the connection and the DNS lookup
+  family: 4,
+  lookup: (hostname, options, callback) => {
+    dns.lookup(hostname, { family: 4 }, (err, address, family) => {
+      if (err) return callback(err);
+      callback(null, address, family);
+    });
+  }
 });
 
 // Verify connection configuration on startup
