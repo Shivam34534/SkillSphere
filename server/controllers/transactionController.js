@@ -1,6 +1,6 @@
 import Transaction from '../models/Transaction.js';
 import User from '../models/User.js';
-import { sendNotification } from '../server.js';
+import { sendNotification } from '../utils/socketService.js';
 
 // @desc    Get user transactions
 // @route   GET /api/v1/transactions

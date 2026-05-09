@@ -2,7 +2,7 @@ import Gig from '../models/Gig.js';
 import User from '../models/User.js';
 import { sendEmail } from '../utils/emailService.js';
 import { gigApplicationTemplate } from '../utils/emailTemplates.js';
-import { sendNotification } from '../server.js';
+import { sendNotification } from '../utils/socketService.js';
 
 export const createGig = async (req, res) => {
   try {
