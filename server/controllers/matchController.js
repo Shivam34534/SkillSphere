@@ -1,6 +1,6 @@
 import Match from '../models/Match.js';
 import User from '../models/User.js';
-import { sendNotification } from '../server.js';
+import { sendNotification } from '../utils/socketService.js';
 
 export const createMatchRequest = async (req, res) => {
   try {

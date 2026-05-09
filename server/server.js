@@ -2,7 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import http from 'http';
-import { Server } from 'socket.io';
+import { initSocket } from './utils/socketService.js';
 import connectDB from './config/db.js';
 
 // Route imports
@@ -26,8 +26,20 @@ connectDB();
 const app = express();
 
 // Middleware
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "http://localhost:5173",
+  "https://skillsphere-c0xl.onrender.com"
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -64,60 +76,7 @@ const PORT = process.env.PORT || 5000;
 const server = http.createServer(app);
 
 // Socket.io for Real-time Chat & WebRTC
-const io = new Server(server, {
-  cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
-    methods: ["GET", "POST"]
-  }
-});
-
-io.on('connection', (socket) => {
-  console.log('User connected to SkillSphere Socket:', socket.id);
-
-  socket.on('join-room', (roomId, userId) => {
-    socket.join(roomId);
-    socket.to(roomId).emit('user-connected', userId);
-
-    socket.on('disconnect', () => {
-      socket.to(roomId).emit('user-disconnected', userId);
-    });
-  });
-
-  // Relay WebRTC signaling data
-  socket.on('offer', (payload) => {
-    io.to(payload.target).emit('offer', payload);
-  });
-
-  socket.on('answer', (payload) => {
-    io.to(payload.target).emit('answer', payload);
-  });
-
-  socket.on('ice-candidate', (payload) => {
-    io.to(payload.target).emit('ice-candidate', payload);
-  });
-
-  // Relay chat messages
-  socket.on('send-chat', (roomId, message) => {
-    socket.to(roomId).emit('receive-chat', message);
-  });
-});
-
-// Helper function to send real-time notifications
-export const sendNotification = async (userId, notificationData) => {
-  try {
-    const Notification = (await import('./models/Notification.js')).default;
-    const notification = await Notification.create({
-      userId,
-      ...notificationData
-    });
-    
-    // Push to socket if user is online
-    io.to(userId.toString()).emit('new-notification', notification);
-    return notification;
-  } catch (error) {
-    console.error('Socket notification error:', error);
-  }
-};
+initSocket(server, process.env.FRONTEND_URL || "http://localhost:5173");
 
 server.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
