@@ -259,7 +259,7 @@ const StudentDashboard = () => {
                 <Inbox size={64} className="text-text-muted/10" />
                 <h3 className="text-2xl font-bold text-white">Silence in the Hub</h3>
                 <p className="text-text-muted max-w-xs mb-6">No active exchanges yet. Why not initiate a skill swap with a fellow student?</p>
-                <button onClick={handleCreateMatch} className="btn-primary px-10 py-4 text-xs">Begin Exploration</button>
+                <Link to="/barter-hub" className="btn-primary px-10 py-4 text-xs no-underline inline-block">Begin Exploration</Link>
               </div>
             )}
           </section>

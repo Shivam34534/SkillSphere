@@ -3,13 +3,23 @@ import { useSelector } from 'react-redux';
 import Modal from './Modal';
 import { Mail, Zap, Target, Send, Loader2 } from 'lucide-react';
 
-const MatchRequestModal = ({ isOpen, onClose, onSubmit, loading }) => {
+const MatchRequestModal = ({ isOpen, onClose, onSubmit, loading, initialData }) => {
   const { user } = useSelector((state) => state.auth);
   const [formData, setFormData] = useState({
     userBEmail: '',
     skillOfferedByA: '',
     skillOfferedByB: ''
   });
+
+  React.useEffect(() => {
+    if (isOpen) {
+      setFormData({
+        userBEmail: initialData?.userBEmail || '',
+        skillOfferedByA: initialData?.skillOfferedByA || '',
+        skillOfferedByB: initialData?.skillOfferedByB || ''
+      });
+    }
+  }, [isOpen, initialData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -19,7 +29,13 @@ const MatchRequestModal = ({ isOpen, onClose, onSubmit, loading }) => {
       return;
     }
     
-    onSubmit(formData);
+    // Clean up empty email string to avoid backend searching for empty email
+    const submissionData = { ...formData };
+    if (!submissionData.userBEmail || submissionData.userBEmail.trim() === '') {
+      delete submissionData.userBEmail;
+    }
+    
+    onSubmit(submissionData);
   };
 
   const handleChange = (e) => {
@@ -27,7 +43,10 @@ const MatchRequestModal = ({ isOpen, onClose, onSubmit, loading }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Synergy Request">
+    <Modal isOpen={isOpen} onClose={() => {
+      setFormData({ userBEmail: '', skillOfferedByA: '', skillOfferedByB: '' });
+      onClose();
+    }} title="Synergy Request">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="bg-primary/5 border border-primary/10 rounded-2xl p-4 flex items-start gap-4 mb-8">
            <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary shrink-0">

@@ -132,8 +132,8 @@ const Marketplace = () => {
                 </div>
               </div>
               
-              <Link to={`/gigs/${service._id}`} className="w-full py-4 bg-white/5 border-t border-white/10 text-center text-sm font-bold text-white group-hover:bg-primary group-hover:border-primary transition-all flex items-center justify-center gap-2">
-                 Book Service <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+              <Link to={`/profile/${service.freelancerId?._id || service.freelancerId}`} className="w-full py-4 bg-white/5 border-t border-white/10 text-center text-sm font-bold text-white group-hover:bg-primary group-hover:border-primary transition-all flex items-center justify-center gap-2">
+                 View Profile <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
           )) : (

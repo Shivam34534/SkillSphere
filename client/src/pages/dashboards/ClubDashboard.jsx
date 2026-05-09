@@ -17,7 +17,7 @@ const ClubDashboard = () => {
   const [focusedField, setFocusedField] = useState(null);
 
   // Form States
-  const [gigData, setGigData] = useState({ title: '', description: '', type: 'VOLUNTEER', budget: 0, skill: '' });
+  const [gigData, setGigData] = useState({ title: '', description: '', type: 'VOLUNTEER', budget: 0, skill: '', category: 'Design' });
   const [eventData, setEventData] = useState({ title: '', description: '', date: '', location: '', type: 'WORKSHOP' });
 
   useEffect(() => {
@@ -62,11 +62,16 @@ const ClubDashboard = () => {
       });
       if (response.ok) {
         setIsGigModalOpen(false);
-        setGigData({ title: '', description: '', type: 'VOLUNTEER', budget: 0, skill: '' });
+        setGigData({ title: '', description: '', type: 'VOLUNTEER', budget: 0, skill: '', category: 'Design' });
         fetchData();
+        alert('Gig posted successfully!');
+      } else {
+        const err = await response.json();
+        alert('Failed to post gig: ' + err.message);
       }
     } catch (error) {
       console.error('Failed to post gig', error);
+      alert('An error occurred while posting the gig.');
     }
   };
 
@@ -386,21 +391,39 @@ const ClubDashboard = () => {
             </div>
           </div>
 
-          <div className="input-group relative">
-            <label className="text-xs font-bold text-text-muted uppercase mb-2 block">Primary Skill Required</label>
-            <div className="relative">
-              <Sparkles className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
-              <input
-                type="text"
-                placeholder="e.g. Photoshop, React"
-                value={gigData.skill}
-                onChange={(e) => setGigData({ ...gigData, skill: e.target.value })}
-                onFocus={() => setFocusedField('skill')}
-                onBlur={() => setFocusedField(null)}
-                className="w-full bg-black/40 border border-glass-border rounded-xl py-3 pl-10 pr-4 text-white focus:border-primary outline-none"
-                required
-              />
-              {renderTooltip('skill', 'Main skill needed', gigData)}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="input-group">
+              <label className="text-xs font-bold text-text-muted uppercase mb-2 block">Category</label>
+              <select
+                value={gigData.category}
+                onChange={(e) => setGigData({ ...gigData, category: e.target.value })}
+                className="w-full bg-black/40 border border-glass-border rounded-xl py-3 px-4 text-white focus:border-primary outline-none appearance-none"
+              >
+                <option value="Design" className="bg-background-dark">Design</option>
+                <option value="Coding" className="bg-background-dark">Coding</option>
+                <option value="Writing" className="bg-background-dark">Writing</option>
+                <option value="Events" className="bg-background-dark">Events</option>
+                <option value="Marketing" className="bg-background-dark">Marketing</option>
+                <option value="Video" className="bg-background-dark">Video</option>
+                <option value="Other" className="bg-background-dark">Other</option>
+              </select>
+            </div>
+            <div className="input-group relative">
+              <label className="text-xs font-bold text-text-muted uppercase mb-2 block">Primary Skill Required</label>
+              <div className="relative">
+                <Sparkles className="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted" size={18} />
+                <input
+                  type="text"
+                  placeholder="e.g. Photoshop, React"
+                  value={gigData.skill}
+                  onChange={(e) => setGigData({ ...gigData, skill: e.target.value })}
+                  onFocus={() => setFocusedField('skill')}
+                  onBlur={() => setFocusedField(null)}
+                  className="w-full bg-black/40 border border-glass-border rounded-xl py-3 pl-10 pr-4 text-white focus:border-primary outline-none"
+                  required
+                />
+                {renderTooltip('skill', 'Main skill needed', gigData)}
+              </div>
             </div>
           </div>
 

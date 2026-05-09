@@ -23,8 +23,8 @@ function Home() {
         
         <div className="hero-buttons flex-col sm:flex-row w-full max-w-xs sm:max-w-none px-6">
           <Link to="/signup" className="w-full sm:w-auto">
-            <button className="btn-primary large w-full justify-center">
-              Join your campus <ArrowRight size={20} />
+            <button className="btn-primary large w-full justify-center gap-2">
+              Get Started <ArrowRight size={20} />
             </button>
           </Link>
           <Link to="/marketplace" className="w-full sm:w-auto">

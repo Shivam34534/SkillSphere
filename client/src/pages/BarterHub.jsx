@@ -16,6 +16,7 @@ const BarterHub = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalLoading, setModalLoading] = useState(false);
+  const [initialData, setInitialData] = useState(null);
 
   useEffect(() => {
     if (token) {
@@ -42,6 +43,15 @@ const BarterHub = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleRequest = (targetUser, offeredSkill, learnedSkill) => {
+    setInitialData({
+      userBEmail: targetUser.email,
+      skillOfferedByA: offeredSkill || '',
+      skillOfferedByB: learnedSkill || ''
+    });
+    setIsModalOpen(true);
   };
 
   const handleClaim = async (requestId) => {
@@ -411,6 +421,7 @@ const BarterHub = () => {
         onClose={() => setIsModalOpen(false)} 
         onSubmit={submitPublicRequest}
         loading={modalLoading}
+        initialData={initialData}
       />
     </div>
   );
