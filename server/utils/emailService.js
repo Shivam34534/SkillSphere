@@ -11,9 +11,7 @@ dotenv.config();
  * Reusable Email Service
  */
 const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.EMAIL_PORT) || 587,
-  secure: false, // Use TLS (true for 465, false for 587)
+  service: 'gmail',
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS,
@@ -21,17 +19,8 @@ const transporter = nodemailer.createTransport({
   tls: {
     rejectUnauthorized: false
   },
-  // CRITICAL: This is the ONLY way Gmail works on Render (Fixes ENETUNREACH)
-  family: 4,
-  lookup: (hostname, options, callback) => {
-    dns.lookup(hostname, { family: 4, verbatim: false }, (err, address, family) => {
-      if (err) return callback(err);
-      callback(null, address, family);
-    });
-  },
-  connectionTimeout: 30000,
-  greetingTimeout: 30000,
-  socketTimeout: 45000
+  // Force IPv4
+  family: 4
 });
 
 // Verify connection configuration on startup
