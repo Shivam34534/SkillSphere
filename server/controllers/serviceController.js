@@ -19,8 +19,34 @@ export const createService = async (req, res) => {
 
 export const getServices = async (req, res) => {
   try {
-    const services = await Service.find({ isActive: true }).populate('freelancerId', 'name trustScore xpLevel profilePhoto') || [];
-    res.json(services);
+    const { category, search, page = 1, limit = 12 } = req.query;
+    const query = { isActive: true };
+
+    if (category && category !== 'All') {
+      query.category = category;
+    }
+
+    if (search) {
+      query.$or = [
+        { title: { $regex: search, $options: 'i' } },
+        { description: { $regex: search, $options: 'i' } }
+      ];
+    }
+
+    const skip = (page - 1) * limit;
+    const total = await Service.countDocuments(query);
+
+    const services = await Service.find(query)
+      .populate('freelancerId', 'name trustScore xpLevel profilePhoto')
+      .skip(skip)
+      .limit(Number(limit))
+      .sort({ createdAt: -1 });
+
+    res.json({
+      services,
+      totalPages: Math.ceil(total / limit),
+      currentPage: Number(page)
+    });
   } catch (error) {
     console.error('Get Services Error:', error);
     res.status(500).json({ message: error.message || 'Internal Server Error' });

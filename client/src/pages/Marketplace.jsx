@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Search, Zap, Code, Palette, Presentation, Music, Video, Star, Inbox, ArrowRight } from 'lucide-react';
+import { API_URL } from '../config';
+import toast from 'react-hot-toast';
 
 const Marketplace = () => {
   const [services, setServices] = useState([]);
@@ -9,29 +11,34 @@ const Marketplace = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('All');
 
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   const categories = ['All', 'Web Dev', 'Design', 'Tutoring', 'Music', 'Video', 'Writing', 'Marketing'];
 
   useEffect(() => {
-    fetchServices();
-  }, []);
+    const delayDebounceFn = setTimeout(() => {
+      fetchServices();
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchTerm, selectedCategory, page]);
 
   const fetchServices = async () => {
+    setLoading(true);
     try {
-      const response = await axios.get('https://skillsphere-backend-8cju.onrender.com/api/v1/services');
-      setServices(response.data || []);
+      const response = await axios.get(`${API_URL}/services`, {
+        params: { search: searchTerm, category: selectedCategory, page }
+      });
+      setServices(response.data.services || []);
+      setTotalPages(response.data.totalPages || 1);
       setLoading(false);
     } catch (error) {
       console.error('Error fetching services:', error);
+      toast.error('Failed to load services. Please try again.');
       setLoading(false);
     }
   };
-
-  const filteredServices = services.filter(service => {
-    const matchesSearch = service.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         service.description.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === 'All' || service.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
 
   return (
     <div className="marketplace-container px-6 py-12 md:px-12 lg:px-24">
@@ -65,7 +72,7 @@ const Marketplace = () => {
             {categories.map(cat => (
               <button 
                 key={cat}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => { setSelectedCategory(cat); setPage(1); }}
                 className={`whitespace-nowrap px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
                   selectedCategory === cat 
                   ? 'bg-primary text-white shadow-lg shadow-primary/20' 
@@ -95,7 +102,7 @@ const Marketplace = () => {
         </div>
       ) : (
         <div className="services-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredServices.length > 0 ? filteredServices.map((service) => (
+          {services.length > 0 ? services.map((service) => (
             <div key={service._id} className="feature-card p-0 flex flex-col group overflow-hidden border border-white/5 hover:border-primary/40 transition-all duration-500 hover:-translate-y-2 h-full">
               <div className="h-48 bg-gradient-to-br from-primary/10 to-accent/5 relative overflow-hidden">
                  <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:scale-110 transition-transform duration-700">
@@ -143,9 +150,32 @@ const Marketplace = () => {
               </div>
               <h3 className="text-3xl font-bold text-white mb-3 text-center">No skills found</h3>
               <p className="text-text-muted text-center max-w-sm mb-12">Adjust your filters or try a different search term to discover hidden talent on campus.</p>
-              <button onClick={() => {setSearchTerm(''); setSelectedCategory('All');}} className="btn-secondary px-8 py-3">Clear All Filters</button>
+              <button onClick={() => {setSearchTerm(''); setSelectedCategory('All'); setPage(1);}} className="btn-secondary px-8 py-3">Clear All Filters</button>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Pagination */}
+      {!loading && totalPages > 1 && (
+        <div className="flex justify-center items-center gap-4 mt-12">
+          <button 
+            disabled={page === 1}
+            onClick={() => setPage(p => Math.max(1, p - 1))}
+            className="px-4 py-2 bg-white/5 rounded-lg disabled:opacity-50 hover:bg-white/10 transition-colors text-sm font-bold text-white"
+          >
+            Previous
+          </button>
+          <span className="text-text-muted text-sm">
+            Page <span className="text-white font-bold">{page}</span> of {totalPages}
+          </span>
+          <button 
+            disabled={page === totalPages}
+            onClick={() => setPage(p => Math.min(totalPages, p + 1))}
+            className="px-4 py-2 bg-white/5 rounded-lg disabled:opacity-50 hover:bg-white/10 transition-colors text-sm font-bold text-white"
+          >
+            Next
+          </button>
         </div>
       )}
     </div>

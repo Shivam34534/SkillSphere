@@ -1,7 +1,19 @@
 import 'dotenv/config';
 import express from 'express';
+
+// Environment variable validation
+const requiredEnvVars = ['JWT_SECRET', 'SENDGRID_API_KEY', 'MONGO_URI'];
+const missingEnvVars = requiredEnvVars.filter((envVar) => !process.env[envVar]);
+
+if (missingEnvVars.length > 0) {
+  console.error(`CRITICAL ERROR: Missing required environment variables: ${missingEnvVars.join(', ')}`);
+  process.exit(1);
+}
+
 import cors from 'cors';
 import http from 'http';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import { initSocket } from './utils/socketService.js';
 import connectDB from './config/db.js';
 
@@ -19,6 +31,7 @@ import transactionRoutes from './routes/transactionRoutes.js';
 import leaderboardRoutes from './routes/leaderboardRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import reviewRoutes from './routes/reviewRoutes.js';
+import User from './models/User.js';
 
 // Connect to Campus Database
 connectDB();
@@ -43,9 +56,16 @@ app.use(cors({
   credentials: true
 }));
 app.use(express.json());
+app.use(helmet());
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 20, // limit each IP to 20 auth requests per windowMs
+  message: { message: 'Too many requests from this IP, please try again after 15 minutes' }
+});
 
 // API Routes
-app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/auth', authLimiter, authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/skills', skillRoutes);
 app.use('/api/v1/gigs', gigRoutes);
@@ -77,6 +97,27 @@ const server = http.createServer(app);
 
 // Socket.io for Real-time Chat & WebRTC
 initSocket(server, process.env.FRONTEND_URL || "http://localhost:5173");
+
+// Periodic Database Cleanup Job (Runs every 1 hour)
+setInterval(async () => {
+  try {
+    const now = new Date();
+    // Clear expired reset tokens
+    await User.updateMany(
+      { resetPasswordExpires: { $lt: now } },
+      { $unset: { resetPasswordOTP: 1, resetPasswordExpires: 1 } }
+    );
+    // Remove unverified accounts older than 24 hours
+    const yesterday = new Date(Date.now() - 24 * 60 * 60 * 1000);
+    await User.deleteMany({
+      isVerified: false,
+      createdAt: { $lt: yesterday }
+    });
+    console.log('[CLEANUP] Ran routine database cleanup.');
+  } catch (err) {
+    console.error('[CLEANUP ERROR]', err);
+  }
+}, 60 * 60 * 1000); // 1 Hour
 
 server.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);

@@ -64,11 +64,6 @@ export const registerUser = async (req, res) => {
     }
 
     if (user) {
-      // FOR DEV TESTING: Log the OTP directly to the terminal
-      console.log(`\n==========================================`);
-      console.log(`[TESTING] OTP FOR ${email} IS: ${otp}`);
-      console.log(`==========================================\n`);
-
       // 3. Send OTP via Email
       try {
         await sendEmail(user.email, 'Verify Your SkillSphere Account', otpTemplate(otp));

@@ -1,21 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import Home from './pages/Home';
-import Login from './pages/Login';
-import Signup from './pages/Signup';
-import Dashboard from './pages/Dashboard';
-import MeetingRoom from './pages/MeetingRoom';
-import Marketplace from './pages/Marketplace';
-import Profile from './pages/Profile';
-import Wallet from './pages/Wallet';
-import Leaderboard from './pages/Leaderboard';
-import PublicProfile from './pages/PublicProfile';
-import Gigs from './pages/Gigs';
-import GigDetails from './pages/GigDetails';
-import BarterHub from './pages/BarterHub';
-import AdminPanel from './pages/AdminPanel';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
+import { Toaster } from 'react-hot-toast';
+
+const Home = lazy(() => import('./pages/Home'));
+const Login = lazy(() => import('./pages/Login'));
+const Signup = lazy(() => import('./pages/Signup'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const MeetingRoom = lazy(() => import('./pages/MeetingRoom'));
+const Marketplace = lazy(() => import('./pages/Marketplace'));
+const Profile = lazy(() => import('./pages/Profile'));
+const Wallet = lazy(() => import('./pages/Wallet'));
+const Leaderboard = lazy(() => import('./pages/Leaderboard'));
+const PublicProfile = lazy(() => import('./pages/PublicProfile'));
+const Gigs = lazy(() => import('./pages/Gigs'));
+const GigDetails = lazy(() => import('./pages/GigDetails'));
+const BarterHub = lazy(() => import('./pages/BarterHub'));
+const AdminPanel = lazy(() => import('./pages/AdminPanel'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
@@ -138,26 +140,41 @@ function App() {
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <div className="app-container">
           <Navigation />
-          
+          <Toaster 
+            position="top-center" 
+            toastOptions={{
+              style: {
+                background: '#1a1a24',
+                color: '#fff',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+              },
+            }}
+          />
           <main className="main-content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/marketplace" element={<Marketplace />} />
-              <Route path="/barter-hub" element={<BarterHub />} />
-              <Route path="/gigs" element={<Gigs />} />
-              <Route path="/gigs/:id" element={<GigDetails />} />
-              <Route path="/admin" element={<AdminPanel />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/signup" element={<Signup />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/meeting/:id" element={<MeetingRoom />} />
-              <Route path="/profile" element={<Profile />} />
-              <Route path="/profile/:id" element={<PublicProfile />} />
-              <Route path="/wallet" element={<Wallet />} />
-              <Route path="/leaderboard" element={<Leaderboard />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password/:token" element={<ResetPassword />} />
-            </Routes>
+            <Suspense fallback={
+              <div className="flex items-center justify-center min-h-[60vh]">
+                <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+              </div>
+            }>
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/marketplace" element={<Marketplace />} />
+                <Route path="/barter-hub" element={<BarterHub />} />
+                <Route path="/gigs" element={<Gigs />} />
+                <Route path="/gigs/:id" element={<GigDetails />} />
+                <Route path="/admin" element={<AdminPanel />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/meeting/:id" element={<MeetingRoom />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/profile/:id" element={<PublicProfile />} />
+                <Route path="/wallet" element={<Wallet />} />
+                <Route path="/leaderboard" element={<Leaderboard />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
+              </Routes>
+            </Suspense>
           </main>
         </div>
       </Router>
