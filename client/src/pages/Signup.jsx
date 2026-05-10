@@ -75,10 +75,10 @@ function Signup() {
   return (
     <div className="auth-container flex items-start justify-center min-h-screen bg-background-dark py-16 px-4 transition-all duration-700">
       <div className={`glow-sphere secondary-glow absolute top-1/3 right-1/4 opacity-20 transition-all duration-1000 ${formData.role === 'FREELANCER' ? 'bg-secondary' :
-          formData.role === 'CLUB' ? 'bg-accent' : 'bg-primary'
+        formData.role === 'CLUB' ? 'bg-accent' : 'bg-primary'
         }`}></div>
       <div className={`glow-sphere main-glow absolute bottom-1/4 left-1/4 opacity-20 transition-all duration-1000 ${formData.role === 'FREELANCER' ? 'bg-secondary' :
-          formData.role === 'CLUB' ? 'bg-accent' : 'bg-primary'
+        formData.role === 'CLUB' ? 'bg-accent' : 'bg-primary'
         }`}></div>
 
       <div className="glass-card auth-card w-full max-w-xl p-8 md:p-12 relative z-10">
@@ -91,7 +91,7 @@ function Signup() {
           <ChevronLeft size={20} className="group-hover:-translate-x-0.5 transition-transform" />
         </button>
 
-        <div className="auth-header text-center mb-8">
+        <div className="auth-header text-center mb-5">
           {step === 1 && <h2 className="text-3xl font-display font-bold text-text-main">Choose your journey</h2>}
           {step === 2 && <h2 className="text-3xl font-display font-bold text-text-main">Create your account</h2>}
           {step === 3 && <h2 className="text-3xl font-display font-bold text-text-main">Verify your campus</h2>}
@@ -101,9 +101,9 @@ function Signup() {
           <div className="flex justify-center gap-2 mt-4">
             {[1, 2, 3, 4, 5].map(s => (
               <div key={s} className={`h-1 rounded-full transition-all duration-500 ${s <= step ? (
-                  formData.role === 'FREELANCER' ? 'w-8 bg-secondary' :
-                    formData.role === 'CLUB' ? 'w-8 bg-accent' : 'w-8 bg-primary'
-                ) : 'w-4 bg-white/10'
+                formData.role === 'FREELANCER' ? 'w-8 bg-secondary' :
+                  formData.role === 'CLUB' ? 'w-8 bg-accent' : 'w-8 bg-primary'
+              ) : 'w-4 bg-white/10'
                 }`}></div>
             ))}
           </div>
@@ -241,8 +241,8 @@ function Signup() {
               type="button"
               onClick={nextStep}
               className={`w-full py-4 mt-4 flex items-center justify-center gap-2 transition-all duration-300 rounded-xl font-bold ${formData.role === 'FREELANCER' ? 'bg-secondary hover:bg-secondary-hover text-white' :
-                  formData.role === 'CLUB' ? 'bg-accent hover:bg-accent-hover text-white' :
-                    'bg-primary hover:bg-primary-hover text-white'
+                formData.role === 'CLUB' ? 'bg-accent hover:bg-accent-hover text-white' :
+                  'bg-primary hover:bg-primary-hover text-white'
                 }`}
               disabled={!formData.name || !formData.email || !formData.password || !formData.mobile}
             >
@@ -320,8 +320,8 @@ function Signup() {
               type="button"
               onClick={nextStep}
               className={`w-full py-4 mt-4 flex items-center justify-center gap-2 transition-all duration-300 rounded-xl font-bold ${formData.role === 'FREELANCER' ? 'bg-secondary hover:bg-secondary-hover text-white' :
-                  formData.role === 'CLUB' ? 'bg-accent hover:bg-accent-hover text-white' :
-                    'bg-primary hover:bg-primary-hover text-white'
+                formData.role === 'CLUB' ? 'bg-accent hover:bg-accent-hover text-white' :
+                  'bg-primary hover:bg-primary-hover text-white'
                 }`}
               disabled={!formData.collegeName || !formData.department}
             >
@@ -352,8 +352,8 @@ function Signup() {
               type="submit"
               disabled={loading}
               className={`w-full py-4 mt-4 transition-all duration-300 rounded-xl font-bold text-white shadow-lg ${formData.role === 'FREELANCER' ? 'bg-gradient-to-r from-secondary to-pink-600' :
-                  formData.role === 'CLUB' ? 'bg-gradient-to-r from-accent to-blue-600' :
-                    'bg-gradient-to-r from-success to-emerald-600'
+                formData.role === 'CLUB' ? 'bg-gradient-to-r from-accent to-blue-600' :
+                  'bg-gradient-to-r from-success to-emerald-600'
                 }`}
             >
               {loading ? 'Creating Account...' : 'Complete Setup & Send OTP'}
