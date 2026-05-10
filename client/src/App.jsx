@@ -125,9 +125,6 @@ function Navigation() {
               </>
             ) : (
               <div className="flex flex-col gap-3">
-                <Link to="/login" className="btn-secondary text-center py-3 flex items-center justify-center gap-2" onClick={closeMenu}>
-                  <LogIn size={18} /> Sign In
-                </Link>
                 <Link to="/signup" className="btn-primary text-center py-3 flex items-center justify-center gap-2" onClick={closeMenu}>
                   <UserPlus size={18} /> Sign Up
                 </Link>
