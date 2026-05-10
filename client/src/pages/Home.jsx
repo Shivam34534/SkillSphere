@@ -144,42 +144,6 @@ function Home() {
         </div>
       </section>
 
-      <section className="features-section py-20" id="features">
-        <div className="feature-tag mb-6 mx-auto uppercase">PLATFORM</div>
-        <h2 className="section-title text-center text-3xl md:text-5xl lg:text-7xl mb-6 tracking-tighter leading-tight max-w-4xl mx-auto">
-          Everything a campus needs in one <span className="gradient-text">ecosystem.</span>
-        </h2>
-        <p className="section-subtitle text-center text-base md:text-lg mx-auto mb-16 max-w-2xl opacity-70">
-          SkillSphere unifies all campus activities—from skill sharing to club management—into a single high-trust network.
-        </p>
-        
-        <div className="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full px-4">
-          <Link to="/marketplace" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
-            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Briefcase size={20} color="white" /></div>
-            <h3 className="text-base md:text-xl font-bold">Gig Marketplace</h3>
-            <p className="text-[12px] md:text-sm text-text-muted">Post, discover and deliver paid, barter or volunteer gigs with milestone-based escrow.</p>
-          </Link>
-          
-          <Link to="/wallet" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
-            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Wallet size={20} color="white" /></div>
-            <h3 className="text-base md:text-xl font-bold">Campus Wallet</h3>
-            <p className="text-[12px] md:text-sm text-text-muted">Cash, credits and coins powered by Razorpay & Stripe with full refund protection.</p>
-          </Link>
-
-          <Link to="/dashboard" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
-            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><MessageSquare size={20} color="white" /></div>
-            <h3 className="text-base md:text-xl font-bold">Real-time Chat</h3>
-            <p className="text-[12px] md:text-sm text-text-muted">Socket.io-powered DMs, presence and typing — built for fast collab.</p>
-          </Link>
-
-          <Link to="/leaderboard" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
-            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Trophy size={20} color="white" /></div>
-            <h3 className="text-base md:text-xl font-bold">XP & Badges</h3>
-            <p className="text-[12px] md:text-sm text-text-muted">Skill badges, leaderboards and weekly challenges that make growth addictive.</p>
-          </Link>
-        </div>
-      </section>
-
       <section className="px-6 py-20 max-w-7xl mx-auto" id="roles">
         <div className="feature-tag mb-6 mx-auto uppercase">ROLE-BASED</div>
         <h2 className="section-title text-center text-3xl md:text-5xl lg:text-7xl mb-16 tracking-tighter leading-tight max-w-4xl mx-auto">
@@ -247,6 +211,42 @@ function Home() {
               <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Mentor</li>
             </ul>
           </div>
+        </div>
+      </section>
+
+      <section className="features-section py-20" id="features">
+        <div className="feature-tag mb-6 mx-auto uppercase">PLATFORM</div>
+        <h2 className="section-title text-center text-3xl md:text-5xl lg:text-7xl mb-6 tracking-tighter leading-tight max-w-4xl mx-auto">
+          Everything a campus needs in one <span className="gradient-text">ecosystem.</span>
+        </h2>
+        <p className="section-subtitle text-center text-base md:text-lg mx-auto mb-16 max-w-2xl opacity-70">
+          SkillSphere unifies all campus activities—from skill sharing to club management—into a single high-trust network.
+        </p>
+        
+        <div className="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full px-4">
+          <Link to="/marketplace" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
+            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Briefcase size={20} color="white" /></div>
+            <h3 className="text-base md:text-xl font-bold">Gig Marketplace</h3>
+            <p className="text-[12px] md:text-sm text-text-muted">Post, discover and deliver paid, barter or volunteer gigs with milestone-based escrow.</p>
+          </Link>
+          
+          <Link to="/wallet" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
+            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Wallet size={20} color="white" /></div>
+            <h3 className="text-base md:text-xl font-bold">Campus Wallet</h3>
+            <p className="text-[12px] md:text-sm text-text-muted">Cash, credits and coins powered by Razorpay & Stripe with full refund protection.</p>
+          </Link>
+
+          <Link to="/dashboard" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
+            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><MessageSquare size={20} color="white" /></div>
+            <h3 className="text-base md:text-xl font-bold">Real-time Chat</h3>
+            <p className="text-[12px] md:text-sm text-text-muted">Socket.io-powered DMs, presence and typing — built for fast collab.</p>
+          </Link>
+
+          <Link to="/leaderboard" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
+            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Trophy size={20} color="white" /></div>
+            <h3 className="text-base md:text-xl font-bold">XP & Badges</h3>
+            <p className="text-[12px] md:text-sm text-text-muted">Skill badges, leaderboards and weekly challenges that make growth addictive.</p>
+          </Link>
         </div>
       </section>
 
