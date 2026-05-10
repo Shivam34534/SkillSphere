@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ArrowRight, Code, Palette, CheckCircle, Briefcase, Wallet, Shield, Bot, MessageSquare, Trophy, BarChart, Sparkles, GraduationCap, Users, ShieldCheck, Award, BookOpen, Zap, Check } from 'lucide-react';
+import { ArrowRight, Code, Palette, CheckCircle, Briefcase, Wallet, Shield, Bot, MessageSquare, Trophy, BarChart, Sparkles, GraduationCap, Users, ShieldCheck, Award, BookOpen, Zap, Check, UserPlus } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 function Home() {
@@ -41,7 +41,7 @@ function Home() {
         <div className="hero-buttons flex-col sm:flex-row w-full max-w-xs sm:max-w-none px-6">
           <Link to="/signup" className="w-full sm:w-auto">
             <button className="btn-primary large w-full justify-center gap-2">
-              Get Started <ArrowRight size={20} />
+              <UserPlus size={20} /> Sign Up
             </button>
           </Link>
           <Link to="/marketplace" className="w-full sm:w-auto">
