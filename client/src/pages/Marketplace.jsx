@@ -76,7 +76,7 @@ const Marketplace = () => {
               placeholder="Search for skills, services, or names..." 
               className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-white focus:border-primary transition-all outline-none"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
             />
           </div>
           <div className="flex items-center gap-2 max-w-[50%] lg:max-w-[60%] shrink-0">
