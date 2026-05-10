@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateUser } from '../store/slices/authSlice';
 import { Mail, GraduationCap, Shield, Award, Edit2, Save, Plus, Trash2, Github, Linkedin, Globe, Zap, Inbox } from 'lucide-react';
@@ -7,6 +8,7 @@ import { API_URL } from '../config';
 const Profile = () => {
   const { user, token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
   const [editedUser, setEditedUser] = useState({ ...user });
   const [newSkillToTeach, setNewSkillToTeach] = useState('');
@@ -19,7 +21,7 @@ const Profile = () => {
        </div>
        <h2 className="text-3xl font-black text-white mb-4">Access Restricted</h2>
        <p className="text-text-muted max-w-sm mb-8">Please log in to your SkillSphere account to view and manage your profile identity.</p>
-       <button className="btn-primary px-10 py-4 text-xs">Log In Now</button>
+       <button onClick={() => navigate('/login')} className="btn-primary px-10 py-4 text-xs">Log In Now</button>
     </div>
   );
 
