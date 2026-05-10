@@ -4,13 +4,20 @@ import { Link } from 'react-router-dom';
 
 function Home() {
   useEffect(() => {
-    // Scroll to top immediately on mount
-    window.scrollTo(0, 0);
-    
-    // Clear the hash from the URL on load so the browser doesn't force-scroll down
-    if (window.location.hash) {
-      window.history.replaceState(null, '', window.location.pathname);
+    // Prevent the browser from auto-scrolling to previous positions or hashes on reload
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
     }
+
+    // Use setTimeout to ensure this runs after browser's native scroll attempts
+    setTimeout(() => {
+      window.scrollTo(0, 0);
+      
+      // Clear the hash from the URL on load
+      if (window.location.hash) {
+        window.history.replaceState(null, '', window.location.pathname);
+      }
+    }, 10);
   }, []);
 
   return (
