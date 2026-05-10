@@ -125,6 +125,7 @@ function Navigation() {
               </>
             ) : (
               <div className="flex flex-col gap-3">
+                {/* Only Sign Up button remains here */}
                 <Link to="/signup" className="btn-primary text-center py-3 flex items-center justify-center gap-2" onClick={closeMenu}>
                   <UserPlus size={18} /> Sign Up
                 </Link>
