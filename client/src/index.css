@@ -9,6 +9,15 @@ html {
 @tailwind components;
 @tailwind utilities;
 
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
 :root {
   --bg-dark: #050508;
   --bg-surface: #110e17;

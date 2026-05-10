@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Search, Zap, Code, Palette, Presentation, Music, Video, Star, Inbox, ArrowRight } from 'lucide-react';
+import { Search, Zap, Code, Palette, Presentation, Music, Video, Star, Inbox, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { API_URL } from '../config';
 import toast from 'react-hot-toast';
 
@@ -13,8 +13,19 @@ const Marketplace = () => {
 
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const categoryContainerRef = useRef(null);
 
   const categories = ['All', 'Web Dev', 'Design', 'Tutoring', 'Music', 'Video', 'Writing', 'Marketing'];
+
+  const scrollCategories = (direction) => {
+    if (categoryContainerRef.current) {
+      const scrollAmount = 200;
+      categoryContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -68,20 +79,39 @@ const Marketplace = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-hide">
-            {categories.map(cat => (
-              <button 
-                key={cat}
-                onClick={() => { setSelectedCategory(cat); setPage(1); }}
-                className={`whitespace-nowrap px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                  selectedCategory === cat 
-                  ? 'bg-primary text-white shadow-lg shadow-primary/20' 
-                  : 'bg-white/5 text-text-muted hover:bg-white/10 hover:text-white'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+          <div className="flex items-center gap-2 max-w-[50%] lg:max-w-[60%] shrink-0">
+            <button 
+              onClick={() => scrollCategories('left')} 
+              className="p-1.5 bg-white/5 hover:bg-white/10 rounded-full transition-colors shrink-0 text-text-muted hover:text-white"
+              aria-label="Scroll left"
+            >
+              <ChevronLeft size={18} />
+            </button>
+            <div 
+              ref={categoryContainerRef}
+              className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide scroll-smooth w-full"
+            >
+              {categories.map(cat => (
+                <button 
+                  key={cat}
+                  onClick={() => { setSelectedCategory(cat); setPage(1); }}
+                  className={`whitespace-nowrap px-6 py-2.5 rounded-xl text-sm font-bold transition-all ${
+                    selectedCategory === cat 
+                    ? 'bg-primary text-white shadow-lg shadow-primary/20' 
+                    : 'bg-white/5 text-text-muted hover:bg-white/10 hover:text-white'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+            <button 
+              onClick={() => scrollCategories('right')} 
+              className="p-1.5 bg-white/5 hover:bg-white/10 rounded-full transition-colors shrink-0 text-text-muted hover:text-white"
+              aria-label="Scroll right"
+            >
+              <ChevronRight size={18} />
+            </button>
           </div>
         </div>
       </div>
