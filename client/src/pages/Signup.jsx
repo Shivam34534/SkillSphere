@@ -81,7 +81,7 @@ function Signup() {
         formData.role === 'CLUB' ? 'bg-accent' : 'bg-primary'
         }`}></div>
 
-      <div className="glass-card auth-card w-full max-w-xl p-5 md:p-12 relative z-10">
+      <div className="glass-card auth-card w-full max-w-lg p-5 md:p-12 relative z-10">
 
         <button
           type="button"
