@@ -72,7 +72,7 @@ function Navigation() {
             </Link>
 
             <div className="nav-group">
-              <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-3 mb-2 block">Main Menu</span>
+              <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-4 mb-2 block">Main Menu</span>
               <div className="nav-links">
                 <Link to="/" className="nav-link" onClick={handleHomeClick}><HomeIcon size={18} /> Home</Link>
                 <Link to="/barter-hub" className="nav-link" onClick={closeMenu}><Sparkles size={18} /> Barter Hub</Link>
