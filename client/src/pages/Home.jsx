@@ -39,7 +39,7 @@ function Home() {
         </div>
       </header>
 
-      <section className="px-6 py-12 md:px-12 lg:px-24 max-w-7xl mx-auto -mt-20 relative z-10" id="roles">
+      <section className="px-6 py-12 md:px-12 lg:px-24 max-w-7xl mx-auto -mt-20 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Live Showcase Card */}
           <div className="lg:col-span-8 feature-card p-1 bg-gradient-to-br from-primary/30 via-accent/10 to-transparent border-primary/20 overflow-hidden group">
@@ -180,6 +180,76 @@ function Home() {
         </div>
       </section>
 
+      <section className="px-6 py-20 max-w-7xl mx-auto" id="roles">
+        <div className="feature-tag mb-6 mx-auto uppercase">ROLE-BASED</div>
+        <h2 className="section-title text-center text-3xl md:text-5xl lg:text-7xl mb-16 tracking-tighter leading-tight max-w-4xl mx-auto">
+          Built for every campus <br className="hidden md:block" />
+          <span className="gradient-text">persona.</span>
+        </h2>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="feature-card p-8 flex flex-col group hover:border-primary/50 transition-all">
+            <div className="mb-6 text-white group-hover:text-primary transition-colors"><GraduationCap size={28} /></div>
+            <h3 className="text-2xl font-bold text-white mb-6">Student</h3>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-primary"></div> Browse skills</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-primary"></div> Hire peers</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-primary"></div> Track learning</li>
+            </ul>
+          </div>
+
+          <div className="feature-card p-8 flex flex-col group hover:border-accent/50 transition-all">
+            <div className="mb-6 text-white group-hover:text-accent transition-colors"><Code size={28} /></div>
+            <h3 className="text-2xl font-bold text-white mb-6">Freelancer</h3>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-accent"></div> List services</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-accent"></div> Manage orders</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-accent"></div> Earn & withdraw</li>
+            </ul>
+          </div>
+
+          <div className="feature-card p-8 flex flex-col group hover:border-white/30 transition-all">
+            <div className="mb-6 text-white group-hover:text-white transition-colors"><Users size={28} /></div>
+            <h3 className="text-2xl font-bold text-white mb-6">Club</h3>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Recruit talent</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Plan events</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Track budget</li>
+            </ul>
+          </div>
+
+          <div className="feature-card p-8 flex flex-col group hover:border-white/30 transition-all">
+            <div className="mb-6 text-white group-hover:text-white transition-colors"><ShieldCheck size={28} /></div>
+            <h3 className="text-2xl font-bold text-white mb-6">Admin</h3>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Verify users</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Moderate</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Revenue ops</li>
+            </ul>
+          </div>
+
+          <div className="feature-card p-8 flex flex-col group hover:border-white/30 transition-all">
+            <div className="mb-6 text-white group-hover:text-white transition-colors"><Award size={28} /></div>
+            <h3 className="text-2xl font-bold text-white mb-6">Alumni</h3>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Mentor</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Workshops</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Referrals</li>
+            </ul>
+          </div>
+
+          <div className="feature-card p-8 flex flex-col group hover:border-white/30 transition-all">
+            <div className="mb-6 text-white group-hover:text-white transition-colors"><BookOpen size={28} /></div>
+            <h3 className="text-2xl font-bold text-white mb-6">Faculty</h3>
+            <ul className="space-y-4">
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Research gigs</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Supervise</li>
+              <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Mentor</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
       <section className="how-it-works-section py-20" id="how-it-works">
         <div className="feature-tag mb-6 mx-auto">HOW IT WORKS</div>
         <h2 className="section-title text-center max-w-3xl mx-auto">
@@ -302,23 +372,28 @@ function Home() {
 
       <section className="px-6 py-24 flex justify-center">
         <div className="feature-card max-w-5xl w-full p-16 md:p-24 bg-gradient-to-br from-primary/20 via-background-dark to-transparent border-primary/20 text-center relative overflow-hidden group">
-           <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-           <h2 className="text-3xl md:text-7xl font-black text-white mb-8 tracking-tighter leading-tight">
-              Unlock your campus <br />
-              <span className="gradient-text">potential.</span>
-           </h2>
-           <p className="text-text-muted text-base md:text-lg max-w-xl mx-auto mb-12 leading-relaxed">
-              Join thousands of students building the future of campus collaboration.
-           </p>
-           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link to="/signup" className="no-underline">
-                 <button className="btn-primary py-4 px-10 text-xs font-black uppercase tracking-widest flex items-center gap-2">
-                    Get Started <ArrowRight size={18} />
-                 </button>
-              </Link>
-              <button className="btn-secondary py-4 px-10 text-xs font-black uppercase tracking-widest">
-                 Partner with us
-              </button>
+           <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+           
+           <div className="relative z-10">
+             <h2 className="text-3xl md:text-7xl font-black text-white mb-8 tracking-tighter leading-tight">
+                Unlock your campus <br />
+                <span className="gradient-text">potential.</span>
+             </h2>
+             <p className="text-text-muted text-base md:text-lg max-w-xl mx-auto mb-12 leading-relaxed">
+                Join thousands of students building the future of campus collaboration.
+             </p>
+             <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link to="/signup" className="no-underline">
+                   <button className="btn-primary py-4 px-10 text-xs font-black uppercase tracking-widest flex items-center gap-2">
+                      Get Started <ArrowRight size={18} />
+                   </button>
+                </Link>
+                <a href="mailto:partnerships@skillsphere.com" className="no-underline">
+                   <button className="btn-secondary py-4 px-10 text-xs font-black uppercase tracking-widest">
+                      Partner with us
+                   </button>
+                </a>
+             </div>
            </div>
         </div>
       </section>
