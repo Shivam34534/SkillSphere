@@ -21,7 +21,25 @@ const Profile = () => {
        </div>
        <h2 className="text-3xl font-black text-white mb-4">Access Restricted</h2>
        <p className="text-text-muted max-w-sm mb-8">Please log in to your SkillSphere account to view and manage your profile identity.</p>
-       <button onClick={() => navigate('/login')} className="btn-primary px-10 py-4 text-xs">Log In Now</button>
+       <button onClick={() => navigate('/login')} className="btn-primary px-10 py-4 text-xs mb-8">Log In Now</button>
+
+       <div className="flex items-center gap-4 w-full max-w-xs mb-6">
+         <div className="h-px bg-white/10 flex-1"></div>
+         <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Or Login With</span>
+         <div className="h-px bg-white/10 flex-1"></div>
+       </div>
+
+       <div className="grid grid-cols-3 gap-4 w-full max-w-xs">
+         <a href="https://github.com/login" target="_blank" rel="noopener noreferrer" className="w-full h-12 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-white hover:bg-white/10 transition-all border border-white/5 hover:border-white/20">
+           <Github size={20} />
+         </a>
+         <a href="https://www.linkedin.com/login" target="_blank" rel="noopener noreferrer" className="w-full h-12 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-[#0a66c2] hover:bg-[#0a66c2]/10 transition-all border border-white/5 hover:border-[#0a66c2]/20">
+           <Linkedin size={20} />
+         </a>
+         <a href="https://accounts.google.com/" target="_blank" rel="noopener noreferrer" className="w-full h-12 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-secondary hover:bg-secondary/10 transition-all border border-white/5 hover:border-secondary/20">
+           <Globe size={20} />
+         </a>
+       </div>
     </div>
   );
 
