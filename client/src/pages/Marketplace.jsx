@@ -126,12 +126,21 @@ const Marketplace = () => {
                   {service.description}
                 </p>
                 <div className="mt-auto pt-6 border-t border-white/5 flex items-center justify-between">
-                   <Link to={`/profile/${service.freelancerId?._id || service.freelancerId}`} className="flex items-center gap-2 group/author">
-                      <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center font-bold text-xs text-primary group-hover/author:bg-primary group-hover/author:text-white transition-all">
-                        {service.freelancerId?.name?.charAt(0) || 'U'}
-                      </div>
-                      <span className="text-xs text-white font-medium group-hover/author:text-primary transition-colors">{service.freelancerId?.name || 'Anonymous'}</span>
-                   </Link>
+                   {service.freelancerId ? (
+                     <Link to={`/profile/${service.freelancerId._id || service.freelancerId}`} className="flex items-center gap-2 group/author">
+                        <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center font-bold text-xs text-primary group-hover/author:bg-primary group-hover/author:text-white transition-all">
+                          {service.freelancerId.name?.charAt(0) || 'U'}
+                        </div>
+                        <span className="text-xs text-white font-medium group-hover/author:text-primary transition-colors">{service.freelancerId.name || 'Anonymous'}</span>
+                     </Link>
+                   ) : (
+                     <div className="flex items-center gap-2 opacity-50">
+                        <div className="w-8 h-8 rounded-lg bg-gray-600/20 flex items-center justify-center font-bold text-xs text-gray-400">
+                          U
+                        </div>
+                        <span className="text-xs text-white font-medium">Anonymous</span>
+                     </div>
+                   )}
                    <div className="text-right">
                       <p className="text-[9px] text-text-muted uppercase font-bold tracking-tighter">Starting at</p>
                       <p className="text-lg font-black text-white">₹{service.pricing?.amount}</p>
@@ -139,9 +148,15 @@ const Marketplace = () => {
                 </div>
               </div>
               
-              <Link to={`/profile/${service.freelancerId?._id || service.freelancerId}`} className="w-full py-4 bg-white/5 border-t border-white/10 text-center text-sm font-bold text-white group-hover:bg-primary group-hover:border-primary transition-all flex items-center justify-center gap-2">
-                 View Profile <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-              </Link>
+              {service.freelancerId ? (
+                <Link to={`/profile/${service.freelancerId._id || service.freelancerId}`} className="w-full py-4 bg-white/5 border-t border-white/10 text-center text-sm font-bold text-white group-hover:bg-primary group-hover:border-primary transition-all flex items-center justify-center gap-2">
+                   View Profile <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              ) : (
+                <div className="w-full py-4 bg-white/5 border-t border-white/10 text-center text-sm font-bold text-text-muted opacity-50 cursor-not-allowed flex items-center justify-center gap-2">
+                   Profile Unavailable
+                </div>
+              )}
             </div>
           )) : (
             <div className="col-span-full py-32 flex flex-col items-center">

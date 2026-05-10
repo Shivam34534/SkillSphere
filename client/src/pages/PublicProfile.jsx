@@ -18,6 +18,10 @@ const PublicProfile = () => {
 
   useEffect(() => {
     const fetchProfile = async () => {
+      if (!id || id === 'null' || id === 'undefined') {
+        setLoading(false);
+        return;
+      }
       try {
         const [userRes, historyRes, reviewRes] = await Promise.all([
           fetch(`${API_URL}/users/${id}`),
