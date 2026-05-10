@@ -39,10 +39,15 @@ function Navigation() {
 
   const closeMenu = () => setIsMobileMenuOpen(false);
   
+  const handleHomeClick = () => {
+    closeMenu();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
   return (
     <>
     <header className="mobile-header">
-      <Link to="/" className="logo mb-0 text-xl" onClick={closeMenu}>
+      <Link to="/" className="logo mb-0 text-xl" onClick={handleHomeClick}>
         <div className="logo-icon new-logo w-8 h-8">
            <Sparkles size={16} color="white" />
         </div>
@@ -59,7 +64,7 @@ function Navigation() {
     <nav className={`glass-nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
       <div className="nav-content">
         <div className="flex flex-col gap-8">
-          <Link to="/" className="logo">
+          <Link to="/" className="logo" onClick={handleHomeClick}>
             <div className="logo-icon new-logo">
                <Sparkles size={20} color="white" />
             </div>
@@ -69,7 +74,7 @@ function Navigation() {
           <div className="nav-group">
             <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest px-4 mb-2 block">Main Menu</span>
       <div className="nav-links">
-        <Link to="/" className="nav-link" onClick={closeMenu}><HomeIcon size={18} /> Home</Link>
+        <Link to="/" className="nav-link" onClick={handleHomeClick}><HomeIcon size={18} /> Home</Link>
         <Link to="/barter-hub" className="nav-link" onClick={closeMenu}><Sparkles size={18} /> Barter Hub</Link>
         <Link to="/marketplace" className="nav-link" onClick={closeMenu}><Users size={18} /> Marketplace</Link>
         <Link to="/gigs" className="nav-link" onClick={closeMenu}><Briefcase size={18} /> Gigs</Link>
