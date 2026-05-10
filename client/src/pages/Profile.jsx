@@ -88,8 +88,8 @@ const Profile = () => {
       <div className="feature-card p-0 overflow-hidden mb-12">
         <div className="h-48 md:h-64 bg-gradient-to-r from-primary via-accent to-secondary relative group">
            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-700"></div>
-           <div className="absolute -bottom-16 left-8 md:left-12 flex items-end gap-6 md:gap-8">
-              <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-background-dark border-4 border-background-dark shadow-2xl relative group/avatar">
+           <div className="absolute -bottom-16 left-8 md:left-12 flex items-end gap-6 md:gap-8 w-[calc(100%-100px)]">
+              <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-background-dark border-4 border-background-dark shadow-2xl relative group/avatar shrink-0">
                  <img src={user.profilePhoto || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} alt="" className="w-full h-full object-cover rounded-2xl" />
                  {isEditing && (
                    <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-2xl cursor-pointer opacity-0 group-hover/avatar:opacity-100 transition-opacity">
@@ -97,11 +97,28 @@ const Profile = () => {
                    </div>
                  )}
               </div>
-              <div className="pb-4">
-                 <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter mb-1">{user.name}</h1>
+              <div className="pb-4 flex-1">
+                 {isEditing ? (
+                   <input 
+                     type="text" 
+                     value={editedUser.name} 
+                     onChange={(e) => setEditedUser({...editedUser, name: e.target.value})}
+                     className="text-3xl md:text-5xl font-black text-white tracking-tighter mb-1 bg-white/10 border border-white/20 rounded-lg px-3 outline-none w-full"
+                   />
+                 ) : (
+                   <h1 className="text-3xl md:text-5xl font-black text-white tracking-tighter mb-1">{user.name}</h1>
+                 )}
                  <div className="flex items-center gap-3">
                     <span className="text-[10px] font-black uppercase tracking-widest text-white/80 flex items-center gap-1">
-                       <GraduationCap size={12} /> {user.department || 'Campus Student'}
+                       <GraduationCap size={12} /> {isEditing ? (
+                         <input 
+                           type="text" 
+                           value={editedUser.department} 
+                           onChange={(e) => setEditedUser({...editedUser, department: e.target.value})}
+                           className="bg-white/10 border-none outline-none text-white px-1 rounded"
+                           placeholder="Department"
+                         />
+                       ) : user.department || 'Campus Student'}
                     </span>
                     <span className="w-1.5 h-1.5 rounded-full bg-white/30"></span>
                     <span className="text-[10px] font-black uppercase tracking-widest text-white/80">Lvl {user.xpLevel} Elite</span>
@@ -110,7 +127,7 @@ const Profile = () => {
            </div>
            <button 
             onClick={() => isEditing ? handleSave() : setIsEditing(true)}
-            className={`absolute right-8 bottom-8 flex items-center gap-2 py-3 px-8 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-xl transition-all ${
+            className={`absolute right-8 bottom-8 flex items-center gap-2 py-3 px-8 rounded-2xl font-black uppercase tracking-widest text-[10px] shadow-xl transition-all z-30 ${
                isEditing ? 'bg-success text-white shadow-success/20' : 'bg-white/10 backdrop-blur-md text-white border border-white/20 hover:bg-white/20'
             }`}
           >
@@ -141,16 +158,53 @@ const Profile = () => {
 
               <div className="space-y-6">
                  <h3 className="text-[10px] font-black text-text-muted uppercase tracking-widest border-b border-white/5 pb-4">Synergy Links</h3>
-                 <div className="grid grid-cols-3 gap-4">
-                    <a href="#" className="w-full h-12 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-white hover:bg-white/10 transition-all border border-white/5">
-                       <Github size={20} />
-                    </a>
-                    <a href="#" className="w-full h-12 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-white hover:bg-white/10 transition-all border border-white/5">
-                       <Linkedin size={20} />
-                    </a>
-                    <a href="#" className="w-full h-12 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-white hover:bg-white/10 transition-all border border-white/5">
-                       <Globe size={20} />
-                    </a>
+                 <div className="grid grid-cols-1 gap-3">
+                    {isEditing ? (
+                      <>
+                        <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/10">
+                          <Github size={18} className="text-text-muted" />
+                          <input 
+                            type="text" 
+                            value={editedUser.github || ''} 
+                            onChange={(e) => setEditedUser({...editedUser, github: e.target.value})}
+                            className="bg-transparent border-none outline-none text-white text-xs flex-1"
+                            placeholder="GitHub Username"
+                          />
+                        </div>
+                        <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/10">
+                          <Linkedin size={18} className="text-text-muted" />
+                          <input 
+                            type="text" 
+                            value={editedUser.linkedin || ''} 
+                            onChange={(e) => setEditedUser({...editedUser, linkedin: e.target.value})}
+                            className="bg-transparent border-none outline-none text-white text-xs flex-1"
+                            placeholder="LinkedIn Profile"
+                          />
+                        </div>
+                        <div className="flex items-center gap-2 bg-white/5 p-2 rounded-xl border border-white/10">
+                          <Globe size={18} className="text-text-muted" />
+                          <input 
+                            type="text" 
+                            value={editedUser.website || ''} 
+                            onChange={(e) => setEditedUser({...editedUser, website: e.target.value})}
+                            className="bg-transparent border-none outline-none text-white text-xs flex-1"
+                            placeholder="Portfolio Website"
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <div className="grid grid-cols-3 gap-4">
+                        <a href={user.github ? `https://github.com/${user.github}` : '#'} target="_blank" rel="noopener noreferrer" className={`w-full h-12 rounded-xl bg-white/5 flex items-center justify-center transition-all border border-white/5 ${user.github ? 'text-white hover:bg-white/10 hover:border-white/20' : 'text-text-muted opacity-30 cursor-not-allowed'}`}>
+                           <Github size={20} />
+                        </a>
+                        <a href={user.linkedin || '#'} target="_blank" rel="noopener noreferrer" className={`w-full h-12 rounded-xl bg-white/5 flex items-center justify-center transition-all border border-white/5 ${user.linkedin ? 'text-[#0a66c2] hover:bg-[#0a66c2]/10 hover:border-[#0a66c2]/20' : 'text-text-muted opacity-30 cursor-not-allowed'}`}>
+                           <Linkedin size={20} />
+                        </a>
+                        <a href={user.website || '#'} target="_blank" rel="noopener noreferrer" className={`w-full h-12 rounded-xl bg-white/5 flex items-center justify-center transition-all border border-white/5 ${user.website ? 'text-secondary hover:bg-secondary/10 hover:border-secondary/20' : 'text-text-muted opacity-30 cursor-not-allowed'}`}>
+                           <Globe size={20} />
+                        </a>
+                      </div>
+                    )}
                  </div>
               </div>
 

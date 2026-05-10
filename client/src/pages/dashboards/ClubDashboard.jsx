@@ -154,10 +154,20 @@ const ClubDashboard = () => {
           <h1 className="text-3xl font-bold text-white">Welcome, {user.name}</h1>
           <p className="text-text-muted mt-1">Club / Organization • Verified Campus Org</p>
         </div>
-        <Link to="/wallet" className="wallet-pill bg-primary/10 border border-primary/20 hover:bg-primary/20 transition-all text-decoration-none">
-          <Users size={16} className="text-primary" />
-          <span className="text-primary-hover">Manage Community Wallet</span>
-          <span className="xp-badge bg-primary">+{Math.floor((user.xpLevel || 1) * 100)} XP</span>
+        <Link to="/wallet" className="premium-wallet-pill group">
+          <div className="pill-content">
+            <div className="icon-box">
+              <Users size={20} />
+            </div>
+            <div className="text-box">
+              <span className="label">Manage Community</span>
+              <span className="sub-label">Wallet</span>
+            </div>
+          </div>
+          <div className="pill-badge">
+            <span className="amount">+{Math.floor((user.xpLevel || 1) * 100)}</span>
+            <span className="unit">XP</span>
+          </div>
         </Link>
       </div>
 

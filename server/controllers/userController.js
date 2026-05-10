@@ -25,6 +25,10 @@ export const updateUserProfile = async (req, res) => {
       user.year = req.body.year || user.year;
       user.skillsToTeach = req.body.skillsToTeach || user.skillsToTeach;
       user.skillsToLearn = req.body.skillsToLearn || user.skillsToLearn;
+      user.bio = req.body.bio !== undefined ? req.body.bio : user.bio;
+      user.github = req.body.github !== undefined ? req.body.github : user.github;
+      user.linkedin = req.body.linkedin !== undefined ? req.body.linkedin : user.linkedin;
+      user.website = req.body.website !== undefined ? req.body.website : user.website;
       
       const updatedUser = await user.save();
       

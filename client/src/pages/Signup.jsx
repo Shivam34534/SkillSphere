@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { User, Mail, Lock, ArrowRight, Briefcase, Phone, Building, Book, GraduationCap, ChevronLeft, CheckCircle, Sparkles, Eye, EyeOff } from 'lucide-react';
+import { User, Mail, Lock, ArrowRight, Briefcase, Phone, Building, Book, GraduationCap, ChevronLeft, CheckCircle, Sparkles, Eye, EyeOff, Plus, Trash2, Github, Linkedin, Globe } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { register, verifyOTP } from '../store/slices/authSlice';
 
@@ -9,9 +9,12 @@ function Signup() {
   const [formData, setFormData] = useState({
     name: '', email: '', password: '', role: '',
     mobile: '', collegeName: '', department: '', year: '',
-    skillsToTeach: '', skillsToLearn: '',
+    skillsToTeach: [], skillsToLearn: [],
+    github: '', linkedin: '', website: '',
     otp: ''
   });
+  const [skillInputTeach, setSkillInputTeach] = useState('');
+  const [skillInputLearn, setSkillInputLearn] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [focusedField, setFocusedField] = useState(null);
 
@@ -40,17 +43,33 @@ function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
 
-    // Process skills into arrays
-    const formattedData = {
-      ...formData,
-      skillsToTeach: formData.skillsToTeach.split(',').map(s => s.trim()).filter(Boolean),
-      skillsToLearn: formData.skillsToLearn.split(',').map(s => s.trim()).filter(Boolean)
-    };
-
-    const result = await dispatch(register(formattedData));
+    // Data is already processed into arrays in our new tag system
+    const result = await dispatch(register(formData));
     if (register.fulfilled.match(result)) {
       setStep(5);
     }
+  };
+
+  const handleAddSkill = (type) => {
+    const input = type === 'teach' ? skillInputTeach : skillInputLearn;
+    const field = type === 'teach' ? 'skillsToTeach' : 'skillsToLearn';
+    const setInput = type === 'teach' ? setSkillInputTeach : setSkillInputLearn;
+
+    if (input.trim() && !formData[field].includes(input.trim())) {
+      setFormData({
+        ...formData,
+        [field]: [...formData[field], input.trim()]
+      });
+      setInput('');
+    }
+  };
+
+  const handleRemoveSkill = (type, skillToRemove) => {
+    const field = type === 'teach' ? 'skillsToTeach' : 'skillsToLearn';
+    setFormData({
+      ...formData,
+      [field]: formData[field].filter(skill => skill !== skillToRemove)
+    });
   };
 
   const handleVerifyOTP = async (e) => {
@@ -337,24 +356,124 @@ function Signup() {
               <p>This powers your peer-matching algorithm.</p>
             </div>
 
+            {/* Skills I Offer */}
             <div className="input-group">
-              <label className="block text-sm font-medium text-text-muted mb-2">What can you teach? (Comma separated)</label>
-              <input type="text" name="skillsToTeach" placeholder="e.g. React, UI Design" value={formData.skillsToTeach} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 px-4 text-white focus:border-primary outline-none" />
-              <span className="text-xs text-text-muted mt-2 block">These skills will be listed in the Marketplace.</span>
+              <label className="block text-xs font-bold text-text-muted uppercase tracking-widest mb-3">Skills I Offer</label>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {formData.skillsToTeach.map((skill, index) => (
+                  <div key={index} className="flex items-center gap-2 px-4 py-2 bg-secondary/10 border border-secondary/20 rounded-full text-secondary text-xs font-bold uppercase tracking-wider group animate-in fade-in zoom-in duration-300">
+                    {skill}
+                    <button type="button" onClick={() => handleRemoveSkill('teach', skill)} className="hover:text-red-400 transition-colors">
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  placeholder="Add skill..." 
+                  value={skillInputTeach} 
+                  onChange={(e) => setSkillInputTeach(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddSkill('teach'))}
+                  className="flex-1 bg-black/20 border border-glass-border rounded-xl py-3 px-4 text-white focus:border-secondary outline-none transition-all" 
+                />
+                <button 
+                  type="button" 
+                  onClick={() => handleAddSkill('teach')}
+                  className="w-12 h-12 bg-secondary/80 hover:bg-secondary rounded-xl flex items-center justify-center text-white transition-all active:scale-90"
+                >
+                  <Plus size={24} />
+                </button>
+              </div>
             </div>
 
+            {/* Skills I Seek */}
             <div className="input-group">
-              <label className="block text-sm font-medium text-text-muted mb-2">What do you want to learn?</label>
-              <input type="text" name="skillsToLearn" placeholder="e.g. Python, Marketing" value={formData.skillsToLearn} onChange={handleChange} className="w-full bg-black/20 border border-glass-border rounded-lg py-3 px-4 text-white focus:border-primary outline-none" />
+              <label className="block text-xs font-bold text-text-muted uppercase tracking-widest mb-3">Skills I Seek</label>
+              <div className="flex flex-wrap gap-2 mb-4">
+                {formData.skillsToLearn.map((skill, index) => (
+                  <div key={index} className="flex items-center gap-2 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full text-primary text-xs font-bold uppercase tracking-wider group animate-in fade-in zoom-in duration-300">
+                    {skill}
+                    <button type="button" onClick={() => handleRemoveSkill('learn', skill)} className="hover:text-red-400 transition-colors">
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+              <div className="flex gap-2">
+                <input 
+                  type="text" 
+                  placeholder="Add skill..." 
+                  value={skillInputLearn} 
+                  onChange={(e) => setSkillInputLearn(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddSkill('learn'))}
+                  className="flex-1 bg-black/20 border border-glass-border rounded-xl py-3 px-4 text-white focus:border-primary outline-none transition-all" 
+                />
+                <button 
+                  type="button" 
+                  onClick={() => handleAddSkill('learn')}
+                  className="w-12 h-12 bg-primary/80 hover:bg-primary rounded-xl flex items-center justify-center text-white transition-all active:scale-90"
+                >
+                  <Plus size={24} />
+                </button>
+              </div>
+            </div>
+
+            {/* Social Links */}
+            <div className="input-group">
+              <label className="block text-xs font-bold text-text-muted uppercase tracking-widest mb-3 text-center">Social Presence</label>
+              <div className="grid grid-cols-3 gap-4">
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-text-muted group-focus-within:text-white transition-colors">
+                    <Github size={18} />
+                  </div>
+                  <input 
+                    type="text" 
+                    name="github" 
+                    placeholder="GitHub" 
+                    value={formData.github} 
+                    onChange={handleChange}
+                    className="w-full bg-black/20 border border-glass-border rounded-xl py-3 pl-10 pr-2 text-xs text-white focus:border-white/40 outline-none transition-all placeholder:text-[10px]" 
+                  />
+                </div>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-text-muted group-focus-within:text-[#0a66c2] transition-colors">
+                    <Linkedin size={18} />
+                  </div>
+                  <input 
+                    type="text" 
+                    name="linkedin" 
+                    placeholder="LinkedIn" 
+                    value={formData.linkedin} 
+                    onChange={handleChange}
+                    className="w-full bg-black/20 border border-glass-border rounded-xl py-3 pl-10 pr-2 text-xs text-white focus:border-[#0a66c2]/40 outline-none transition-all placeholder:text-[10px]" 
+                  />
+                </div>
+                <div className="relative group">
+                  <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-text-muted group-focus-within:text-secondary transition-colors">
+                    <Globe size={18} />
+                  </div>
+                  <input 
+                    type="text" 
+                    name="website" 
+                    placeholder="Website" 
+                    value={formData.website} 
+                    onChange={handleChange}
+                    className="w-full bg-black/20 border border-glass-border rounded-xl py-3 pl-10 pr-2 text-xs text-white focus:border-secondary/40 outline-none transition-all placeholder:text-[10px]" 
+                  />
+                </div>
+              </div>
             </div>
 
             <button
               type="submit"
-              disabled={loading}
-              className={`w-full py-4 mt-4 transition-all duration-300 rounded-xl font-bold text-white shadow-lg ${formData.role === 'FREELANCER' ? 'bg-gradient-to-r from-secondary to-pink-600' :
+              disabled={loading || (formData.skillsToTeach.length === 0 && formData.skillsToLearn.length === 0)}
+              className={`w-full py-4 mt-4 transition-all duration-300 rounded-xl font-bold text-white shadow-lg ${
+                formData.role === 'FREELANCER' ? 'bg-gradient-to-r from-secondary to-pink-600' :
                 formData.role === 'CLUB' ? 'bg-gradient-to-r from-accent to-blue-600' :
-                  'bg-gradient-to-r from-success to-emerald-600'
-                }`}
+                'bg-gradient-to-r from-success to-emerald-600'
+              }`}
             >
               {loading ? 'Creating Account...' : 'Complete Setup & Send OTP'}
             </button>

@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema(
       icon: String, 
       awardedAt: { type: Date, default: Date.now } 
     }],
+    bio: { type: String, default: '' },
+    github: { type: String, default: '' },
+    linkedin: { type: String, default: '' },
+    website: { type: String, default: '' },
     otp: { type: String },
     otpExpires: { type: Date },
     resetPasswordToken: { type: String },
