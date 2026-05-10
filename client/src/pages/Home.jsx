@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ArrowRight, Code, Palette, CheckCircle, Briefcase, Wallet, Shield, Bot, MessageSquare, Trophy, BarChart, Sparkles, GraduationCap, Users, ShieldCheck, Award, BookOpen, Zap, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 function Home() {
+  useEffect(() => {
+    // Scroll to top immediately on mount
+    window.scrollTo(0, 0);
+    
+    // Clear the hash from the URL on load so the browser doesn't force-scroll down
+    if (window.location.hash) {
+      window.history.replaceState(null, '', window.location.pathname);
+    }
+  }, []);
+
   return (
     <>
       <header className="hero-section">
