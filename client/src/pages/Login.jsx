@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Mail, Lock, ArrowRight, Eye, EyeOff, ChevronLeft } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Eye, EyeOff, ChevronLeft, Github, Linkedin, Globe } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../store/slices/authSlice';
 
@@ -108,9 +108,42 @@ function Login() {
             </Link>
           </div>
           
-          <button type="submit" disabled={loading} className="btn-primary w-full py-3 flex items-center justify-center gap-2">
+          <button type="submit" disabled={loading} className="btn-primary w-full py-3 flex items-center justify-center gap-2 shadow-lg shadow-primary/20">
             {loading ? 'Signing In...' : <>Sign In <ArrowRight size={18} /></>}
           </button>
+
+          <div className="flex items-center gap-4 my-2">
+            <div className="h-px bg-glass-border flex-1"></div>
+            <span className="text-[10px] font-bold text-text-muted uppercase tracking-widest">Or Continue With</span>
+            <div className="h-px bg-glass-border flex-1"></div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4">
+            <a 
+              href="https://github.com/login" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="w-full h-12 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-white hover:bg-white/10 transition-all border border-glass-border hover:border-white/20"
+            >
+              <Github size={20} />
+            </a>
+            <a 
+              href="https://www.linkedin.com/login" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="w-full h-12 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-[#0a66c2] hover:bg-[#0a66c2]/10 transition-all border border-glass-border hover:border-[#0a66c2]/20"
+            >
+              <Linkedin size={20} />
+            </a>
+            <a 
+              href="https://accounts.google.com/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="w-full h-12 rounded-xl bg-white/5 flex items-center justify-center text-text-muted hover:text-secondary hover:bg-secondary/10 transition-all border border-glass-border hover:border-secondary/20"
+            >
+              <Globe size={20} />
+            </a>
+          </div>
         </form>
         
         <div className="auth-footer text-center mt-8 pt-6 border-t border-glass-border">
