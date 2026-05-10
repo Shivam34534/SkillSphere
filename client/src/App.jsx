@@ -63,7 +63,7 @@ function Navigation() {
 
       <nav className={`glass-nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
         <div className="nav-content">
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-4">
             <Link to="/" className="logo" onClick={handleHomeClick}>
               <div className="logo-icon new-logo">
                 <Sparkles size={20} color="white" />
