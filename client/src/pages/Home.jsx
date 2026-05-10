@@ -153,7 +153,7 @@ function Home() {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="feature-card p-8 flex flex-col group hover:border-primary/50 transition-all">
-            <div className="mb-6 text-white group-hover:text-primary transition-colors"><GraduationCap size={28} /></div>
+            <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform"><GraduationCap size={24} /></div>
             <h3 className="text-2xl font-bold text-white mb-6">Student</h3>
             <ul className="space-y-4">
               <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-primary"></div> Browse skills</li>
@@ -163,7 +163,7 @@ function Home() {
           </div>
 
           <div className="feature-card p-8 flex flex-col group hover:border-accent/50 transition-all">
-            <div className="mb-6 text-white group-hover:text-accent transition-colors"><Code size={28} /></div>
+            <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform"><Code size={24} /></div>
             <h3 className="text-2xl font-bold text-white mb-6">Freelancer</h3>
             <ul className="space-y-4">
               <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-accent"></div> List services</li>
@@ -172,8 +172,8 @@ function Home() {
             </ul>
           </div>
 
-          <div className="feature-card p-8 flex flex-col group hover:border-white/30 transition-all">
-            <div className="mb-6 text-white group-hover:text-white transition-colors"><Users size={28} /></div>
+          <div className="feature-card p-8 flex flex-col group hover:border-secondary/50 transition-all">
+            <div className="w-12 h-12 rounded-2xl bg-secondary/20 flex items-center justify-center text-secondary mb-6 group-hover:scale-110 transition-transform"><Users size={24} /></div>
             <h3 className="text-2xl font-bold text-white mb-6">Club</h3>
             <ul className="space-y-4">
               <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Recruit talent</li>
@@ -182,8 +182,8 @@ function Home() {
             </ul>
           </div>
 
-          <div className="feature-card p-8 flex flex-col group hover:border-white/30 transition-all">
-            <div className="mb-6 text-white group-hover:text-white transition-colors"><ShieldCheck size={28} /></div>
+          <div className="feature-card p-8 flex flex-col group hover:border-success/50 transition-all">
+            <div className="w-12 h-12 rounded-2xl bg-success/20 flex items-center justify-center text-success mb-6 group-hover:scale-110 transition-transform"><ShieldCheck size={24} /></div>
             <h3 className="text-2xl font-bold text-white mb-6">Admin</h3>
             <ul className="space-y-4">
               <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Verify users</li>
@@ -192,8 +192,8 @@ function Home() {
             </ul>
           </div>
 
-          <div className="feature-card p-8 flex flex-col group hover:border-white/30 transition-all">
-            <div className="mb-6 text-white group-hover:text-white transition-colors"><Award size={28} /></div>
+          <div className="feature-card p-8 flex flex-col group hover:border-primary/50 transition-all">
+            <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform"><Award size={24} /></div>
             <h3 className="text-2xl font-bold text-white mb-6">Alumni</h3>
             <ul className="space-y-4">
               <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Mentor</li>
@@ -202,8 +202,8 @@ function Home() {
             </ul>
           </div>
 
-          <div className="feature-card p-8 flex flex-col group hover:border-white/30 transition-all">
-            <div className="mb-6 text-white group-hover:text-white transition-colors"><BookOpen size={28} /></div>
+          <div className="feature-card p-8 flex flex-col group hover:border-accent/50 transition-all">
+            <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform"><BookOpen size={24} /></div>
             <h3 className="text-2xl font-bold text-white mb-6">Faculty</h3>
             <ul className="space-y-4">
               <li className="flex items-center gap-3 text-sm text-text-muted"><div className="w-1.5 h-1.5 rounded-full bg-white/50"></div> Research gigs</li>
@@ -224,26 +224,26 @@ function Home() {
         </p>
         
         <div className="features-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 w-full px-4">
-          <Link to="/marketplace" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
-            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Briefcase size={20} color="white" /></div>
+          <Link to="/marketplace" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95 group">
+            <div className="w-12 h-12 rounded-2xl bg-primary/20 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform"><Briefcase size={24} /></div>
             <h3 className="text-base md:text-xl font-bold">Gig Marketplace</h3>
             <p className="text-[12px] md:text-sm text-text-muted">Post, discover and deliver paid, barter or volunteer gigs with milestone-based escrow.</p>
           </Link>
           
-          <Link to="/wallet" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
-            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Wallet size={20} color="white" /></div>
+          <Link to="/wallet" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95 group">
+            <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent mb-6 group-hover:scale-110 transition-transform"><Wallet size={24} /></div>
             <h3 className="text-base md:text-xl font-bold">Campus Wallet</h3>
             <p className="text-[12px] md:text-sm text-text-muted">Cash, credits and coins powered by Razorpay & Stripe with full refund protection.</p>
           </Link>
 
-          <Link to="/dashboard" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
-            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><MessageSquare size={20} color="white" /></div>
+          <Link to="/dashboard" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95 group">
+            <div className="w-12 h-12 rounded-2xl bg-secondary/20 flex items-center justify-center text-secondary mb-6 group-hover:scale-110 transition-transform"><MessageSquare size={24} /></div>
             <h3 className="text-base md:text-xl font-bold">Real-time Chat</h3>
             <p className="text-[12px] md:text-sm text-text-muted">Socket.io-powered DMs, presence and typing — built for fast collab.</p>
           </Link>
 
-          <Link to="/leaderboard" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95">
-            <div className="icon-box new-feature-icon w-10 h-10 md:w-11 md:h-11 rounded-xl"><Trophy size={20} color="white" /></div>
+          <Link to="/leaderboard" className="feature-card p-5 md:p-8 block no-underline transition-all hover:scale-105 active:scale-95 group">
+            <div className="w-12 h-12 rounded-2xl bg-success/20 flex items-center justify-center text-success mb-6 group-hover:scale-110 transition-transform"><Trophy size={24} /></div>
             <h3 className="text-base md:text-xl font-bold">XP & Badges</h3>
             <p className="text-[12px] md:text-sm text-text-muted">Skill badges, leaderboards and weekly challenges that make growth addictive.</p>
           </Link>
