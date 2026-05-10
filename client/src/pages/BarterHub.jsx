@@ -4,6 +4,7 @@ import { API_URL } from '../config';
 import { 
   Users, Zap, ArrowRight, Video, Award, Sparkles, MessageCircle, ArrowUpRight, Inbox, Clock, Shield, Plus, Target
 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import MatchRequestModal from '../components/MatchRequestModal';
 import { Link } from 'react-router-dom';
 
@@ -61,14 +62,14 @@ const BarterHub = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (response.ok) {
-        alert('Exchange matched! Check your Active Sessions.');
+        toast.success('Exchange matched! Check your Active Sessions.');
         fetchData();
       } else {
         const err = await response.json();
-        alert(err.message);
+        toast.error(err.message || 'Failed to claim swap');
       }
     } catch (error) {
-      alert('Failed to claim swap');
+      toast.error('Failed to claim swap');
     }
   };
 
@@ -85,15 +86,15 @@ const BarterHub = () => {
       });
 
       if (response.ok) {
-        alert('Request posted to the Hub! We will notify you when someone matches.');
+        toast.success('Request posted to the Hub!');
         setIsModalOpen(false);
         fetchData();
       } else {
         const err = await response.json();
-        alert(err.message);
+        toast.error(err.message || 'Failed to post request');
       }
     } catch (error) {
-      alert('Failed to post request');
+      toast.error('Failed to post request');
     } finally {
       setModalLoading(false);
     }
@@ -111,7 +112,7 @@ const BarterHub = () => {
       });
       if (response.ok) fetchData();
     } catch (error) {
-      alert('Action failed');
+      toast.error('Action failed');
     }
   };
 
@@ -127,11 +128,11 @@ const BarterHub = () => {
           body: JSON.stringify({ status: 'DECLINED' }) // Using DECLINED to cancel
         });
         if (response.ok) {
-          alert('Request removed.');
+          toast.success('Request removed.');
           fetchData();
         }
       } catch (error) {
-        alert('Failed to cancel request');
+        toast.error('Failed to cancel request');
       }
     }
   };
@@ -143,9 +144,12 @@ const BarterHub = () => {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` }
         });
-        if (response.ok) fetchData();
+        if (response.ok) {
+          toast.success('Session completed!');
+          fetchData();
+        }
       } catch (error) {
-        alert('Completion failed');
+        toast.error('Completion failed');
       }
     }
   };
@@ -290,10 +294,10 @@ const BarterHub = () => {
                    <div key={req._id} className="feature-card p-6 flex flex-col md:flex-row justify-between items-center gap-6 group hover:border-accent/30 transition-all">
                       <div className="flex items-center gap-6">
                          <div className="w-16 h-16 rounded-2xl overflow-hidden border border-white/10 group-hover:border-accent transition-all p-0.5 bg-white/5">
-                            <img src={req.userAId?.profilePhoto || `https://api.dicebear.com/7.x/avataaars/svg?seed=${req.userAId?.name}`} alt="" className="w-full h-full object-cover rounded-xl" />
+                            <img src={req.userAId?.profilePhoto || `https://api.dicebear.com/7.x/avataaars/svg?seed=${req.userAId?.name || 'Anonymous'}`} alt="" className="w-full h-full object-cover rounded-xl" />
                          </div>
                          <div>
-                            <h4 className="text-xl font-bold text-white mb-2 group-hover:text-accent transition-colors">{req.userAId?.name}</h4>
+                            <h4 className="text-xl font-bold text-white mb-2 group-hover:text-accent transition-colors">{req.userAId?.name || 'Anonymous'}</h4>
                             <div className="flex items-center gap-3">
                                <div className="flex items-center gap-1.5 px-3 py-1 bg-primary/10 border border-primary/20 rounded-lg">
                                   <Zap size={12} className="text-primary" />
@@ -337,10 +341,10 @@ const BarterHub = () => {
                     <div className="flex justify-between items-start mb-8">
                       <div className="flex items-center gap-4">
                         <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center text-white border border-white/10 font-bold">
-                          {otherUser?.name?.charAt(0)}
+                          {otherUser?.name?.charAt(0) || 'U'}
                         </div>
                         <div>
-                          <h4 className="text-lg font-bold text-white">{otherUser?.name}</h4>
+                          <h4 className="text-lg font-bold text-white">{otherUser?.name || 'Anonymous'}</h4>
                           <span className="text-[9px] text-success font-black uppercase tracking-widest">Live Session</span>
                         </div>
                       </div>
