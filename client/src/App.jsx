@@ -21,7 +21,7 @@ const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from './store/slices/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { Wallet as WalletIcon, Sparkles, Briefcase, Zap, Trophy, UserCheck, Home as HomeIcon, Layout, Info, Users, X, Shield, Menu, Bell } from 'lucide-react';
+import { Wallet as WalletIcon, Sparkles, Briefcase, Zap, Trophy, UserCheck, Home as HomeIcon, Layout, Info, Users, X, Shield, Menu, Bell, LogIn, UserPlus } from 'lucide-react';
 import { SocketProvider } from './context/SocketContext';
 import NotificationBell from './components/NotificationBell';
 
@@ -125,8 +125,12 @@ function Navigation() {
               </>
             ) : (
               <div className="flex flex-col gap-3">
-                <Link to="/login" className="btn-secondary text-center py-3">Sign in</Link>
-                <Link to="/signup" className="btn-primary text-center py-3">Get started</Link>
+                <Link to="/login" className="btn-secondary text-center py-3 flex items-center justify-center gap-2" onClick={closeMenu}>
+                  <LogIn size={18} /> Sign In
+                </Link>
+                <Link to="/signup" className="btn-primary text-center py-3 flex items-center justify-center gap-2" onClick={closeMenu}>
+                  <UserPlus size={18} /> Sign Up
+                </Link>
               </div>
             )}
           </div>
