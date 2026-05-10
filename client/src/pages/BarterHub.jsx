@@ -6,9 +6,10 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 import MatchRequestModal from '../components/MatchRequestModal';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const BarterHub = () => {
+  const navigate = useNavigate();
   const { user, token } = useSelector((state) => state.auth);
   const [suggestions, setSuggestions] = useState([]);
   const [matches, setMatches] = useState([]);
@@ -22,8 +23,13 @@ const BarterHub = () => {
   useEffect(() => {
     if (token) {
       fetchData();
+    } else {
+      // If there is no token, the user is not authenticated.
+      // Redirect them to login instead of hanging infinitely on the loading screen.
+      toast.error('You must be logged in to access the Barter Hub.');
+      navigate('/login');
     }
-  }, [token]);
+  }, [token, navigate]);
 
   const fetchData = async () => {
     setLoading(true);
