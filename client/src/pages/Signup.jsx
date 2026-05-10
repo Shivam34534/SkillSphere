@@ -81,7 +81,7 @@ function Signup() {
         formData.role === 'CLUB' ? 'bg-accent' : 'bg-primary'
         }`}></div>
 
-      <div className="glass-card auth-card w-full max-w-lg p-5 md:p-12 relative z-10">
+      <div className="glass-card auth-card w-full max-w-md p-5 md:p-8 relative z-10">
 
         <button
           type="button"
@@ -123,17 +123,17 @@ function Signup() {
 
         {step === 1 && (
           <div className="grid gap-4">
-            <button type="button" className="glass-card p-6 flex items-start gap-4 text-left hover:border-primary transition-all bg-white/[0.02]" onClick={() => handleRoleSelect('STUDENT')}>
+            <button type="button" className="glass-card p-4 flex items-start gap-4 text-left hover:border-primary transition-all bg-white/[0.02]" onClick={() => handleRoleSelect('STUDENT')}>
               <div className="bg-primary/10 p-3 rounded-xl text-primary-hover"><GraduationCap size={24} /></div>
               <div><h3 className="text-lg font-display font-semibold text-text-main mb-1">Student</h3><p className="text-text-muted text-sm leading-relaxed">I want to learn, hire peers, and build my portfolio.</p></div>
             </button>
 
-            <button type="button" className="glass-card p-6 flex items-start gap-4 text-left hover:border-secondary transition-all bg-white/[0.02]" onClick={() => handleRoleSelect('FREELANCER')}>
+            <button type="button" className="glass-card p-4 flex items-start gap-4 text-left hover:border-secondary transition-all bg-white/[0.02]" onClick={() => handleRoleSelect('FREELANCER')}>
               <div className="bg-secondary/10 p-3 rounded-xl text-secondary"><Briefcase size={24} /></div>
               <div><h3 className="text-lg font-display font-semibold text-text-main mb-1">Freelancer</h3><p className="text-text-muted text-sm leading-relaxed">I want to offer my skills and earn money on campus.</p></div>
             </button>
 
-            <button type="button" className="glass-card p-6 flex items-start gap-4 text-left hover:border-accent transition-all bg-white/[0.02]" onClick={() => handleRoleSelect('CLUB')}>
+            <button type="button" className="glass-card p-4 flex items-start gap-4 text-left hover:border-accent transition-all bg-white/[0.02]" onClick={() => handleRoleSelect('CLUB')}>
               <div className="bg-accent/10 p-3 rounded-xl text-accent"><Building size={24} /></div>
               <div><h3 className="text-lg font-display font-semibold text-text-main mb-1">Campus Club / Org</h3><p className="text-text-muted text-sm leading-relaxed">I want to recruit talent and manage our internal economy.</p></div>
             </button>
