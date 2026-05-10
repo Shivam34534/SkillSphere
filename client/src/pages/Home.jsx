@@ -39,7 +39,7 @@ function Home() {
         </div>
       </header>
 
-      <section className="px-6 py-12 md:px-12 lg:px-24 max-w-7xl mx-auto -mt-20 relative z-10">
+      <section className="px-6 py-12 md:px-12 lg:px-24 max-w-7xl mx-auto -mt-20 relative z-10" id="roles">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Live Showcase Card */}
           <div className="lg:col-span-8 feature-card p-1 bg-gradient-to-br from-primary/30 via-accent/10 to-transparent border-primary/20 overflow-hidden group">

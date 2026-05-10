@@ -3,6 +3,7 @@
 html {
   overflow-y: auto;
   height: auto;
+  scroll-behavior: smooth;
 }
 
 @tailwind base;
