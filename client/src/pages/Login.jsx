@@ -55,7 +55,7 @@ function Login() {
                 type="email" 
                 id="login-email"
                 name="email"
-                autocomplete="email"
+                autoComplete="email"
                 placeholder="alex@example.com" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -73,7 +73,7 @@ function Login() {
                 type={showPassword ? "text" : "password"} 
                 id="login-password"
                 name="password"
-                autocomplete="current-password"
+                autoComplete="current-password"
                 placeholder="••••••••" 
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

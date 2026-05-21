@@ -106,7 +106,7 @@ function ResetPassword() {
                   type={showPassword ? "text" : "password"} 
                   id="reset-password"
                   name="password"
-                  autocomplete="new-password"
+                  autoComplete="new-password"
                   placeholder="••••••••" 
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -131,7 +131,7 @@ function ResetPassword() {
                   type={showPassword ? "text" : "password"} 
                   id="confirm-password"
                   name="confirmPassword"
-                  autocomplete="new-password"
+                  autoComplete="new-password"
                   placeholder="••••••••" 
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}

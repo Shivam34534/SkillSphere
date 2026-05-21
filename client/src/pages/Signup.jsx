@@ -173,7 +173,7 @@ function Signup() {
                   type="text"
                   id="signup-name"
                   name="name"
-                  autocomplete="name"
+                  autoComplete="name"
                   placeholder="Alex Mercer"
                   value={formData.name}
                   onChange={handleChange}
@@ -194,7 +194,7 @@ function Signup() {
                   type="email"
                   id="signup-email"
                   name="email"
-                  autocomplete="email"
+                  autoComplete="email"
                   placeholder="alex@example.com"
                   value={formData.email}
                   onChange={handleChange}
@@ -215,7 +215,7 @@ function Signup() {
                   type="tel"
                   id="signup-mobile"
                   name="mobile"
-                  autocomplete="tel"
+                  autoComplete="tel"
                   placeholder="+91 9876543210"
                   value={formData.mobile}
                   onChange={handleChange}
@@ -236,7 +236,7 @@ function Signup() {
                   type={showPassword ? "text" : "password"}
                   id="signup-password"
                   name="password"
-                  autocomplete="new-password"
+                  autoComplete="new-password"
                   placeholder="••••••••"
                   value={formData.password}
                   onChange={handleChange}
@@ -303,7 +303,7 @@ function Signup() {
                   type="text"
                   id="college-name"
                   name="collegeName"
-                  autocomplete="organization"
+                  autoComplete="organization"
                   placeholder="e.g. IIT Bombay"
                   value={formData.collegeName}
                   onChange={handleChange}
@@ -512,7 +512,7 @@ function Signup() {
                   type="text"
                   id="signup-otp"
                   name="otp"
-                  autocomplete="one-time-code"
+                  autoComplete="one-time-code"
                   placeholder="000000"
                   value={formData.otp}
                   onChange={handleChange}

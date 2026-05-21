@@ -119,7 +119,7 @@ function ForgotPassword() {
                   type="email" 
                   id="forgot-email"
                   name="email"
-                  autocomplete="email"
+                  autoComplete="email"
                   placeholder="alex@college.edu" 
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
