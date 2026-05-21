@@ -487,7 +487,7 @@ function Signup() {
             <button
               type="submit"
               disabled={loading || (formData.skillsToTeach.length === 0 && formData.skillsToLearn.length === 0)}
-              className={`w-full py-4 mt-4 transition-all duration-300 rounded-xl font-bold text-white shadow-lg ${
+              className={`w-full py-4 mt-4 transition-all duration-300 rounded-xl font-bold text-white shadow-lg disabled:opacity-60 disabled:cursor-not-allowed ${
                 formData.role === 'FREELANCER' ? 'bg-gradient-to-r from-secondary to-pink-600' :
                 formData.role === 'CLUB' ? 'bg-gradient-to-r from-accent to-blue-600' :
                 'bg-gradient-to-r from-success to-emerald-600'
@@ -495,6 +495,9 @@ function Signup() {
             >
               {loading ? 'Creating Account...' : 'Complete Setup & Send OTP'}
             </button>
+            {formData.skillsToTeach.length === 0 && formData.skillsToLearn.length === 0 && !loading && (
+              <p className="text-center text-text-muted text-sm mt-2">Add at least one skill you offer or seek before completing setup.</p>
+            )}
           </form>
         )}
 
