@@ -187,6 +187,12 @@ const BarterHub = () => {
   const pendingRequests = matches.filter(m => m.status === 'PENDING' && m.userBId?._id === user?._id);
   const myPublicRequests = matches.filter(m => m.status === 'PENDING' && m.isPublic && m.userAId?._id === user?._id);
   const activeSessions = matches.filter(m => m.status === 'ACCEPTED');
+  const liveSwapsCount = activeSessions.length;
+  const trustAverage = (() => {
+    const trustValues = [user?.trustScore || 0, ...suggestions.map(s => s.trustScore || 0)].filter(Boolean);
+    const avg = trustValues.length ? trustValues.reduce((sum, score) => sum + score, 0) / trustValues.length : (user?.trustScore || 50);
+    return (avg / 10).toFixed(1);
+  })();
 
   return (
     <div className="barter-hub-container px-6 py-12 md:px-12 lg:px-24 max-w-7xl mx-auto">
@@ -466,11 +472,11 @@ const BarterHub = () => {
               <div className="space-y-8 relative z-10">
                  <div>
                     <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1">Live Swaps</p>
-                    <p className="text-4xl font-black text-white tracking-tighter">1.2K+</p>
+                    <p className="text-4xl font-black text-white tracking-tighter">{liveSwapsCount || '0'}</p>
                  </div>
                  <div>
                     <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1">Trust Average</p>
-                    <p className="text-4xl font-black text-white tracking-tighter">8.5<span className="text-lg">/10</span></p>
+                    <p className="text-4xl font-black text-white tracking-tighter">{trustAverage}<span className="text-lg">/10</span></p>
                  </div>
               </div>
               <Link to="/leaderboard" className="w-full mt-10 btn-secondary py-4 text-center block text-sm font-bold">View Rankings</Link>
