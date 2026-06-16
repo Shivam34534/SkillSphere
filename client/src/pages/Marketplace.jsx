@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Search, Zap, Code, Palette, Presentation, Music, Video, Star, Inbox, ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { API_URL } from '../config';
 import toast from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 
 const Marketplace = () => {
   const [services, setServices] = useState([]);
@@ -14,6 +15,7 @@ const Marketplace = () => {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const categoryContainerRef = useRef(null);
+  const { token } = useSelector((state) => state.auth);
 
   const categories = ['All', 'Web Dev', 'Design', 'Tutoring', 'Music', 'Video', 'Writing', 'Marketing'];
 
@@ -26,6 +28,27 @@ const Marketplace = () => {
       });
     }
   };
+
+  const [showCategoryArrows, setShowCategoryArrows] = useState(false);
+
+  useEffect(() => {
+    const checkOverflow = () => {
+      const el = categoryContainerRef.current;
+      if (!el) return setShowCategoryArrows(false);
+      setShowCategoryArrows(el.scrollWidth > el.clientWidth + 4);
+    };
+
+    checkOverflow();
+    window.addEventListener('resize', checkOverflow);
+    // also observe mutations
+    const ro = new ResizeObserver(checkOverflow);
+    if (categoryContainerRef.current) ro.observe(categoryContainerRef.current);
+
+    return () => {
+      window.removeEventListener('resize', checkOverflow);
+      if (categoryContainerRef.current) ro.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
@@ -48,6 +71,30 @@ const Marketplace = () => {
       console.error('Error fetching services:', error);
       toast.error('Failed to load services. Please try again.');
       setLoading(false);
+    }
+  };
+
+  const formatCurrency = (amt) => {
+    const amount = Number(amt) || 0;
+    try {
+      return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
+    } catch (e) {
+      return `₹${amount}`;
+    }
+  };
+
+  const handlePurchase = async (serviceId) => {
+    if (!token) {
+      toast.error('Please login to purchase a service.');
+      return;
+    }
+
+    try {
+      const res = await axios.post(`${API_URL}/services/${serviceId}/purchase`, {}, { headers: { Authorization: `Bearer ${token}` } });
+      toast.success(res.data?.message || 'Purchase successful');
+    } catch (err) {
+      console.error('Purchase error', err);
+      toast.error(err.response?.data?.message || 'Purchase failed');
     }
   };
 
@@ -80,13 +127,15 @@ const Marketplace = () => {
             />
           </div>
           <div className="flex items-center gap-2 max-w-[50%] lg:max-w-[60%] shrink-0">
-            <button 
-              onClick={() => scrollCategories('left')} 
-              className="p-1.5 bg-white/5 hover:bg-white/10 rounded-full transition-colors shrink-0 text-text-muted hover:text-white"
-              aria-label="Scroll left"
-            >
-              <ChevronLeft size={18} />
-            </button>
+            {showCategoryArrows && (
+              <button 
+                onClick={() => scrollCategories('left')} 
+                className="p-1.5 bg-white/5 hover:bg-white/10 rounded-full transition-colors shrink-0 text-text-muted hover:text-white"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft size={18} />
+              </button>
+            )}
             <div 
               ref={categoryContainerRef}
               className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide scroll-smooth w-full"
@@ -105,13 +154,15 @@ const Marketplace = () => {
                 </button>
               ))}
             </div>
-            <button 
-              onClick={() => scrollCategories('right')} 
-              className="p-1.5 bg-white/5 hover:bg-white/10 rounded-full transition-colors shrink-0 text-text-muted hover:text-white"
-              aria-label="Scroll right"
-            >
-              <ChevronRight size={18} />
-            </button>
+            {showCategoryArrows && (
+              <button 
+                onClick={() => scrollCategories('right')} 
+                className="p-1.5 bg-white/5 hover:bg-white/10 rounded-full transition-colors shrink-0 text-text-muted hover:text-white"
+                aria-label="Scroll right"
+              >
+                <ChevronRight size={18} />
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -133,8 +184,8 @@ const Marketplace = () => {
       ) : (
         <div className="services-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.length > 0 ? services.map((service) => (
-            <div key={service._id} className="feature-card p-0 flex flex-col group overflow-hidden border border-white/5 hover:border-primary/40 transition-all duration-500 hover:-translate-y-2 h-full">
-              <div className="h-48 bg-gradient-to-br from-primary/10 to-accent/5 relative overflow-hidden">
+            <div key={service._id} className="feature-card rounded-3xl p-0 flex flex-col group overflow-hidden border border-white/5 hover:border-primary/40 transition-all duration-500 hover:-translate-y-2 h-full">
+              <div className="h-56 rounded-t-3xl bg-gradient-to-br from-primary/10 to-accent/5 relative overflow-hidden">
                  <div className="absolute inset-0 flex items-center justify-center opacity-20 group-hover:scale-110 transition-transform duration-700">
                     {service.category === 'Web Dev' && <Code size={120} />}
                     {service.category === 'Design' && <Palette size={120} />}
@@ -143,14 +194,14 @@ const Marketplace = () => {
                     {service.category === 'Video' && <Video size={120} />}
                     {!['Web Dev', 'Design', 'Tutoring', 'Music', 'Video'].includes(service.category) && <Zap size={120} />}
                  </div>
-                 <div className="absolute top-4 left-4">
+                  <div className="absolute top-4 left-4">
                     <span className="px-3 py-1 rounded-lg bg-black/40 backdrop-blur-md border border-white/10 text-[10px] font-black uppercase tracking-widest text-primary">
-                       {service.category}
+                      {service.category?.toUpperCase()}
                     </span>
-                 </div>
+                  </div>
               </div>
               
-              <div className="p-6 flex-1 flex flex-col">
+              <div className="p-8 flex-1 flex flex-col">
                 <h3 className="text-xl font-bold mb-3 text-white group-hover:text-primary transition-colors line-clamp-1">{service.title}</h3>
                 <p className="text-text-muted text-sm mb-6 leading-relaxed line-clamp-2">
                   {service.description}
@@ -173,15 +224,18 @@ const Marketplace = () => {
                    )}
                    <div className="text-right">
                       <p className="text-[9px] text-text-muted uppercase font-bold tracking-tighter">Starting at</p>
-                      <p className="text-lg font-black text-white">₹{service.pricing?.amount}</p>
+                      <p className="text-lg font-black text-white">{formatCurrency(service.pricing?.amount)}</p>
                    </div>
                 </div>
               </div>
               
               {service.freelancerId ? (
-                <Link to={`/profile/${service.freelancerId._id || service.freelancerId}`} className="w-full py-4 bg-white/5 border-t border-white/10 text-center text-sm font-bold text-white group-hover:bg-primary group-hover:border-primary transition-all flex items-center justify-center gap-2">
-                   View Profile <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
+                <div className="w-full flex items-center gap-2 border-t border-white/10 rounded-b-3xl overflow-hidden">
+                  <Link to={`/profile/${service.freelancerId._id || service.freelancerId}`} className="flex-1 py-4 bg-white/5 text-center text-sm font-bold text-white group-hover:bg-primary group-hover:border-primary transition-all flex items-center justify-center gap-2 no-underline">
+                    View Profile <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                  <button onClick={() => handlePurchase(service._id)} className="py-4 px-5 bg-primary text-white font-bold rounded-r-xl hover:opacity-90">Buy</button>
+                </div>
               ) : (
                 <div className="w-full py-4 bg-white/5 border-t border-white/10 text-center text-sm font-bold text-text-muted opacity-50 cursor-not-allowed flex items-center justify-center gap-2">
                    Profile Unavailable

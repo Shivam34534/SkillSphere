@@ -20,31 +20,58 @@ export const createService = async (req, res) => {
 export const getServices = async (req, res) => {
   try {
     const { category, search, page = 1, limit = 12 } = req.query;
-    const query = { isActive: true };
+    const match = { isActive: true };
 
     if (category && category !== 'All') {
-      query.category = category;
+      match.category = category;
     }
 
-    if (search) {
-      query.$or = [
-        { title: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
-      ];
+    const skip = (Number(page) - 1) * Number(limit);
+    const searchRegex = search ? new RegExp(search, 'i') : null;
+
+    const basePipeline = [
+      { $match: match },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'freelancerId',
+          foreignField: '_id',
+          as: 'freelancerId'
+        }
+      },
+      { $unwind: '$freelancerId' }
+    ];
+
+    if (searchRegex) {
+      basePipeline.push({
+        $match: {
+          $or: [
+            { title: searchRegex },
+            { description: searchRegex },
+            { 'freelancerId.name': searchRegex }
+          ]
+        }
+      });
     }
 
-    const skip = (page - 1) * limit;
-    const total = await Service.countDocuments(query);
+    const countPipeline = [...basePipeline, { $count: 'count' }];
+    const dataPipeline = [
+      ...basePipeline,
+      { $sort: { createdAt: -1 } },
+      { $skip: skip },
+      { $limit: Number(limit) }
+    ];
 
-    const services = await Service.find(query)
-      .populate('freelancerId', 'name trustScore xpLevel profilePhoto')
-      .skip(skip)
-      .limit(Number(limit))
-      .sort({ createdAt: -1 });
+    const [countResult, services] = await Promise.all([
+      Service.aggregate(countPipeline),
+      Service.aggregate(dataPipeline)
+    ]);
+
+    const total = countResult[0]?.count || 0;
 
     res.json({
       services,
-      totalPages: Math.ceil(total / limit),
+      totalPages: Math.ceil(total / Number(limit)),
       currentPage: Number(page)
     });
   } catch (error) {

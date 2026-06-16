@@ -19,6 +19,15 @@ const Gigs = () => {
     fetchGigs();
   }, [selectedCategory, selectedType]);
 
+  // Re-fetch when search changes (debounced) so server-side filtering can be added later if desired
+  useEffect(() => {
+    const t = setTimeout(() => {
+      // currently search is client-side, keep a fetch to refresh results after typing stops
+      fetchGigs();
+    }, 400);
+    return () => clearTimeout(t);
+  }, [searchTerm]);
+
   const fetchGigs = async () => {
     setLoading(true);
     try {
@@ -43,6 +52,24 @@ const Gigs = () => {
     gig.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const activePoolAmount = gigs
+    .filter(g => g.type === 'PAID' && g.status === 'OPEN')
+    .reduce((sum, g) => sum + (Number(g.budget) || 0), 0);
+
+  const formatCurrency = (amt) => {
+    const n = Number(amt) || 0;
+    if (n >= 100000) {
+      // show in lakhs: 140000 -> 1.4L+
+      const lakhs = (n / 100000);
+      return `₹${lakhs.toFixed(1)}L+`;
+    }
+    try {
+      return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n);
+    } catch (e) {
+      return `₹${n}`;
+    }
+  };
+
   return (
     <div className="gigs-container px-6 py-12 md:px-12 lg:px-24 max-w-7xl mx-auto">
       {/* Header */}
@@ -56,11 +83,11 @@ const Gigs = () => {
             Monetize your skills, build your portfolio, and help campus clubs grow. The professional layer of SkillSphere.
           </p>
         </div>
-        <div className="feature-card p-6 flex items-center gap-6 bg-primary/10 border-primary/20 group">
-           <div className="text-right">
+          <div className="feature-card rounded-3xl p-6 flex items-center gap-6 bg-primary/10 border-primary/20 group">
+            <div className="text-right">
               <p className="text-[10px] font-black text-text-muted uppercase tracking-widest mb-1">Active Pool</p>
-              <p className="text-3xl font-black text-white tracking-tighter">₹1.4L+</p>
-           </div>
+              <p className="text-3xl font-black text-white tracking-tighter">{formatCurrency(activePoolAmount)}</p>
+            </div>
            <div className="w-14 h-14 rounded-2xl bg-primary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
               <TrendingUp size={28} />
            </div>
@@ -68,7 +95,7 @@ const Gigs = () => {
       </div>
 
       {/* Filter Bar */}
-      <div className="glass-card p-4 mb-16 sticky top-20 z-50 shadow-2xl shadow-black/40">
+      <div className="glass-card rounded-3xl p-6 mb-16 sticky top-20 z-50 shadow-2xl shadow-black/40">
         <div className="flex flex-col lg:flex-row items-center gap-6">
           <div className="relative flex-1 w-full">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" size={20} />
@@ -120,7 +147,7 @@ const Gigs = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredGigs.length > 0 ? filteredGigs.map((gig) => (
             <Link key={gig._id} to={`/gigs/${gig._id}`} className="group no-underline">
-              <div className="feature-card h-full p-8 flex flex-col hover:translate-y-[-8px] transition-all duration-300">
+              <div className="feature-card rounded-3xl h-full p-8 flex flex-col hover:translate-y-[-8px] transition-all duration-300">
                 <div className="flex justify-between items-start mb-8">
                   <div className="flex flex-col gap-2">
                     <span className={`text-[9px] font-black px-4 py-1.5 rounded-lg border uppercase tracking-widest w-fit ${gig.type === 'PAID' ? 'bg-success/10 text-success border-success/20' : 'bg-accent/10 text-accent border-accent/20'}`}>
