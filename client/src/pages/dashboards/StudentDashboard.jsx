@@ -266,7 +266,7 @@ const StudentDashboard = () => {
         </div>
 
         {/* Right Rail */}
-        <div className="space-y-12">
+        <div className="space-y-6">
           <div className="feature-card p-8">
             <h3 className="text-xl font-bold text-white mb-8">Reputation Pulse</h3>
             <div className="space-y-8">
