@@ -88,6 +88,26 @@ export const claimMatchRequest = async (req, res) => {
   }
 };
 
+export const cancelMatchRequest = async (req, res) => {
+  try {
+    const match = await Match.findById(req.params.id);
+    if (!match) return res.status(404).json({ message: 'Match not found' });
+    if (match.status !== 'PENDING') {
+      return res.status(400).json({ message: 'Only pending matches can be cancelled' });
+    }
+    if (match.userAId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: 'Not authorized to cancel this request' });
+    }
+
+    match.status = 'DECLINED';
+    match.isPublic = false;
+    await match.save();
+    res.json({ message: 'Request cancelled successfully' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 export const getMyMatches = async (req, res) => {
   try {
     if (!req.user || !req.user._id) {

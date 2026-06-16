@@ -44,7 +44,10 @@ const BarterHub = () => {
       if (sugRes.ok) setSuggestions(await sugRes.json());
       if (matchRes.ok) setMatches(await matchRes.json());
       if (histRes.ok) setHistory(await histRes.json());
-      if (pubRes.ok) setPublicRequests(await pubRes.json());
+      if (pubRes.ok) {
+        const requests = await pubRes.json();
+        setPublicRequests(requests.filter((req) => req.userAId?._id !== user?._id));
+      }
     } catch (error) {
       console.error('Failed to fetch barter data', error);
     } finally {
@@ -55,8 +58,8 @@ const BarterHub = () => {
   const handleRequest = (targetUser, offeredSkill, learnedSkill) => {
     setInitialData({
       userBEmail: targetUser.email,
-      skillOfferedByA: offeredSkill || '',
-      skillOfferedByB: learnedSkill || ''
+      skillOfferedByA: offeredSkill || user?.skillsToTeach?.[0] || '',
+      skillOfferedByB: learnedSkill || targetUser?.skillsToTeach?.[0] || ''
     });
     setIsModalOpen(true);
   };
@@ -116,7 +119,13 @@ const BarterHub = () => {
         },
         body: JSON.stringify({ status })
       });
-      if (response.ok) fetchData();
+      if (response.ok) {
+        toast.success(status === 'ACCEPTED' ? 'Swap accepted!' : 'Swap declined.');
+        fetchData();
+      } else {
+        const err = await response.json();
+        toast.error(err.message || 'Action failed');
+      }
     } catch (error) {
       toast.error('Action failed');
     }
@@ -125,17 +134,18 @@ const BarterHub = () => {
   const handleCancelRequest = async (id) => {
     if (window.confirm('Are you sure you want to remove this request from the Hub?')) {
       try {
-        const response = await fetch(`${API_URL}/matches/${id}/respond`, {
+        const response = await fetch(`${API_URL}/matches/${id}/cancel`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`
-          },
-          body: JSON.stringify({ status: 'DECLINED' }) // Using DECLINED to cancel
+          }
         });
         if (response.ok) {
           toast.success('Request removed.');
           fetchData();
+        } else {
+          const err = await response.json();
+          toast.error(err.message || 'Failed to cancel request');
         }
       } catch (error) {
         toast.error('Failed to cancel request');
@@ -153,6 +163,9 @@ const BarterHub = () => {
         if (response.ok) {
           toast.success('Session completed!');
           fetchData();
+        } else {
+          const err = await response.json();
+          toast.error(err.message || 'Completion failed');
         }
       } catch (error) {
         toast.error('Completion failed');
@@ -278,6 +291,45 @@ const BarterHub = () => {
                     >
                        Remove Post
                     </button>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {/* Incoming Swap Requests */}
+          {pendingRequests.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                <MessageCircle size={24} className="text-primary" /> Incoming Swap Requests
+              </h2>
+              <div className="space-y-4">
+                {pendingRequests.map(req => (
+                  <div key={req._id} className="feature-card p-6 bg-white/[0.03] border border-white/10">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                      <div>
+                        <p className="text-xs font-black uppercase text-text-muted mb-2 tracking-widest">From {req.userAId?.name || 'Unknown'}</p>
+                        <div className="flex flex-wrap items-center gap-2 text-sm font-bold text-white uppercase">
+                          <span>{req.skillOfferedByA}</span>
+                          <ArrowRight size={12} className="text-text-muted" />
+                          <span>{req.skillOfferedByB}</span>
+                        </div>
+                      </div>
+                      <div className="flex flex-wrap gap-3">
+                        <button
+                          onClick={() => handleResponse(req._id, 'ACCEPTED')}
+                          className="btn-primary px-6 py-3 text-[10px] font-black uppercase tracking-widest"
+                        >
+                          Accept
+                        </button>
+                        <button
+                          onClick={() => handleResponse(req._id, 'DECLINED')}
+                          className="px-6 py-3 text-[10px] font-black uppercase tracking-widest border border-white/10 text-text-muted hover:text-white rounded-xl"
+                        >
+                          Decline
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>

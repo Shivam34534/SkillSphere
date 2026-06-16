@@ -8,7 +8,8 @@ import {
   getMatchSuggestions,
   getBarterHistory,
   getPublicRequests,
-  claimMatchRequest
+  claimMatchRequest,
+  cancelMatchRequest
 } from '../controllers/matchController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -21,6 +22,7 @@ router.route('/')
 router.get('/suggestions', protect, getMatchSuggestions);
 router.get('/history', protect, getBarterHistory);
 router.post('/:id/respond', protect, respondToMatch);
+router.post('/:id/cancel', protect, cancelMatchRequest);
 router.post('/:id/complete', protect, completeMatch);
 router.get('/user-history/:id', getUserMatches);
 router.get('/public', protect, getPublicRequests);
