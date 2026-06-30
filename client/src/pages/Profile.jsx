@@ -103,12 +103,12 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container px-6 py-12 md:px-12 lg:px-24 max-w-6xl mx-auto">
+    <div className="profile-container px-6 py-14 md:px-12 lg:px-24 max-w-6xl mx-auto">
       {/* Header Banner */}
-      <div className="feature-card p-0 overflow-hidden mb-12">
-        <div className="h-48 md:h-64 bg-gradient-to-r from-primary via-accent to-secondary relative group">
+      <div className="feature-card rounded-3xl p-0 overflow-hidden mb-14">
+        <div className="h-56 md:h-72 bg-gradient-to-r from-primary via-accent to-secondary relative group">
            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-all duration-700"></div>
-           <div className="absolute -bottom-16 left-8 md:left-12 flex items-end gap-6 md:gap-8 w-[calc(100%-100px)]">
+           <div className="absolute -bottom-20 left-8 md:left-12 flex items-end gap-6 md:gap-8 w-[calc(100%-100px)]">
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-3xl bg-background-dark border-4 border-background-dark shadow-2xl relative group/avatar shrink-0">
                  <img src={user.profilePhoto || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} alt="" className="w-full h-full object-cover rounded-2xl" />
                  {isEditing && (
@@ -155,10 +155,10 @@ const Profile = () => {
           </button>
         </div>
 
-        <div className="pt-24 pb-12 px-8 md:px-12 grid grid-cols-1 lg:grid-cols-3 gap-12">
+        <div className="pt-32 pb-16 px-6 md:px-10 lg:px-12 grid grid-cols-1 lg:grid-cols-3 gap-14">
            {/* Sidebar Info */}
            <div className="space-y-10">
-              <div className="space-y-6">
+              <div className="bg-white/5 border border-white/10 rounded-3xl p-6 space-y-6">
                  <h3 className="text-[10px] font-black text-text-muted uppercase tracking-widest border-b border-white/5 pb-4">Verification</h3>
                  <div className="space-y-4">
                     <div className="flex items-center gap-4 text-white/80 group">
@@ -176,7 +176,7 @@ const Profile = () => {
                  </div>
               </div>
 
-              <div className="space-y-6">
+              <div className="bg-white/5 border border-white/10 rounded-3xl p-6 space-y-6">
                  <h3 className="text-[10px] font-black text-text-muted uppercase tracking-widest border-b border-white/5 pb-4">Synergy Links</h3>
                  <div className="grid grid-cols-1 gap-3">
                     {isEditing ? (
@@ -245,7 +245,7 @@ const Profile = () => {
 
            {/* Main Profile Info */}
            <div className="lg:col-span-2 space-y-12">
-              <div className="space-y-6">
+              <div className="bg-white/5 border border-white/10 rounded-3xl p-8 space-y-6">
                  <h3 className="text-[10px] font-black text-text-muted uppercase tracking-widest border-b border-white/5 pb-4">Personal Narrative</h3>
                  {isEditing ? (
                    <textarea 
@@ -264,7 +264,7 @@ const Profile = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                 <div className="space-y-6">
+                 <div className="bg-white/5 border border-white/10 rounded-3xl p-8 space-y-6">
                     <h3 className="text-[10px] font-black text-primary uppercase tracking-widest border-b border-primary/10 pb-4">Skills I Offer</h3>
                     <div className="flex flex-wrap gap-2">
                        {(isEditing ? editedUser.skillsToTeach : user.skillsToTeach)?.map(skill => (
@@ -290,7 +290,7 @@ const Profile = () => {
                     </div>
                  </div>
 
-                 <div className="space-y-6">
+                 <div className="bg-white/5 border border-white/10 rounded-3xl p-8 space-y-6">
                     <h3 className="text-[10px] font-black text-accent uppercase tracking-widest border-b border-accent/10 pb-4">Skills I Seek</h3>
                     <div className="flex flex-wrap gap-2">
                        {(isEditing ? editedUser.skillsToLearn : user.skillsToLearn)?.map(skill => (

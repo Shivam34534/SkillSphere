@@ -57,29 +57,31 @@ const PublicProfile = () => {
   return (
     <div className="max-w-6xl mx-auto p-8 animate-in fade-in duration-700">
       {/* Header Card */}
-      <div className="glass-card overflow-hidden mb-8">
-        <div className="h-48 bg-gradient-to-r from-primary/80 via-accent/80 to-primary/80 relative">
-           <div className="absolute -bottom-16 left-8 flex items-end gap-6">
-             <div className="w-32 h-32 rounded-3xl bg-background-dark border-4 border-background-dark shadow-2xl overflow-hidden">
-                <img src={user.profilePhoto || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} alt={user.name} className="w-full h-full object-cover" />
+      <div className="glass-card rounded-3xl overflow-hidden mb-10">
+        <div className="h-60 md:h-72 bg-gradient-to-r from-primary/80 via-accent/80 to-primary/80 relative">
+           <div className="absolute -bottom-20 inset-x-6 md:inset-x-8 flex flex-col md:flex-row items-start md:items-end justify-between gap-6">
+             <div className="flex items-end gap-6">
+               <div className="w-32 h-32 rounded-3xl bg-background-dark border-4 border-background-dark shadow-2xl overflow-hidden">
+                  <img src={user.profilePhoto || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.name}`} alt={user.name} className="w-full h-full object-cover" />
+               </div>
+               <div className="pb-4">
+                  <h1 className="text-4xl font-bold text-white mb-1">{user.name}</h1>
+                  <p className="text-white/80 flex items-center gap-2">
+                    <GraduationCap size={16} /> {user.department} • {user.collegeName || 'SkillSphere Campus'}
+                  </p>
+               </div>
              </div>
-             <div className="pb-4">
-                <h1 className="text-4xl font-bold text-white mb-1">{user.name}</h1>
-                <p className="text-white/80 flex items-center gap-2">
-                  <GraduationCap size={16} /> {user.department} • {user.collegeName || 'SkillSphere Campus'}
-                </p>
+             <div className="flex flex-wrap items-center gap-3 justify-end">
+                <button className="btn-secondary py-2 px-6 flex items-center gap-2 border-white/10 hover:bg-red-500/10 hover:border-red-500/30 text-text-muted hover:text-red-500 transition-all" onClick={() => setShowReportModal(true)}>
+                  <ShieldAlert size={18} /> Report
+                </button>
+                <button className="btn-primary py-2 px-6 flex items-center gap-2">
+                  <MessageCircle size={18} /> Message
+                </button>
              </div>
-           </div>
-           <div className="absolute bottom-4 right-8 flex gap-3">
-              <button className="btn-secondary py-2 px-6 flex items-center gap-2 border-white/10 hover:bg-red-500/10 hover:border-red-500/30 text-text-muted hover:text-red-500 transition-all" onClick={() => setShowReportModal(true)}>
-                <ShieldAlert size={18} /> Report
-              </button>
-              <button className="btn-primary py-2 px-6 flex items-center gap-2">
-                <MessageCircle size={18} /> Message
-              </button>
            </div>
         </div>
-        <div className="pt-20 px-8 pb-8 flex flex-wrap gap-12">
+        <div className="pt-36 px-6 md:px-8 pb-10 grid gap-6">
             <div className="flex items-center gap-2 text-text-muted">
                <Shield className="text-success" size={20} />
                <span className="text-sm font-bold uppercase tracking-widest">Verified Student</span>
@@ -98,7 +100,7 @@ const PublicProfile = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         {/* Left: Bio & Social */}
         <div className="md:col-span-1 flex flex-col gap-8">
-          <div className="glass-card p-6">
+          <div className="glass-card rounded-3xl p-6">
             <h3 className="text-lg font-bold text-white mb-4">About Me</h3>
             <p className="text-sm text-text-muted leading-relaxed">
               {user.bio || "No bio added yet. This user prefers to let their skills do the talking!"}
@@ -227,7 +229,7 @@ const PublicProfile = () => {
             </div>
           </div>
 
-          <div className="glass-card p-8 bg-gradient-to-br from-primary/5 to-transparent">
+          <div className="glass-card rounded-3xl p-8 bg-gradient-to-br from-primary/5 to-transparent">
              <h3 className="text-lg font-bold text-white mb-4">Portfolio Showcase</h3>
              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[1, 2, 3, 4].map(i => (
